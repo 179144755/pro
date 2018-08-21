@@ -1,4 +1,7 @@
 <?php
+
+namespace Mockery\Tests;
+
 /**
  * Mockery
  *
@@ -15,11 +18,9 @@
  * @category   Mockery
  * @package    Mockery
  * @subpackage UnitTests
- * @copyright  Copyright (c) 2010 Pádraic Brady (http://blog.astrumfutura.com)
+ * @copyright  Copyright (c) 2010-2014 Pádraic Brady (http://blog.astrumfutura.com)
  * @license    http://github.com/padraic/mockery/blob/master/LICENSE New BSD License
  */
-
-namespace Mockery\Tests;
 
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
@@ -60,6 +61,8 @@ interface React_WritableStreamInterface extends React_StreamInterface
     public function write($data);
 }
 
-interface Chatroulette_ConnectionInterface extends React_ReadableStreamInterface, React_WritableStreamInterface
+interface Chatroulette_ConnectionInterface
+    extends React_ReadableStreamInterface,
+            React_WritableStreamInterface
 {
 }

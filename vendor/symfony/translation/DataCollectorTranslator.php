@@ -11,8 +11,6 @@
 
 namespace Symfony\Component\Translation;
 
-use Symfony\Component\Translation\Exception\InvalidArgumentException;
-
 /**
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  */
@@ -27,6 +25,9 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
      */
     private $translator;
 
+    /**
+     * @var array
+     */
     private $messages = array();
 
     /**
@@ -35,7 +36,7 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
     public function __construct(TranslatorInterface $translator)
     {
         if (!$translator instanceof TranslatorBagInterface) {
-            throw new InvalidArgumentException(sprintf('The Translator "%s" must implement TranslatorInterface and TranslatorBagInterface.', \get_class($translator)));
+            throw new \InvalidArgumentException(sprintf('The Translator "%s" must implement TranslatorInterface and TranslatorBagInterface.', get_class($translator)));
         }
 
         $this->translator = $translator;
@@ -88,25 +89,11 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
     }
 
     /**
-     * Gets the fallback locales.
-     *
-     * @return array $locales The fallback locales
-     */
-    public function getFallbackLocales()
-    {
-        if ($this->translator instanceof Translator || method_exists($this->translator, 'getFallbackLocales')) {
-            return $this->translator->getFallbackLocales();
-        }
-
-        return array();
-    }
-
-    /**
      * Passes through all unknown calls onto the translator object.
      */
     public function __call($method, $args)
     {
-        return \call_user_func_array(array($this->translator, $method), $args);
+        return call_user_func_array(array($this->translator, $method), $args);
     }
 
     /**
@@ -139,14 +126,14 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
         } elseif ($catalogue->has($id, $domain)) {
             $state = self::MESSAGE_EQUALS_FALLBACK;
 
-            $fallbackCatalogue = $catalogue->getFallbackCatalogue();
+            $fallbackCatalogue = $catalogue->getFallBackCatalogue();
             while ($fallbackCatalogue) {
                 if ($fallbackCatalogue->defines($id, $domain)) {
                     $locale = $fallbackCatalogue->getLocale();
                     break;
                 }
 
-                $fallbackCatalogue = $fallbackCatalogue->getFallbackCatalogue();
+                $fallbackCatalogue = $fallbackCatalogue->getFallBackCatalogue();
             }
         } else {
             $state = self::MESSAGE_MISSING;

@@ -12,7 +12,6 @@
 namespace Symfony\Component\Console\Helper;
 
 use Symfony\Component\Console\Exception\LogicException;
-use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -29,8 +28,6 @@ class SymfonyQuestionHelper extends QuestionHelper
 {
     /**
      * {@inheritdoc}
-     *
-     * To be removed in 4.0
      */
     public function ask(InputInterface $input, OutputInterface $output, Question $question)
     {
@@ -38,13 +35,11 @@ class SymfonyQuestionHelper extends QuestionHelper
         $question->setValidator(function ($value) use ($validator) {
             if (null !== $validator) {
                 $value = $validator($value);
-            } else {
-                // make required
-                if (!\is_array($value) && !\is_bool($value) && 0 === \strlen($value)) {
-                    @trigger_error('The default question validator is deprecated since Symfony 3.3 and will not be used anymore in version 4.0. Set a custom question validator if needed.', E_USER_DEPRECATED);
+            }
 
-                    throw new LogicException('A value is required.');
-                }
+            // make required
+            if (!is_array($value) && !is_bool($value) && 0 === strlen($value)) {
+                throw new LogicException('A value is required.');
             }
 
             return $value;
@@ -58,7 +53,7 @@ class SymfonyQuestionHelper extends QuestionHelper
      */
     protected function writePrompt(OutputInterface $output, Question $question)
     {
-        $text = OutputFormatter::escapeTrailingBackslash($question->getQuestion());
+        $text = $question->getQuestion();
         $default = $question->getDefault();
 
         switch (true) {
@@ -72,26 +67,14 @@ class SymfonyQuestionHelper extends QuestionHelper
 
                 break;
 
-            case $question instanceof ChoiceQuestion && $question->isMultiselect():
-                $choices = $question->getChoices();
-                $default = explode(',', $default);
-
-                foreach ($default as $key => $value) {
-                    $default[$key] = $choices[trim($value)];
-                }
-
-                $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape(implode(', ', $default)));
-
-                break;
-
             case $question instanceof ChoiceQuestion:
                 $choices = $question->getChoices();
-                $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape($choices[$default]));
+                $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, $choices[$default]);
 
                 break;
 
             default:
-                $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, OutputFormatter::escape($default));
+                $text = sprintf(' <info>%s</info> [<comment>%s</comment>]:', $text, $default);
         }
 
         $output->writeln($text);

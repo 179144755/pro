@@ -51,7 +51,7 @@ interface ReadInterface
     public function getMetadata($path);
 
     /**
-     * Get the size of a file.
+     * Get all the meta data of a file or directory.
      *
      * @param string $path
      *
@@ -69,7 +69,7 @@ interface ReadInterface
     public function getMimetype($path);
 
     /**
-     * Get the last modified time of a file as a timestamp.
+     * Get the timestamp of a file.
      *
      * @param string $path
      *

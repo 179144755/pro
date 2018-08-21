@@ -65,14 +65,18 @@ class AppNameCommand extends Command
      *
      * @return void
      */
-    public function handle()
+    public function fire()
     {
         $this->currentRoot = trim($this->laravel->getNamespace(), '\\');
 
-        $this->setAppDirectoryNamespace();
         $this->setBootstrapNamespaces();
+
+        $this->setAppDirectoryNamespace();
+
         $this->setConfigNamespaces();
+
         $this->setComposerNamespace();
+
         $this->setDatabaseFactoryNamespaces();
 
         $this->info('Application namespace set!');
@@ -91,7 +95,6 @@ class AppNameCommand extends Command
     {
         $files = Finder::create()
                             ->in($this->laravel['path'])
-                            ->contains($this->currentRoot)
                             ->name('*.php');
 
         foreach ($files as $file) {
@@ -143,6 +146,18 @@ class AppNameCommand extends Command
     }
 
     /**
+     * Set the PSR-4 namespace in the Composer file.
+     *
+     * @return void
+     */
+    protected function setComposerNamespace()
+    {
+        $this->replaceIn(
+            $this->getComposerPath(), $this->currentRoot.'\\\\', str_replace('\\', '\\\\', $this->argument('name')).'\\\\'
+        );
+    }
+
+    /**
      * Set the namespace in the appropriate configuration files.
      *
      * @return void
@@ -150,7 +165,9 @@ class AppNameCommand extends Command
     protected function setConfigNamespaces()
     {
         $this->setAppConfigNamespaces();
+
         $this->setAuthConfigNamespace();
+
         $this->setServicesConfigNamespace();
     }
 
@@ -182,9 +199,7 @@ class AppNameCommand extends Command
     protected function setAuthConfigNamespace()
     {
         $this->replaceIn(
-            $this->getConfigPath('auth'),
-            $this->currentRoot.'\\User',
-            $this->argument('name').'\\User'
+            $this->getConfigPath('auth'), $this->currentRoot.'\\User', $this->argument('name').'\\User'
         );
     }
 
@@ -196,23 +211,7 @@ class AppNameCommand extends Command
     protected function setServicesConfigNamespace()
     {
         $this->replaceIn(
-            $this->getConfigPath('services'),
-            $this->currentRoot.'\\User',
-            $this->argument('name').'\\User'
-        );
-    }
-
-    /**
-     * Set the PSR-4 namespace in the Composer file.
-     *
-     * @return void
-     */
-    protected function setComposerNamespace()
-    {
-        $this->replaceIn(
-            $this->getComposerPath(),
-            str_replace('\\', '\\\\', $this->currentRoot).'\\\\',
-            str_replace('\\', '\\\\', $this->argument('name')).'\\\\'
+            $this->getConfigPath('services'), $this->currentRoot.'\\User', $this->argument('name').'\\User'
         );
     }
 
@@ -223,17 +222,9 @@ class AppNameCommand extends Command
      */
     protected function setDatabaseFactoryNamespaces()
     {
-        $files = Finder::create()
-                            ->in(database_path('factories'))
-                            ->contains($this->currentRoot)
-                            ->name('*.php');
-
-        foreach ($files as $file) {
-            $this->replaceIn(
-                $file->getRealPath(),
-                $this->currentRoot, $this->argument('name')
-            );
-        }
+        $this->replaceIn(
+            $this->laravel->databasePath().'/factories/ModelFactory.php', $this->currentRoot, $this->argument('name')
+        );
     }
 
     /**
@@ -246,9 +237,7 @@ class AppNameCommand extends Command
      */
     protected function replaceIn($path, $search, $replace)
     {
-        if ($this->files->exists($path)) {
-            $this->files->put($path, str_replace($search, $replace, $this->files->get($path)));
-        }
+        $this->files->put($path, str_replace($search, $replace, $this->files->get($path)));
     }
 
     /**
@@ -268,7 +257,7 @@ class AppNameCommand extends Command
      */
     protected function getComposerPath()
     {
-        return base_path('composer.json');
+        return $this->laravel->basePath().'/composer.json';
     }
 
     /**

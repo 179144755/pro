@@ -35,7 +35,7 @@ class Filesystem
     public function get($path, $lock = false)
     {
         if ($this->isFile($path)) {
-            return $lock ? $this->sharedGet($path) : file_get_contents($path);
+            return $lock ? $this->sharedGet($path, $lock) : file_get_contents($path);
         }
 
         throw new FileNotFoundException("File does not exist at path {$path}");
@@ -51,16 +51,14 @@ class Filesystem
     {
         $contents = '';
 
-        $handle = fopen($path, 'rb');
+        $handle = fopen($path, 'r');
 
         if ($handle) {
             try {
                 if (flock($handle, LOCK_SH)) {
-                    clearstatcache(true, $path);
-
-                    $contents = fread($handle, $this->size($path) ?: 1);
-
-                    flock($handle, LOCK_UN);
+                    while (! feof($handle)) {
+                        $contents .= fread($handle, 1048576);
+                    }
                 }
             } finally {
                 fclose($handle);
@@ -96,17 +94,6 @@ class Filesystem
     public function requireOnce($file)
     {
         require_once $file;
-    }
-
-    /**
-     * Get the MD5 hash of the file at the given path.
-     *
-     * @param  string  $path
-     * @return string
-     */
-    public function hash($path)
-    {
-        return md5_file($path);
     }
 
     /**
@@ -148,22 +135,6 @@ class Filesystem
     public function append($path, $data)
     {
         return file_put_contents($path, $data, FILE_APPEND);
-    }
-
-    /**
-     * Get or set UNIX mode of a file or directory.
-     *
-     * @param  string  $path
-     * @param  int  $mode
-     * @return mixed
-     */
-    public function chmod($path, $mode = null)
-    {
-        if ($mode) {
-            return chmod($path, $mode);
-        }
-
-        return substr(sprintf('%o', fileperms($path)), -4);
     }
 
     /**
@@ -213,24 +184,6 @@ class Filesystem
     public function copy($path, $target)
     {
         return copy($path, $target);
-    }
-
-    /**
-     * Create a hard link to the target file or directory.
-     *
-     * @param  string  $target
-     * @param  string  $link
-     * @return void
-     */
-    public function link($target, $link)
-    {
-        if (! windows_os()) {
-            return symlink($target, $link);
-        }
-
-        $mode = $this->isDirectory($target) ? 'J' : 'H';
-
-        exec("mklink /{$mode} \"{$link}\" \"{$target}\"");
     }
 
     /**
@@ -333,17 +286,6 @@ class Filesystem
     }
 
     /**
-     * Determine if the given path is readable.
-     *
-     * @param  string  $path
-     * @return bool
-     */
-    public function isReadable($path)
-    {
-        return is_readable($path);
-    }
-
-    /**
      * Determine if the given path is writable.
      *
      * @param  string  $path
@@ -381,30 +323,33 @@ class Filesystem
      * Get an array of all files in a directory.
      *
      * @param  string  $directory
-     * @param  bool  $hidden
-     * @return \Symfony\Component\Finder\SplFileInfo[]
+     * @return array
      */
-    public function files($directory, $hidden = false)
+    public function files($directory)
     {
-        return iterator_to_array(
-            Finder::create()->files()->ignoreDotFiles(! $hidden)->in($directory)->depth(0),
-            false
-        );
+        $glob = glob($directory.'/*');
+
+        if ($glob === false) {
+            return [];
+        }
+
+        // To get the appropriate files, we'll simply glob the directory and filter
+        // out any "files" that are not truly files so we do not end up with any
+        // directories in our list, but only true files within the directory.
+        return array_filter($glob, function ($file) {
+            return filetype($file) == 'file';
+        });
     }
 
     /**
      * Get all of the files from the given directory (recursive).
      *
      * @param  string  $directory
-     * @param  bool  $hidden
-     * @return \Symfony\Component\Finder\SplFileInfo[]
+     * @return array
      */
-    public function allFiles($directory, $hidden = false)
+    public function allFiles($directory)
     {
-        return iterator_to_array(
-            Finder::create()->files()->ignoreDotFiles(! $hidden)->in($directory),
-            false
-        );
+        return iterator_to_array(Finder::create()->files()->in($directory), false);
     }
 
     /**
@@ -440,25 +385,6 @@ class Filesystem
         }
 
         return mkdir($path, $mode, $recursive);
-    }
-
-    /**
-     * Move a directory.
-     *
-     * @param  string  $from
-     * @param  string  $to
-     * @param  bool  $overwrite
-     * @return bool
-     */
-    public function moveDirectory($from, $to, $overwrite = false)
-    {
-        if ($overwrite && $this->isDirectory($to)) {
-            if (! $this->deleteDirectory($to)) {
-                return false;
-            }
-        }
-
-        return @rename($from, $to) === true;
     }
 
     /**

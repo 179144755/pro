@@ -26,18 +26,13 @@ if (empty($files)) {
     showHelp("Must specify at least one file.");
 }
 
-$lexer = new PhpParser\Lexer\Emulative(['usedAttributes' => [
-    'startLine', 'endLine', 'startFilePos', 'endFilePos', 'comments'
-]]);
-$parser = (new PhpParser\ParserFactory)->create(
-    PhpParser\ParserFactory::PREFER_PHP7,
-    $lexer
-);
-$dumper = new PhpParser\NodeDumper([
-    'dumpComments' => true,
-    'dumpPositions' => $attributes['with-positions'],
-]);
+$lexer = new PhpParser\Lexer\Emulative(array('usedAttributes' => array(
+    'startLine', 'endLine', 'startFilePos', 'endFilePos'
+)));
+$parser = (new PhpParser\ParserFactory)->create(PhpParser\ParserFactory::PREFER_PHP7, $lexer);
+$dumper = new PhpParser\NodeDumper;
 $prettyPrinter = new PhpParser\PrettyPrinter\Standard;
+$serializer = new PhpParser\Serializer\XML;
 
 $traverser = new PhpParser\NodeTraverser();
 $traverser->addVisitor(new PhpParser\NodeVisitor\NameResolver);
@@ -55,35 +50,32 @@ foreach ($files as $file) {
         echo "====> File $file:\n";
     }
 
-    if ($attributes['with-recovery']) {
-        $errorHandler = new PhpParser\ErrorHandler\Collecting;
-        $stmts = $parser->parse($code, $errorHandler);
-        foreach ($errorHandler->getErrors() as $error) {
-            $message = formatErrorMessage($error, $code, $attributes['with-column-info']);
-            echo $message . "\n";
+    try {
+        $stmts = $parser->parse($code);
+    } catch (PhpParser\Error $e) {
+        if ($attributes['with-column-info'] && $e->hasColumnInfo()) {
+            $startLine = $e->getStartLine();
+            $endLine = $e->getEndLine();
+            $startColumn = $e->getStartColumn($code);
+            $endColumn   = $e->getEndColumn($code);
+            $message .= $e->getRawMessage() . " from $startLine:$startColumn to $endLine:$endColumn";
+        } else {
+            $message = $e->getMessage();
         }
-        if (null === $stmts) {
-            continue;
-        }
-    } else {
-        try {
-            $stmts = $parser->parse($code);
-        } catch (PhpParser\Error $error) {
-            $message = formatErrorMessage($error, $code, $attributes['with-column-info']);
-            die($message . "\n");
-        }
+
+        die($message . "\n");
     }
 
     foreach ($operations as $operation) {
         if ('dump' === $operation) {
             echo "==> Node dump:\n";
-            echo $dumper->dump($stmts, $code), "\n";
+            echo $dumper->dump($stmts), "\n";
         } elseif ('pretty-print' === $operation) {
             echo "==> Pretty print:\n";
             echo $prettyPrinter->prettyPrintFile($stmts), "\n";
-        } elseif ('json-dump' === $operation) {
-            echo "==> JSON dump:\n";
-            echo json_encode($stmts, JSON_PRETTY_PRINT), "\n";
+        } elseif ('serialize-xml' === $operation) {
+            echo "==> Serialized XML:\n";
+            echo $serializer->serialize($stmts), "\n";
         } elseif ('var-dump' === $operation) {
             echo "==> var_dump():\n";
             var_dump($stmts);
@@ -94,19 +86,9 @@ foreach ($files as $file) {
     }
 }
 
-function formatErrorMessage(PhpParser\Error $e, $code, $withColumnInfo) {
-    if ($withColumnInfo && $e->hasColumnInfo()) {
-        return $e->getMessageWithColumnInfo($code);
-    } else {
-        return $e->getMessage();
-    }
-}
-
-function showHelp($error = '') {
-    if ($error) {
-        echo $error . "\n\n";
-    }
-    die(<<<OUTPUT
+function showHelp($error) {
+    die($error . "\n\n" .
+        <<<OUTPUT
 Usage: php-parse [operations] file1.php [file2.php ...]
    or: php-parse [operations] "<?php code"
 Turn PHP source code into an abstract syntax tree.
@@ -115,13 +97,10 @@ Operations is a list of the following options (--dump by default):
 
     -d, --dump              Dump nodes using NodeDumper
     -p, --pretty-print      Pretty print file using PrettyPrinter\Standard
-    -j, --json-dump         Print json_encode() result
+        --serialize-xml     Serialize nodes using Serializer\XML
         --var-dump          var_dump() nodes (for exact structure)
     -N, --resolve-names     Resolve names using NodeVisitor\NameResolver
     -c, --with-column-info  Show column-numbers for errors (if available)
-    -P, --with-positions    Show positions in node dumps
-    -r, --with-recovery     Use parsing with error recovery
-    -h, --help              Display this page
 
 Example:
     php-parse -d -p -N -d file.php
@@ -134,13 +113,11 @@ OUTPUT
 }
 
 function parseArgs($args) {
-    $operations = [];
-    $files = [];
-    $attributes = [
+    $operations = array();
+    $files = array();
+    $attributes = array(
         'with-column-info' => false,
-        'with-positions' => false,
-        'with-recovery' => false,
-    ];
+    );
 
     array_shift($args);
     $parseOptions = true;
@@ -159,9 +136,8 @@ function parseArgs($args) {
             case '-p':
                 $operations[] = 'pretty-print';
                 break;
-            case '--json-dump':
-            case '-j':
-                $operations[] = 'json-dump';
+            case '--serialize-xml':
+                $operations[] = 'serialize-xml';
                 break;
             case '--var-dump':
                 $operations[] = 'var-dump';
@@ -173,18 +149,6 @@ function parseArgs($args) {
             case '--with-column-info':
             case '-c';
                 $attributes['with-column-info'] = true;
-                break;
-            case '--with-positions':
-            case '-P':
-                $attributes['with-positions'] = true;
-                break;
-            case '--with-recovery':
-            case '-r':
-                $attributes['with-recovery'] = true;
-                break;
-            case '--help':
-            case '-h';
-                showHelp();
                 break;
             case '--':
                 $parseOptions = false;
@@ -198,5 +162,5 @@ function parseArgs($args) {
         }
     }
 
-    return [$operations, $files, $attributes];
+    return array($operations, $files, $attributes);
 }

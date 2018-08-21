@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace PhpParser\Node\Scalar;
 
@@ -7,16 +7,10 @@ use PhpParser\Node\Scalar;
 
 class String_ extends Scalar
 {
-    /* For use in "kind" attribute */
-    const KIND_SINGLE_QUOTED = 1;
-    const KIND_DOUBLE_QUOTED = 2;
-    const KIND_HEREDOC = 3;
-    const KIND_NOWDOC = 4;
-
     /** @var string String value */
     public $value;
 
-    protected static $replacements = [
+    protected static $replacements = array(
         '\\' => '\\',
         '$'  =>  '$',
         'n'  => "\n",
@@ -25,7 +19,7 @@ class String_ extends Scalar
         'f'  => "\f",
         'v'  => "\v",
         'e'  => "\x1B",
-    ];
+    );
 
     /**
      * Constructs a string scalar node.
@@ -33,13 +27,13 @@ class String_ extends Scalar
      * @param string $value      Value of the string
      * @param array  $attributes Additional attributes
      */
-    public function __construct(string $value, array $attributes = []) {
+    public function __construct($value, array $attributes = array()) {
         parent::__construct($attributes);
         $this->value = $value;
     }
 
-    public function getSubNodeNames() : array {
-        return ['value'];
+    public function getSubNodeNames() {
+        return array('value');
     }
 
     /**
@@ -52,16 +46,16 @@ class String_ extends Scalar
      *
      * @return string The parsed string
      */
-    public static function parse(string $str, bool $parseUnicodeEscape = true) : string {
+    public static function parse($str, $parseUnicodeEscape = true) {
         $bLength = 0;
-        if ('b' === $str[0] || 'B' === $str[0]) {
+        if ('b' === $str[0]) {
             $bLength = 1;
         }
 
         if ('\'' === $str[$bLength]) {
             return str_replace(
-                ['\\\\', '\\\''],
-                ['\\', '\''],
+                array('\\\\', '\\\''),
+                array(  '\\',   '\''),
                 substr($str, $bLength + 1, -1)
             );
         } else {
@@ -82,7 +76,7 @@ class String_ extends Scalar
      *
      * @return string String with escape sequences parsed
      */
-    public static function parseEscapeSequences(string $str, $quote, bool $parseUnicodeEscape = true) : string {
+    public static function parseEscapeSequences($str, $quote, $parseUnicodeEscape = true) {
         if (null !== $quote) {
             $str = str_replace('\\' . $quote, $quote, $str);
         }
@@ -111,14 +105,7 @@ class String_ extends Scalar
         );
     }
 
-    /**
-     * Converts a Unicode code point to its UTF-8 encoded representation.
-     *
-     * @param int $num Code point
-     *
-     * @return string UTF-8 representation of code point
-     */
-    private static function codePointToUtf8(int $num) : string {
+    private static function codePointToUtf8($num) {
         if ($num <= 0x7F) {
             return chr($num);
         }
@@ -146,7 +133,7 @@ class String_ extends Scalar
      *
      * @return string Parsed string
      */
-    public static function parseDocString(string $startToken, string $str, bool $parseUnicodeEscape = true) : string {
+    public static function parseDocString($startToken, $str, $parseUnicodeEscape = true) {
         // strip last newline (thanks tokenizer for sticking it into the string!)
         $str = preg_replace('~(\r\n|\n|\r)\z~', '', $str);
 
@@ -156,9 +143,5 @@ class String_ extends Scalar
         }
 
         return self::parseEscapeSequences($str, null, $parseUnicodeEscape);
-    }
-    
-    public function getType() : string {
-        return 'Scalar_String';
     }
 }

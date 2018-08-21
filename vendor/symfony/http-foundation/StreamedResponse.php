@@ -28,9 +28,10 @@ class StreamedResponse extends Response
 {
     protected $callback;
     protected $streamed;
-    private $headersSent;
 
     /**
+     * Constructor.
+     *
      * @param callable|null $callback A valid PHP callback or null to set it later
      * @param int           $status   The response status code
      * @param array         $headers  An array of response headers
@@ -43,7 +44,6 @@ class StreamedResponse extends Response
             $this->setCallback($callback);
         }
         $this->streamed = false;
-        $this->headersSent = false;
     }
 
     /**
@@ -53,7 +53,7 @@ class StreamedResponse extends Response
      * @param int           $status   The response status code
      * @param array         $headers  An array of response headers
      *
-     * @return static
+     * @return StreamedResponse
      */
     public static function create($callback = null, $status = 200, $headers = array())
     {
@@ -64,45 +64,21 @@ class StreamedResponse extends Response
      * Sets the PHP callback associated with this Response.
      *
      * @param callable $callback A valid PHP callback
-     *
-     * @return $this
      */
     public function setCallback(callable $callback)
     {
         $this->callback = $callback;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * This method only sends the headers once.
-     *
-     * @return $this
-     */
-    public function sendHeaders()
-    {
-        if ($this->headersSent) {
-            return $this;
-        }
-
-        $this->headersSent = true;
-
-        return parent::sendHeaders();
     }
 
     /**
      * {@inheritdoc}
      *
      * This method only sends the content once.
-     *
-     * @return $this
      */
     public function sendContent()
     {
         if ($this->streamed) {
-            return $this;
+            return;
         }
 
         $this->streamed = true;
@@ -111,25 +87,19 @@ class StreamedResponse extends Response
             throw new \LogicException('The Response callback must not be null.');
         }
 
-        \call_user_func($this->callback);
-
-        return $this;
+        call_user_func($this->callback);
     }
 
     /**
      * {@inheritdoc}
      *
      * @throws \LogicException when the content is not null
-     *
-     * @return $this
      */
     public function setContent($content)
     {
         if (null !== $content) {
             throw new \LogicException('The content cannot be set on a StreamedResponse instance.');
         }
-
-        return $this;
     }
 
     /**
@@ -140,17 +110,5 @@ class StreamedResponse extends Response
     public function getContent()
     {
         return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @return $this
-     */
-    public function setNotModified()
-    {
-        $this->setCallback(function () {});
-
-        return parent::setNotModified();
     }
 }

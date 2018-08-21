@@ -4,7 +4,7 @@ require_once 'swift_required.php';
 
 //This is more of a "cross your fingers and hope it works" test!
 
-class Swift_DependencyContainerAcceptanceTest extends PHPUnit\Framework\TestCase
+class Swift_DependencyContainerAcceptanceTest extends \PHPUnit_Framework_TestCase
 {
     public function testNoLookupsFail()
     {
@@ -16,7 +16,5 @@ class Swift_DependencyContainerAcceptanceTest extends PHPUnit\Framework\TestCase
                 $this->fail($e->getMessage());
             }
         }
-        // previous loop would fail if there is an issue
-        $this->addToAssertionCount(1);
     }
 }

@@ -14,29 +14,29 @@ class JobFailed
     /**
      * The job instance.
      *
-     * @var \Illuminate\Contracts\Queue\Job
+     * @var \Illuminate\Contracts\Jobs\Job
      */
     public $job;
 
     /**
-     * The exception that caused the job to fail.
+     * The data given to the job.
      *
-     * @var \Exception
+     * @var array
      */
-    public $exception;
+    public $data;
 
     /**
      * Create a new event instance.
      *
      * @param  string  $connectionName
-     * @param  \Illuminate\Contracts\Queue\Job  $job
-     * @param  \Exception  $exception
+     * @param  \Illuminate\Contracts\Jobs\Job  $job
+     * @param  array  $data
      * @return void
      */
-    public function __construct($connectionName, $job, $exception)
+    public function __construct($connectionName, $job, $data)
     {
         $this->job = $job;
-        $this->exception = $exception;
+        $this->data = $data;
         $this->connectionName = $connectionName;
     }
 }

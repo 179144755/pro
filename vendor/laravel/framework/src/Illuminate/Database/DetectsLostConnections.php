@@ -26,14 +26,9 @@ trait DetectsLostConnections
             'decryption failed or bad record mac',
             'server closed the connection unexpectedly',
             'SSL connection has been closed unexpectedly',
+            'Deadlock found when trying to get lock',
             'Error writing data to the connection',
             'Resource deadlock avoided',
-            'Transaction() on null',
-            'child connection forced to terminate due to client_idle_limit',
-            'query_wait_timeout',
-            'reset by peer',
-            'Physical connection is not usable',
-            'TCP Provider: Error code 0x68',
         ]);
     }
 }

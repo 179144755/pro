@@ -23,16 +23,12 @@ class B {
 -----
 array(
     0: Stmt_Trait(
-        name: Identifier(
-            name: A
-        )
+        name: A
         stmts: array(
             0: Stmt_ClassMethod(
-                flags: MODIFIER_PUBLIC (1)
+                type: 1
                 byRef: false
-                name: Identifier(
-                    name: a
-                )
+                name: a
                 params: array(
                 )
                 returnType: null
@@ -42,10 +38,8 @@ array(
         )
     )
     1: Stmt_Class(
-        flags: 0
-        name: Identifier(
-            name: B
-        )
+        type: 0
+        name: B
         extends: null
         implements: array(
         )
@@ -72,30 +66,20 @@ array(
                 adaptations: array(
                     0: Stmt_TraitUseAdaptation_Alias(
                         trait: null
-                        method: Identifier(
-                            name: a
-                        )
-                        newModifier: MODIFIER_PROTECTED (2)
-                        newName: Identifier(
-                            name: b
-                        )
+                        method: a
+                        newModifier: 2
+                        newName: b
                     )
                     1: Stmt_TraitUseAdaptation_Alias(
                         trait: null
-                        method: Identifier(
-                            name: c
-                        )
+                        method: c
                         newModifier: null
-                        newName: Identifier(
-                            name: d
-                        )
+                        newName: d
                     )
                     2: Stmt_TraitUseAdaptation_Alias(
                         trait: null
-                        method: Identifier(
-                            name: e
-                        )
-                        newModifier: MODIFIER_PRIVATE (4)
+                        method: e
+                        newModifier: 4
                         newName: null
                     )
                 )
@@ -125,9 +109,7 @@ array(
                                 0: E
                             )
                         )
-                        method: Identifier(
-                            name: a
-                        )
+                        method: a
                         insteadof: array(
                             0: Name(
                                 parts: array(
@@ -147,13 +129,9 @@ array(
                                 0: E
                             )
                         )
-                        method: Identifier(
-                            name: b
-                        )
-                        newModifier: MODIFIER_PROTECTED (2)
-                        newName: Identifier(
-                            name: c
-                        )
+                        method: b
+                        newModifier: 2
+                        newName: c
                     )
                     2: Stmt_TraitUseAdaptation_Alias(
                         trait: Name(
@@ -161,13 +139,9 @@ array(
                                 0: E
                             )
                         )
-                        method: Identifier(
-                            name: d
-                        )
+                        method: d
                         newModifier: null
-                        newName: Identifier(
-                            name: e
-                        )
+                        newName: e
                     )
                     3: Stmt_TraitUseAdaptation_Alias(
                         trait: Name(
@@ -175,10 +149,8 @@ array(
                                 0: E
                             )
                         )
-                        method: Identifier(
-                            name: f
-                        )
-                        newModifier: MODIFIER_PRIVATE (4)
+                        method: f
+                        newModifier: 4
                         newName: null
                     )
                 )

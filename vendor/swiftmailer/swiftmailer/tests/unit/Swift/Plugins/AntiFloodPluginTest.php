@@ -1,6 +1,6 @@
 <?php
 
-class Swift_Plugins_AntiFloodPluginTest extends \PHPUnit\Framework\TestCase
+class Swift_Plugins_AntiFloodPluginTest extends \PHPUnit_Framework_TestCase
 {
     public function testThresholdCanBeSetAndFetched()
     {
@@ -20,63 +20,65 @@ class Swift_Plugins_AntiFloodPluginTest extends \PHPUnit\Framework\TestCase
 
     public function testPluginStopsConnectionAfterThreshold()
     {
-        $transport = $this->createTransport();
+        $transport = $this->_createTransport();
         $transport->expects($this->once())
                   ->method('start');
         $transport->expects($this->once())
                   ->method('stop');
 
-        $evt = $this->createSendEvent($transport);
+        $evt = $this->_createSendEvent($transport);
 
         $plugin = new Swift_Plugins_AntiFloodPlugin(10);
-        for ($i = 0; $i < 12; ++$i) {
+        for ($i = 0; $i < 12; $i++) {
             $plugin->sendPerformed($evt);
         }
     }
 
     public function testPluginCanStopAndStartMultipleTimes()
     {
-        $transport = $this->createTransport();
+        $transport = $this->_createTransport();
         $transport->expects($this->exactly(5))
                   ->method('start');
         $transport->expects($this->exactly(5))
                   ->method('stop');
 
-        $evt = $this->createSendEvent($transport);
+        $evt = $this->_createSendEvent($transport);
 
         $plugin = new Swift_Plugins_AntiFloodPlugin(2);
-        for ($i = 0; $i < 11; ++$i) {
+        for ($i = 0; $i < 11; $i++) {
             $plugin->sendPerformed($evt);
         }
     }
 
     public function testPluginCanSleepDuringRestart()
     {
-        $sleeper = $this->getMockBuilder('Swift_Plugins_Sleeper')->getMock();
+        $sleeper = $this->getMock('Swift_Plugins_Sleeper');
         $sleeper->expects($this->once())
                 ->method('sleep')
                 ->with(10);
 
-        $transport = $this->createTransport();
+        $transport = $this->_createTransport();
         $transport->expects($this->once())
                   ->method('start');
         $transport->expects($this->once())
                   ->method('stop');
 
-        $evt = $this->createSendEvent($transport);
+        $evt = $this->_createSendEvent($transport);
 
         $plugin = new Swift_Plugins_AntiFloodPlugin(99, 10, $sleeper);
-        for ($i = 0; $i < 101; ++$i) {
+        for ($i = 0; $i < 101; $i++) {
             $plugin->sendPerformed($evt);
         }
     }
 
-    private function createTransport()
+    // -- Creation Methods
+
+    private function _createTransport()
     {
-        return $this->getMockBuilder('Swift_Transport')->getMock();
+        return $this->getMock('Swift_Transport');
     }
 
-    private function createSendEvent($transport)
+    private function _createSendEvent($transport)
     {
         $evt = $this->getMockBuilder('Swift_Events_SendEvent')
                     ->disableOriginalConstructor()

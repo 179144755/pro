@@ -33,12 +33,24 @@ class ArrayStore extends TaggableStore implements Store
      *
      * @param  string  $key
      * @param  mixed   $value
-     * @param  float|int  $minutes
+     * @param  int     $minutes
      * @return void
      */
     public function put($key, $value, $minutes)
     {
         $this->storage[$key] = $value;
+    }
+
+    /**
+     * Store multiple items in the cache for a given number of minutes.
+     *
+     * @param  array  $values
+     * @param  int  $minutes
+     * @return void
+     */
+    public function putMultiple(array $values, $minutes)
+    {
+        $this->storage += $values;
     }
 
     /**
@@ -50,14 +62,13 @@ class ArrayStore extends TaggableStore implements Store
      */
     public function increment($key, $value = 1)
     {
-        $this->storage[$key] = ! isset($this->storage[$key])
-                ? $value : ((int) $this->storage[$key]) + $value;
+        $this->storage[$key] = $this->storage[$key] + $value;
 
         return $this->storage[$key];
     }
 
     /**
-     * Decrement the value of an item in the cache.
+     * Increment the value of an item in the cache.
      *
      * @param  string  $key
      * @param  mixed   $value
@@ -96,13 +107,11 @@ class ArrayStore extends TaggableStore implements Store
     /**
      * Remove all items from the cache.
      *
-     * @return bool
+     * @return void
      */
     public function flush()
     {
         $this->storage = [];
-
-        return true;
     }
 
     /**

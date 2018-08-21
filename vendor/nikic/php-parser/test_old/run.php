@@ -43,12 +43,9 @@ if (count($arguments) !== 2) {
 }
 
 $showProgress = true;
-$verbose = false;
-foreach ($options as $option) {
-    if ($option === '--no-progress') {
+if (count($options) > 0) {
+    if (count($options) === 1 && $options[0] === '--no-progress') {
         $showProgress = false;
-    } elseif ($option === '--verbose') {
-        $verbose = true;
     } else {
         showHelp('Invalid option passed!');
     }
@@ -83,15 +80,11 @@ switch ($testType) {
 | Zend.tests.multibyte.multibyte_encoding_001
 | Zend.tests.multibyte.multibyte_encoding_004
 | Zend.tests.multibyte.multibyte_encoding_005
+# token_get_all bug (https://bugs.php.net/bug.php?id=60097)
+| Zend.tests.bug47516
 # pretty print difference due to INF vs 1e1000
 | ext.standard.tests.general_functions.bug27678
 | tests.lang.bug24640
-# pretty print differences due to negative LNumbers
-| Zend.tests.neg_num_string
-| Zend.tests.bug72918
-# pretty print difference due to nop statements
-| ext.mbstring.tests.htmlent
-| ext.standard.tests.file.fread_basic
 )\.phpt$~x', $file)) {
                 return null;
             }
@@ -110,24 +103,17 @@ switch ($testType) {
         showHelp('Test type must be one of: PHP5, PHP7 or Symfony');
 }
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once dirname(__FILE__) . '/../lib/PhpParser/Autoloader.php';
+PhpParser\Autoloader::register();
 
-$lexer = new PhpParser\Lexer\Emulative(['usedAttributes' => [
-    'comments', 'startLine', 'endLine', 'startTokenPos', 'endTokenPos',
-]]);
-$parserName = 'PhpParser\Parser\\' . $version;
-/** @var PhpParser\Parser $parser */
-$parser = new $parserName($lexer);
+$parserName    = 'PhpParser\Parser\\' . $version;
+$parser        = new $parserName(new PhpParser\Lexer\Emulative);
 $prettyPrinter = new PhpParser\PrettyPrinter\Standard;
-$nodeDumper = new PhpParser\NodeDumper;
+$nodeDumper    = new PhpParser\NodeDumper;
 
-$cloningTraverser = new PhpParser\NodeTraverser;
-$cloningTraverser->addVisitor(new PhpParser\NodeVisitor\CloningVisitor);
+$parseFail = $ppFail = $compareFail = $count = 0;
 
-$parseFail = $fpppFail = $ppFail = $compareFail = $count = 0;
-
-$readTime = $parseTime = $cloneTime = 0;
-$fpppTime = $ppTime = $reparseTime = $compareTime = 0;
+$readTime = $parseTime = $ppTime = $reparseTime = $compareTime = 0;
 $totalStartTime = microtime(true);
 
 foreach (new RecursiveIteratorIterator(
@@ -139,10 +125,10 @@ foreach (new RecursiveIteratorIterator(
     }
 
     $startTime = microtime(true);
-    $origCode = file_get_contents($file);
+    $code = file_get_contents($file);
     $readTime += microtime(true) - $startTime;
 
-    if (null === $origCode = $codeExtractor($file, $origCode)) {
+    if (null === $code = $codeExtractor($file, $code)) {
         continue;
     }
 
@@ -156,30 +142,11 @@ foreach (new RecursiveIteratorIterator(
 
     try {
         $startTime = microtime(true);
-        $origStmts = $parser->parse($origCode);
+        $stmts = $parser->parse($code);
         $parseTime += microtime(true) - $startTime;
 
-        $origTokens = $lexer->getTokens();
-
         $startTime = microtime(true);
-        $stmts = $cloningTraverser->traverse($origStmts);
-        $cloneTime += microtime(true) - $startTime;
-
-        $startTime = microtime(true);
-        $code = $prettyPrinter->printFormatPreserving($stmts, $origStmts, $origTokens);
-        $fpppTime += microtime(true) - $startTime;
-
-        if ($code !== $origCode) {
-            echo $file, ":\n Result of format-preserving pretty-print differs\n";
-            if ($verbose) {
-                echo "FPPP output:\n=====\n$code\n=====\n\n";
-            }
-
-            ++$fpppFail;
-        }
-
-        $startTime = microtime(true);
-        $code = "<?php\n" . $prettyPrinter->prettyPrint($stmts);
+        $code = '<?php' . "\n" . $prettyPrinter->prettyPrint($stmts);
         $ppTime += microtime(true) - $startTime;
 
         try {
@@ -193,17 +160,11 @@ foreach (new RecursiveIteratorIterator(
 
             if (!$same) {
                 echo $file, ":\n    Result of initial parse and parse after pretty print differ\n";
-                if ($verbose) {
-                    echo "Pretty printer output:\n=====\n$code\n=====\n\n";
-                }
 
                 ++$compareFail;
             }
         } catch (PhpParser\Error $e) {
             echo $file, ":\n    Parse of pretty print failed with message: {$e->getMessage()}\n";
-            if ($verbose) {
-                echo "Pretty printer output:\n=====\n$code\n=====\n\n";
-            }
 
             ++$ppFail;
         }
@@ -215,19 +176,14 @@ foreach (new RecursiveIteratorIterator(
 }
 
 if (0 === $parseFail && 0 === $ppFail && 0 === $compareFail) {
-    $exit = 0;
     echo "\n\n", 'All tests passed.', "\n";
 } else {
-    $exit = 1;
     echo "\n\n", '==========', "\n\n", 'There were: ', "\n";
     if (0 !== $parseFail) {
         echo '    ', $parseFail,   ' parse failures.',        "\n";
     }
     if (0 !== $ppFail) {
         echo '    ', $ppFail,      ' pretty print failures.', "\n";
-    }
-    if (0 !== $fpppFail) {
-        echo '    ', $fpppFail,      ' FPPP failures.', "\n";
     }
     if (0 !== $compareFail) {
         echo '    ', $compareFail, ' compare failures.',      "\n";
@@ -239,13 +195,9 @@ echo "\n",
      "\n",
      'Reading files took:   ', $readTime,    "\n",
      'Parsing took:         ', $parseTime,   "\n",
-     'Cloning took:         ', $cloneTime,   "\n",
-     'FPPP took:            ', $fpppTime,    "\n",
      'Pretty printing took: ', $ppTime,      "\n",
      'Reparsing took:       ', $reparseTime, "\n",
      'Comparing took:       ', $compareTime, "\n",
      "\n",
      'Total time:           ', microtime(true) - $totalStartTime, "\n",
      'Maximum memory usage: ', memory_get_peak_usage(true), "\n";
-
-exit($exit);

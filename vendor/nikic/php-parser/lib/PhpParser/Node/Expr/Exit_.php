@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace PhpParser\Node\Expr;
 
@@ -6,10 +6,6 @@ use PhpParser\Node\Expr;
 
 class Exit_ extends Expr
 {
-    /* For use in "kind" attribute */
-    const KIND_EXIT = 1;
-    const KIND_DIE = 2;
-
     /** @var null|Expr Expression */
     public $expr;
 
@@ -19,16 +15,12 @@ class Exit_ extends Expr
      * @param null|Expr $expr       Expression
      * @param array                    $attributes Additional attributes
      */
-    public function __construct(Expr $expr = null, array $attributes = []) {
+    public function __construct(Expr $expr = null, array $attributes = array()) {
         parent::__construct($attributes);
         $this->expr = $expr;
     }
 
-    public function getSubNodeNames() : array {
-        return ['expr'];
-    }
-    
-    public function getType() : string {
-        return 'Expr_Exit';
+    public function getSubNodeNames() {
+        return array('expr');
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Illuminate\Foundation\Console;
 
-use RuntimeException;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
@@ -47,15 +46,11 @@ class ViewClearCommand extends Command
      *
      * @return void
      */
-    public function handle()
+    public function fire()
     {
-        $path = $this->laravel['config']['view.compiled'];
+        $views = $this->files->glob($this->laravel['config']['view.compiled'].'/*');
 
-        if (! $path) {
-            throw new RuntimeException('View path not found.');
-        }
-
-        foreach ($this->files->glob("{$path}/*") as $view) {
+        foreach ($views as $view) {
             $this->files->delete($view);
         }
 

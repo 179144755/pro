@@ -18,160 +18,144 @@ use const foo\BAR as BAZ;
 -----
 array(
     0: Stmt_Use(
-        type: TYPE_NORMAL (1)
+        type: 1
         uses: array(
             0: Stmt_UseUse(
-                type: TYPE_UNKNOWN (0)
+                type: 0
                 name: Name(
                     parts: array(
                         0: A
                         1: B
                     )
                 )
-                alias: null
+                alias: B
             )
         )
     )
     1: Stmt_Use(
-        type: TYPE_NORMAL (1)
+        type: 1
         uses: array(
             0: Stmt_UseUse(
-                type: TYPE_UNKNOWN (0)
+                type: 0
                 name: Name(
                     parts: array(
                         0: C
                         1: D
                     )
                 )
-                alias: Identifier(
-                    name: E
-                )
+                alias: E
             )
         )
     )
     2: Stmt_Use(
-        type: TYPE_NORMAL (1)
+        type: 1
         uses: array(
             0: Stmt_UseUse(
-                type: TYPE_UNKNOWN (0)
+                type: 0
                 name: Name(
                     parts: array(
                         0: F
                         1: G
                     )
                 )
-                alias: Identifier(
-                    name: H
-                )
+                alias: H
             )
             1: Stmt_UseUse(
-                type: TYPE_UNKNOWN (0)
+                type: 0
                 name: Name(
                     parts: array(
                         0: J
                     )
                 )
-                alias: null
+                alias: J
             )
         )
     )
     3: Stmt_Use(
-        type: TYPE_NORMAL (1)
+        type: 1
         uses: array(
             0: Stmt_UseUse(
-                type: TYPE_UNKNOWN (0)
+                type: 0
                 name: Name(
                     parts: array(
                         0: A
                     )
                 )
-                alias: null
+                alias: A
             )
-        )
-        comments: array(
-            0: // evil alias notation - Do Not Use!
         )
     )
     4: Stmt_Use(
-        type: TYPE_NORMAL (1)
+        type: 1
         uses: array(
             0: Stmt_UseUse(
-                type: TYPE_UNKNOWN (0)
+                type: 0
                 name: Name(
                     parts: array(
                         0: A
                     )
                 )
-                alias: Identifier(
-                    name: B
-                )
+                alias: B
             )
         )
     )
     5: Stmt_Use(
-        type: TYPE_FUNCTION (2)
+        type: 2
         uses: array(
             0: Stmt_UseUse(
-                type: TYPE_UNKNOWN (0)
+                type: 0
                 name: Name(
                     parts: array(
                         0: foo
                         1: bar
                     )
                 )
-                alias: null
+                alias: bar
             )
-        )
-        comments: array(
-            0: // function and constant aliases
         )
     )
     6: Stmt_Use(
-        type: TYPE_FUNCTION (2)
+        type: 2
         uses: array(
             0: Stmt_UseUse(
-                type: TYPE_UNKNOWN (0)
+                type: 0
                 name: Name(
                     parts: array(
                         0: foo
                         1: bar
                     )
                 )
-                alias: Identifier(
-                    name: baz
-                )
+                alias: baz
             )
         )
     )
     7: Stmt_Use(
-        type: TYPE_CONSTANT (3)
+        type: 3
         uses: array(
             0: Stmt_UseUse(
-                type: TYPE_UNKNOWN (0)
+                type: 0
                 name: Name(
                     parts: array(
                         0: foo
                         1: BAR
                     )
                 )
-                alias: null
+                alias: BAR
             )
         )
     )
     8: Stmt_Use(
-        type: TYPE_CONSTANT (3)
+        type: 3
         uses: array(
             0: Stmt_UseUse(
-                type: TYPE_UNKNOWN (0)
+                type: 0
                 name: Name(
                     parts: array(
                         0: foo
                         1: BAR
                     )
                 )
-                alias: Identifier(
-                    name: BAZ
-                )
+                alias: BAZ
             )
         )
     )

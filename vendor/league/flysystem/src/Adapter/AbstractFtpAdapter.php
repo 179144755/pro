@@ -6,8 +6,6 @@ use DateTime;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
 use League\Flysystem\NotSupportedException;
-use League\Flysystem\SafeStorage;
-use RuntimeException;
 
 abstract class AbstractFtpAdapter extends AbstractAdapter
 {
@@ -25,6 +23,16 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
      * @var int
      */
     protected $port = 21;
+
+    /**
+     * @var string|null
+     */
+    protected $username;
+
+    /**
+     * @var string|null
+     */
+    protected $password;
 
     /**
      * @var bool
@@ -72,23 +80,12 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     protected $systemType;
 
     /**
-     * @var bool
-     */
-    protected $alternativeRecursion = false;
-
-    /**
-     * @var SafeStorage
-     */
-    protected $safeStorage;
-
-    /**
      * Constructor.
      *
      * @param array $config
      */
     public function __construct(array $config)
     {
-        $this->safeStorage = new SafeStorage();
         $this->setConfig($config);
     }
 
@@ -223,9 +220,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
      */
     public function getUsername()
     {
-        $username = $this->safeStorage->retrieveSafely('username');
-
-        return $username !== null ? $username : 'anonymous';
+        return empty($this->username) ? 'anonymous' : $this->username;
     }
 
     /**
@@ -237,7 +232,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
      */
     public function setUsername($username)
     {
-        $this->safeStorage->storeSafely('username', $username);
+        $this->username = $username;
 
         return $this;
     }
@@ -249,7 +244,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
      */
     public function getPassword()
     {
-        return $this->safeStorage->retrieveSafely('password');
+        return $this->password;
     }
 
     /**
@@ -261,7 +256,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
      */
     public function setPassword($password)
     {
-        $this->safeStorage->storeSafely('password', $password);
+        $this->password = $password;
 
         return $this;
     }
@@ -322,8 +317,6 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
         return $this->listDirectoryContents($directory, $recursive);
     }
 
-    abstract protected function listDirectoryContents($directory, $recursive = false);
-
     /**
      * Normalize a directory listing.
      *
@@ -340,7 +333,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
 
         while ($item = array_shift($listing)) {
             if (preg_match('#^.*:$#', $item)) {
-                $base = preg_replace('~^\./*|:$~', '', $item);
+                $base = trim($item, ':');
                 continue;
             }
 
@@ -402,14 +395,9 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     protected function normalizeUnixObject($item, $base)
     {
         $item = preg_replace('#\s+#', ' ', trim($item), 7);
-
-        if (count(explode(' ', $item, 9)) !== 9) {
-            throw new RuntimeException("Metadata can't be parsed from item '$item' , not enough parts.");
-        }
-
         list($permissions, /* $number */, /* $owner */, /* $group */, $size, /* $month */, /* $day */, /* $time*/, $name) = explode(' ', $item, 9);
         $type = $this->detectType($permissions);
-        $path = $base === '' ? $name : $base . $this->separator . $name;
+        $path = empty($base) ? $name : $base . $this->separator . $name;
 
         if ($type === 'dir') {
             return compact('type', 'path');
@@ -433,18 +421,12 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     protected function normalizeWindowsObject($item, $base)
     {
         $item = preg_replace('#\s+#', ' ', trim($item), 3);
-
-        if (count(explode(' ', $item, 4)) !== 4) {
-            throw new RuntimeException("Metadata can't be parsed from item '$item' , not enough parts.");
-        }
-
         list($date, $time, $size, $name) = explode(' ', $item, 4);
-        $path = $base === '' ? $name : $base . $this->separator . $name;
+        $path = empty($base) ? $name : $base . $this->separator . $name;
 
         // Check for the correct date/time format
         $format = strlen($date) === 8 ? 'm-d-yH:iA' : 'Y-m-dH:i';
-        $dt = DateTime::createFromFormat($format, $date . $time);
-        $timestamp = $dt ? $dt->getTimestamp() : (int) strtotime("$date $time");
+        $timestamp = DateTime::createFromFormat($format, $date . $time)->getTimestamp();
 
         if ($size === '<DIR>') {
             $type = 'dir';
@@ -468,7 +450,11 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
      */
     protected function detectSystemType($item)
     {
-        return preg_match('/^[0-9]{2,4}-[0-9]{2}-[0-9]{2}/', $item) ? 'windows' : 'unix';
+        if (preg_match('/^[0-9]{2,4}-[0-9]{2}-[0-9]{2}/', $item)) {
+            return $this->systemType = 'windows';
+        }
+
+        return $this->systemType = 'unix';
     }
 
     /**
@@ -507,8 +493,8 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
             return array_sum(str_split($part));
         };
 
-        // converts to decimal number
-        return octdec(implode('', array_map($mapper, $parts)));
+        // get the sum of the groups
+        return array_sum(array_map($mapper, $parts));
     }
 
     /**
@@ -521,7 +507,11 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
     public function removeDotDirectories(array $list)
     {
         $filter = function ($line) {
-            return $line !== '' && ! preg_match('#.* \.(\.)?$|^total#', $line);
+            if ( ! empty($line) && ! preg_match('#.* \.(\.)?$|^total#', $line)) {
+                return true;
+            }
+
+            return false;
         };
 
         return array_filter($list, $filter);
@@ -558,9 +548,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
      */
     public function ensureDirectory($dirname)
     {
-        $dirname = (string) $dirname;
-
-        if ($dirname !== '' && ! $this->has($dirname)) {
+        if ( ! empty($dirname) && ! $this->has($dirname)) {
             $this->createDir($dirname, new Config());
         }
     }
@@ -570,10 +558,7 @@ abstract class AbstractFtpAdapter extends AbstractAdapter
      */
     public function getConnection()
     {
-        $tries = 0;
-
-        while ( ! $this->isConnected() && $tries < 3) {
-            $tries++;
+        if ( ! $this->isConnected()) {
             $this->disconnect();
             $this->connect();
         }
