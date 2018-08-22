@@ -1,0 +1,239 @@
+.body{
+    width:100%;
+    font-family: "Helvetica ff;Neue",Helvetica,Arial,sans-serif;
+    /*src: url('./fonts/glyplhicons-halflings-regular.ttf');*/
+}
+.header{
+    height: 54px;
+    width: 100%;
+    background: #000000;
+    font-size: 16px;
+    font-style:normal;
+}
+.headerfont{
+    color: #ffff;
+    margin-top: -34px;
+    text-align: center;
+    /*margin-left: 130px;*/
+}
+.video{
+    height: 180px;
+    margin-top: -2px;
+    background: #ffffff;
+}
+.imgcontent{
+    height: 90px;
+    width:100%;
+
+}
+.imgv1{
+    margin: 8px 26% 10px 30%;
+    height:48px;
+}
+.p1{
+    margin-top: -12px;
+    font-size: 14px;
+    text-align: center;
+}
+.imgcontent1{
+    float: left;
+    height: 90px;
+    width:33.3%;
+}
+.imgcontent2{
+    float: left;
+    height: 90px;
+    width:33.3%;
+}
+.imgcontent3{
+    float: left;
+    height: 90px;
+    width:33.3%;
+}
+.videos{
+    background: #ffffff;
+    margin-top: 2px;
+    height: 190px;
+}
+.videostitle{
+    height: 34px;
+}
+.videogd{
+    font-size: 12px;
+    margin-left: 90%;
+}
+.videoxc{
+    margin-top: -22px;
+    margin-left: 10px;
+
+}
+.videoimg{
+    height: 146px;
+}
+.image1{
+    float: left;
+    margin-top: 10px;
+    margin-left: 8px;
+    height: 120px;
+    width: 47%;
+}
+.image2{
+    float: right;
+    margin-top: 10px;
+    margin-right: 8px;
+    height: 120px;
+    width: 47%;
+}
+.footercontent{
+    height: 220px;
+    background: #ffffff;
+}
+.footertitle{
+    margin-top: -1px;
+    height: 40px;
+}
+.footerimg{
+    margin-top: -10px;
+    height: 150px;
+    width: 100%;
+}
+.headerfontxc{
+    color: #ffff;
+    margin-top: -30px;
+    text-align: center;
+    /*margin-left: 130px;*/
+}
+.xcvideo1{
+    margin-top: 8px;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: -10px;
+}
+.icon1{
+    height: 18px;
+    margin-right: 10px;
+}
+.gztitle{
+    height: 80px;
+    background: black;
+}
+.button1{
+    height: 35px;
+    margin-left: 30%;
+    margin-top:30px;
+}
+.button2{
+    height: 35px;
+}
+.gzcontent{
+    height: 220px;
+    background: #F0F0F0;
+    margin-top: 14px;
+}
+.gz_content1{
+    height:70px ;
+}
+.gz_content2{
+    height:100px ;
+}
+.img_ct{
+    height: 50px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.gz_font{
+    margin-top: -50px;
+    margin-left: 20%;
+}
+.gz_font1{
+    margin-left: 20%;
+    font-size: 12px;
+    margin-top: 5px;
+}
+.font_ct{
+    margin-top: 5px;
+    font-size: 13px;
+}
+.dupin{
+    height: 136px;
+    margin-top: -5px;
+    background: #F0F0F0;
+}
+.dupin1{
+    margin-left: 10px;
+    margin-top: 10px;
+    height: 114px;
+    width: 138px;
+}
+.subject{
+    margin-top: -34%;
+    margin-left: 45%;
+}
+.narcotics_ct{
+    margin-top: -16px;
+    font-size: 12px;
+    margin-right: 10px;
+    margin-left: 45%;
+}
+.dupintype{
+    margin-top: 12px;
+    font-size: 12px;
+    margin-left: 45%;
+}
+.drug{
+    margin-top: 20px;
+    height: 200px;
+}
+.camera{
+    margin-top: 20px;
+    margin-left: 33.3%;
+    height: 120px;
+}
+.camera_ct{
+    text-align: center;
+}
+.camera_img1{
+    border-color:#000000 ;
+    margin-top: 16px;
+    height: 116px;
+    width: 116px;
+}
+.font_ctimg{
+    float: left;
+
+}
+.paa{
+    text-align: center;
+}
+.dp_title{
+    text-align: center;
+}
+.dp_time{
+height: 20px;
+background: red;
+}
+.dp_read{
+    margin-top: -20px;
+    margin-left: 8px;
+}
+.dp_readtime{
+    margin-top: -36px;
+    margin-left: 70%;
+}
+.dp_content{
+    margin-right: 10px;
+    margin-left: 10px;
+    font-size: 20px;
+    margin-top: 20px;
+}
+.dp_img{
+    width: 50%;
+}
+/*.jdcontent{
+    margin-top: 12px;
+    width: 100%;
+    height: 600px;
+    background-color: red;
+    background:#000000 url('../images/jdbackground.png');
+    background-size: 100%;
+}*/
