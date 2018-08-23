@@ -47,3 +47,15 @@ Route::group(['middleware' => ['web','admin.login'],'prefix'=>'admin','namespace
     Route::any('upload', 'CommonController@upload');
 
 });
+
+
+Route::group(['middleware' => ['web'] , 'prefix'=>'web','namespace'=>'Web'], function () {
+    
+    Route::get('/', 'IndexController@index')->name('index');
+    Route::get('/dpxq', 'IndexController@dpxq')->name('dpxq');
+    Route::get('/gz', 'IndexController@gz')->name('gz');
+    Route::get('/jd', 'IndexController@jd')->name('profile');
+    Route::get('/rs', 'IndexController@rs')->name('profile');
+    Route::get('/xc', 'IndexController@xc')->name('profile');
+    Route::get('/xddl', 'IndexController@xddl')->name('profile');
+});
