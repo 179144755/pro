@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>工作动态</title>
-    <link type="text/css" rel="stylesheet" href="./css/index.css">
-</head>
-<body>
-<div class="body" style="width: 100%;">
-    <div class="header" style="width: 100%;background: black;">
-
-    </div>
-    <div class="headerfont">工作动态
-    </div>
+@extends('layouts.web')
+@section('headerfont') 工作动态 @endsection()
+@section('content')
     <div class="gztitle">
      <div class="gztitle1">
          <input type="button" value="工作动态" class="button1">
@@ -20,7 +9,7 @@
         <div class="gzcontent">
             <div class="gz_content1">
                 <div class="gz_img">
-                    <img src="./images/jinc_hz.png" alt="" class="img_ct">
+                    <img src="/resources/views/web/images/jinc_hz.png" alt="" class="img_ct">
                     <div class="gz_font">惠州市缉毒支队</div>
                     <div class="gz_font1">2018-08-20</div>
                 </div>
@@ -36,13 +25,13 @@
             </div>
             <div class="icon">
                 <div class="xcvideo1">
-                    <img src="./images/like.png" alt="" class="icon1" style="margin-left:220px; ">
+                    <img src="/resources/views/web/images/like.png" alt="" class="icon1" style="margin-left:220px; ">
                 </div>
                 <div class="xcvideo1">
-                    <img src="./images/comment.png" alt="" class="icon1">
+                    <img src="/resources/views/web/images/comment.png" alt="" class="icon1">
                 </div>
                 <div class="xcvideo1">
-                    <img src="./images/transmit.png" alt="" class="icon1">
+                    <img src="/resources/views/web/images/transmit.png" alt="" class="icon1">
                 </div>
             </div>
 
@@ -50,7 +39,7 @@
         <div class="gzcontent">
             <div class="gz_content1">
                 <div class="gz_img">
-                    <img src="./images/jinc_hz.png" alt="" class="img_ct">
+                    <img src="/resources/views/web/images/jinc_hz.png" alt="" class="img_ct">
                     <div class="gz_font">惠州市缉毒支队</div>
                     <div class="gz_font1">2018-08-20</div>
                 </div>
@@ -66,13 +55,13 @@
             </div>
             <div class="icon">
                 <div class="xcvideo1">
-                    <img src="./images/like.png" alt="" class="icon1" style="margin-left:220px; ">
+                    <img src="/resources/views/web/images/like.png" alt="" class="icon1" style="margin-left:220px; ">
                 </div>
                 <div class="xcvideo1">
-                    <img src="./images/comment.png" alt="" class="icon1">
+                    <img src="/resources/views/web/images/comment.png" alt="" class="icon1">
                 </div>
                 <div class="xcvideo1">
-                    <img src="./images/transmit.png" alt="" class="icon1">
+                    <img src="/resources/views/web/images/transmit.png" alt="" class="icon1">
                 </div>
             </div>
 
@@ -80,7 +69,7 @@
         <div class="gzcontent">
             <div class="gz_content1">
                 <div class="gz_img">
-                    <img src="./images/jinc_hz.png" alt="" class="img_ct">
+                    <img src="/resources/views/web/images/jinc_hz.png" alt="" class="img_ct">
                     <div class="gz_font">惠州市缉毒支队</div>
                     <div class="gz_font1">2018-08-20</div>
                 </div>
@@ -96,17 +85,16 @@
             </div>
             <div class="icon">
                 <div class="xcvideo1">
-                    <img src="./images/like.png" alt="" class="icon1" style="margin-left:220px; ">
+                    <img src="/resources/views/web/images/like.png" alt="" class="icon1" style="margin-left:220px; ">
                 </div>
                 <div class="xcvideo1">
-                    <img src="./images/comment.png" alt="" class="icon1">
+                    <img src="/resources/views/web/images/comment.png" alt="" class="icon1">
                 </div>
                 <div class="xcvideo1">
-                    <img src="./images/transmit.png" alt="" class="icon1">
+                    <img src="/resources/views/web/images/transmit.png" alt="" class="icon1">
                 </div>
             </div>
 
         </div>
     </div>
-</div>
-</body>
+@endsection

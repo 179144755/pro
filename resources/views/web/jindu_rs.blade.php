@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>认识毒品</title>
-    <link type="text/css" rel="stylesheet" href="./css/index.css">
-</head>
-<body>
-<div class="body" style="width: 100%;">
-    <div class="header" style="width: 100%;background: black;">
-
-    </div>
-    <div class="headerfont">认识毒品
-    </div>
+@extends('layouts.web')
+@section('headerfont') 认识毒品 @endsection()
+@section('content')
     <div class="gztitle">
         <div class="gztitle1">
             <input type="button" value="毒品种类" class="button1">
@@ -19,7 +8,7 @@
         </div>
     </div>
     <div class="dupin">
-        <img src="./images/heroin.png" alt="" class="dupin1">
+        <img src="/resources/views/web/images/heroin.png" alt="" class="dupin1">
         <h4 class="subject">海洛因</h4>
         <div class="narcotics_ct">
             海洛因对人类的身心健康危害极大，长期
@@ -30,7 +19,7 @@
         <div class="dupintype">毒品类型：&nbsp;&nbsp;&nbsp;传统毒品</div>
     </div><br>
     <div class="dupin">
-        <img src="./images/heroin.png" alt="" class="dupin1">
+        <img src="/resources/views/web/images/heroin.png" alt="" class="dupin1">
         <h4 class="subject">可卡因</h4>
         <div class="narcotics_ct">
             可卡因对消化系统、免疫系统、心血管系
@@ -41,7 +30,7 @@
     </div><br>
 
     <div class="dupin">
-        <img src="./images/heroin.png" alt="" class="dupin1">
+        <img src="/resources/views/web/images/heroin.png" alt="" class="dupin1">
         <h4 class="subject">冰毒</h4>
         <div class="narcotics_ct">
             冰毒，新型毒品的一种，又名甲基
@@ -53,7 +42,7 @@
     </div><br>
 
     <div class="dupin">
-        <img src="./images/heroin.png" alt="" class="dupin1">
+        <img src="/resources/views/web/images/heroin.png" alt="" class="dupin1">
         <h4 class="subject">K粉</h4>
         <div class="narcotics_ct">
             氯胺酮(英语：ketamine)，
@@ -63,7 +52,4 @@
         </div>
         <div class="dupintype">毒品类型：&nbsp;&nbsp;&nbsp;新型毒品</div>
     </div><br>
-
-
-</div>
-</body>
+    @endsection()

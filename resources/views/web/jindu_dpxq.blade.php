@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" />
-    <title>毒品危害</title>
-    <link type="text/css" rel="stylesheet" href="./css/index.css">
-</head>
-<body>
-<div class="body" style="width: 100%;">
-    <div class="header" style="width: 100%;background: black;"></div>
-    <div class="headerfont">毒品危害</div>
+@extends('layouts.web')
+@section('headerfont') 毒品危害 @endsection()
+@section('content')
     <h2 class="dp_title">海洛因</h2>
     <div class="dp_time">
     	<p class="dp_read">阅读量：900</p>
@@ -31,7 +23,6 @@
     	 维尔问题为而我也热图有问
     </div>
 	<div class="dp_image">
-	<img src="./images/cocaine.png" alt="" class="dp_img">
+	<img src="/resources/views/web/images/cocaine.png" alt="" class="dp_img">
 	</div>
-</div>
-</body>
+@endsection

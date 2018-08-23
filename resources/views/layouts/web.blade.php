@@ -5,11 +5,7 @@
     <meta charset="utf-8">
     
     <title>
-        @hasSection ('title')
-            @yield('title')
-        @else
-            App Name
-        @endif
+            @yield('title','禁毒')
     </title>
     <link type="text/css" rel="stylesheet" href="{{asset('resources/views/web/css/index.css')}}">
 </head>
@@ -24,5 +20,6 @@
         @show
     </div>
      @yield('content')
+</div>
 </body>
 </html>

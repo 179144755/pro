@@ -54,8 +54,8 @@ Route::group(['middleware' => ['web'] , 'prefix'=>'web','namespace'=>'Web'], fun
     Route::get('/', 'IndexController@index')->name('index');
     Route::get('/dpxq', 'IndexController@dpxq')->name('dpxq');
     Route::get('/gz', 'IndexController@gz')->name('gz');
-    Route::get('/jd', 'IndexController@jd')->name('profile');
-    Route::get('/rs', 'IndexController@rs')->name('profile');
-    Route::get('/xc', 'IndexController@xc')->name('profile');
-    Route::get('/xddl', 'IndexController@xddl')->name('profile');
+    Route::get('/jd', 'IndexController@jd')->name('jd');
+    Route::get('/rs', 'IndexController@rs')->name('rs');
+    Route::get('/xc', 'IndexController@xc')->name('xc');
+    Route::get('/xddl', 'IndexController@xddl')->name('xddl');
 });
