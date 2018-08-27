@@ -33,6 +33,10 @@ class Face{
         return $this->factory($driveIndex?:$this->driveIndex);
     }
     
+    public function driveIndex(){
+        return $this->driveIndex;
+    }
+
     /**
      * 
      * @param type $driveIndex
@@ -66,9 +70,10 @@ class Face{
     }
     
     public function __call($name, $arguments) {
-        $this->getDrive()->{$name}(...$arguments);
+        return $this->getDrive()->{$name}(...$arguments);
     }
     
+
  
 }
 

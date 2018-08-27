@@ -16,7 +16,5 @@ namespace App\Service\Contract\Faceplusplus;
 interface FaceInterface {
         
     public function mergeface($template_base64,$merge_base64);
-    
-    
- 
+
 }

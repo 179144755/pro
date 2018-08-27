@@ -27,14 +27,19 @@ class Faceplusplus {
      * @param type $merge_base64 用于人脸融合的融合图
      * @param type $merge_rate 融合比例，范围 [0,100]。数字越大融合结果包含越多融合图 (merge_url, merge_file, merge_base64 代表图片) 特征。默认值为50
      */
-    public function mergeface($template_base64, $merge_base64, $merge_rate = 50) {
+    public function mergeface($template_base64, $merge_base64, $merge_rate = 30) {
         $data['template_base64'] = $template_base64;
         $data['merge_base64'] = $merge_base64;
         $data['merge_rate'] = $merge_rate;
         
-        $detectResult = $this->detect($merge_base64);
+        //$detectResult = $this->detect($merge_base64);
+        //$faceRectangle = $detectResult['face_rectangle'];
         //指定融合图中用以融合的人脸框位置。 四个正整数，用逗号分隔，依次代表人脸框左上角纵坐标（top），左上角横坐标（left），人脸框宽度（width），人脸框高度（height）。例如：70,80,100,100
-        $data['merge_rectangle'] = implode(',', array($detectResult['top'],$detectResult['left'],$detectResult['width'],$detectResult['height']));
+        //$data['merge_rectangle'] = implode(',', array($faceRectangle['top'],$faceRectangle['left'],$faceRectangle['width'],$faceRectangle['height']));
+        
+        $templeteDetectResult = $this->detect($template_base64);
+        $templeteFaceRectangle = $templeteDetectResult['face_rectangle'];
+        $data['template_rectangle'] = implode(',', array($templeteFaceRectangle['top'],$templeteFaceRectangle['left'],$templeteFaceRectangle['width'],$templeteFaceRectangle['height']));
         
         $response = $this->curl('https://api-cn.faceplusplus.com/imagepp/v1/mergeface', $data);
         return $response['result'];
@@ -54,10 +59,10 @@ class Faceplusplus {
         $data['return_landmark'] = $return_landmark;
         
         $response = $this->curl('https://api-cn.faceplusplus.com/facepp/v3/detect', $data);
-        
+
         return $response['faces'][0];
     }
-
+    
     protected function curl($curl_url,$data) {
         $requestData['api_key'] = $this->api_key;
         $requestData['api_secret'] = $this->api_secret;
@@ -70,6 +75,8 @@ class Faceplusplus {
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 30,
+            CURLOPT_SSL_VERIFYPEER => 0,
+             CURLOPT_SSL_VERIFYHOST => 0,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => $requestData, 
@@ -82,8 +89,12 @@ class Faceplusplus {
             throw new Exception("curl error Faceplusplus:{$err}");
         }
         
+        $response = json_decode($response,true);
+        if (!$response) {
+            throw new Exception("curl error Faceplusplus:return error".$curl_url);
+        }
         if(isset($response['error_message']) && $response['error_message']){
-            throw new Exception($response['error_message']);
+            throw new Exception($response['error_message'].$curl_url);
         }
         return $response;
     }
