@@ -59,3 +59,6 @@ Route::group(['middleware' => ['web'] , 'prefix'=>'web','namespace'=>'Web'], fun
     Route::get('/xc', 'IndexController@xc')->name('xc');
     Route::get('/xddl', 'IndexController@xddl')->name('xddl');
 });
+
+
+Route::get('/test', 'Web\IndexController@test')->name('test');

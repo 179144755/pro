@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Web;
 class IndexController extends CommonController
 {
     public function index()
-    {
+    {  
         return view('web.index');
     }
     
@@ -31,5 +31,11 @@ class IndexController extends CommonController
     
     public function xddl(){
         return view('web.jindu_xddl');
+    }
+    
+    public function test(){
+        //echo base_path();
+        
+        return view('test');
     }
 }

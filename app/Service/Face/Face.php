@@ -19,25 +19,39 @@ class Face{
         
         $this->config = $faceConfig;
         
-        $this->driveIndex =  $faceConfig['deault'];
+        $this->driveIndex =  $faceConfig['default'];
           
         $this->factory($this->driveIndex);
     }
     
+    /**
+     * 
+     * @param type $driveIndex
+     * @return \App\Service\Contract\Faceplusplus\FaceInterface
+     */   
+    public function getDrive($driveIndex = null){
+        return $this->factory($driveIndex?:$this->driveIndex);
+    }
     
-    public function factory($driveIndex){
+    /**
+     * 
+     * @param type $driveIndex
+     * @return \App\Service\Contract\Faceplusplus\FaceInterface
+     * @throws Exception
+     */
+    protected function factory($driveIndex){
         if(isset($this->drives[$driveIndex])){
             $this->driveIndex = $driveIndex;
             return $this->drives[$driveIndex];
         }
         
-        if(!isset($this->config['drive']) && isset($this->config['drive'][$driveIndex])){
+        if(!isset($this->config['drives']) && isset($this->config['drives'][$driveIndex])){
             throw new Exception("App\Service\Face\Faceplusplus\Face:drives {$driveIndex} not exisit");
         }
         
         switch ($driveIndex){
             case 'faceplusplus':
-                $this->drives[$driveIndex] = new Faceplusplus\Faceplusplus($this->config['drive'][$driveIndex]);
+                $this->drives[$driveIndex] = new Faceplusplus\Faceplusplus($this->config['drives'][$driveIndex]);
                 break;
         }
         
@@ -51,29 +65,11 @@ class Face{
         
     }
     
-    public function getDrive(){
-        
+    public function __call($name, $arguments) {
+        $this->getDrive()->{$name}(...$arguments);
     }
-
     
-    //public function 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
 }
 
 
