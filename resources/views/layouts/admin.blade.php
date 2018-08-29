@@ -7,6 +7,7 @@
     <script type="text/javascript" src="{{asset('resources/views/admin/style/js/jquery.js')}}"></script>
     <script type="text/javascript" src="{{asset('resources/views/admin/style/js/ch-ui.admin.js')}}"></script>
     <script type="text/javascript" src="{{asset('resources/org/layer/layer.js')}}"></script>
+    <script type="text/javascript" src="{{asset('resources/views/public/vue.js')}}"></script>
 </head>
 <body>
 @yield('content')
