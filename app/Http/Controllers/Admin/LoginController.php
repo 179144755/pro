@@ -19,7 +19,7 @@ class LoginController extends CommonController
             $code = new \Code;
             $_code = $code->get();
             if(strtoupper($input['code'])!=$_code){
-                return back()->with('msg','验证码错误！');
+                //return back()->with('msg','验证码错误！');
             }
             $user = User::first();
             if($user->user_name != $input['user_name'] || Crypt::decrypt($user->user_pass)!= $input['user_pass']){

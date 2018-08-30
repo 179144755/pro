@@ -3,14 +3,14 @@
         <!--面包屑导航 开始-->
 <div class="crumb_warp">
     <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
-    <i class="fa fa-home"></i> <a href="{{url('admin/info')}}">首页</a> &raquo; 文章管理
+    <i class="fa fa-home"></i> <a href="{{url('admin/info')}}">首页</a> &raquo; 题目管理
 </div>
 <!--面包屑导航 结束-->
 
 <!--结果集标题与导航组件 开始-->
 <div class="result_wrap">
     <div class="result_title">
-        <h3>添加文章</h3>
+        <h3>添加题目</h3>
         @if(count($errors)>0)
             <div class="mark">
                 @if(is_object($errors))
@@ -25,32 +25,38 @@
     </div>
     <div class="result_content">
         <div class="short_wrap">
-            <a href="{{url('admin/quiz/create')}}"><i class="fa fa-plus"></i>添加文章</a>
-            <a href="{{url('admin/quiz')}}"><i class="fa fa-recycle"></i>全部文章</a>
+            <a href="{{url('admin/quiz/create')}}"><i class="fa fa-plus"></i>添加题目</a>
+            <a href="{{url('admin/quiz')}}"><i class="fa fa-recycle"></i>全部题目</a>
         </div>
     </div>
 </div>
 <!--结果集标题与导航组件 结束-->
 
-<div class="result_wrap">
+<div class="result_wrap" id="app">
     <form action="{{url('admin/quiz')}}" method="post">
         {{csrf_field()}}
+        <input type="hidden" value="{{$quiz->id}}" name="id" />
         <table class="add_tab">
             <tbody>
             <tr>
                 <th><i class="require">*</i> 题目：</th>
                 <td>
-                    <textarea name="subject" class="lg"> </textarea>
+                    <textarea name="subject" class="lg"> {{$quiz->subject}} </textarea>
                 </td>
             </tr>
             <tr>
                 <th><i class="require">*</i> 选项：</th>
                 <td>
                     <ul>
-                        <li><input type="radio" name="answer" value="1"><input type="text" class="lg" name="choice[1]" ></li>
-                        <li><input type="radio" name="answer" value="2" ><input type="text" class="lg" name="choice[2]" ></li>
-                        <li><input type="radio" name="answer" value="3" ><input type="text" class="lg" name="choice[3]" ></li>
-                        <li><input type="radio" name="answer" value="4" ><input type="text" class="lg" name="choice[4]" ></li>
+                        @foreach ($choiseOption as $row)
+                        <li> 
+                            <input type="radio" {{$answer==$row['index'] ? 'checked="checked"' : ''}}   name="answer" value="{{$row['index']}}">
+                            <input type="text" value="{{$row['value']}}" class="lg" name="choice[{{$row['index']}}]" >                        
+                        </li>
+                        @endforeach
+                        <!--<li><input type="radio" name="answer" value="2" ><input type="text" class="lg" name="choice[2]" ></li>-->
+                        <!--<li><input type="radio" name="answer" value="3" ><input type="text" class="lg" name="choice[3]" ></li>-->
+                        <!--<li><input type="radio" name="answer" value="4" ><input type="text" class="lg" name="choice[4]" ></li>-->
                     </ul> 
                 </td>
             </tr>
@@ -66,5 +72,7 @@
         </table>
     </form>
 </div>
+
+
 
 @endsection

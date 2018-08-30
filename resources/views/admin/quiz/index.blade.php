@@ -3,7 +3,7 @@
         <!--面包屑导航 开始-->
 <div class="crumb_warp">
     <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
-    <i class="fa fa-home"></i> <a href="{{url('admin/info')}}">首页</a> &raquo; 文章管理
+    <i class="fa fa-home"></i> <a href="{{url('admin/info')}}">首页</a> &raquo; 题目管理
 </div>
 <!--面包屑导航 结束-->
 <!--搜索结果页面 列表 开始-->
@@ -11,12 +11,12 @@
     <div class="result_wrap">
         <!--快捷导航 开始-->
         <div class="result_title">
-            <h3>文章列表</h3>
+            <h3>题目列表</h3>
         </div>
         <div class="result_content">
             <div class="short_wrap">
-                <a href="{{url('admin/quiz/create')}}"><i class="fa fa-plus"></i>添加文章</a>
-                <a href="{{url('admin/quiz')}}"><i class="fa fa-recycle"></i>全部文章</a>
+                <a href="{{url('admin/quiz/create')}}"><i class="fa fa-plus"></i>添加题目</a>
+                <a href="{{url('admin/quiz')}}"><i class="fa fa-recycle"></i>全部题目</a>
             </div>
         </div>
         <!--快捷导航 结束-->
@@ -45,7 +45,7 @@
                     <td>@{{quiz.answer}}</td>
                     <td>@{{quiz.create_time}}</td>
                     <td>
-                        <a v-bind:href="'{{url('admin/quit')}}/'+quiz.id+'/edit'">修改</a>
+                        <a v-bind:href="'{{url('admin/quiz')}}/'+quiz.id+'/edit'">修改</a>
                         <a href="javascript:;" v-on:click="del(quiz_index)">删除</a>
                     </td>
                 </tr>

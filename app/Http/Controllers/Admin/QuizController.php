@@ -13,41 +13,70 @@ use Illuminate\Support\Facades\Validator;
 class QuizController extends Controller
 {
     
-    //get.admin/article 全部题库
+    //get.admin/quiz 全部题库
     public function index()
     {           
         $data = Quiz::orderBy('id','desc')->paginate(10);        
         return view('admin.quiz.index',compact('data'));
     }
     
-        //get.admin/article/create   添加文章
+        //get.admin/quiz/create   添加文章
     public function create()
     {   
         $quiz = new \stdClass();
-         $quiz->id = 0;
+        $quiz->id = 0;
         $quiz->subject = '';
         $quiz->choice = array('data'=>array());
         $quiz->answer = null;
-        return view('admin.quiz.add',array('quiz'=>$quiz));
+        
+        $choiseOption = array(
+            array('index'=>1,'value'=>''),
+            array('index'=>2,'value'=>''),
+            array('index'=>3,'value'=>''),
+            array('index'=>4,'value'=>''),
+        );
+        $answer = '';
+        return view('admin.quiz.add',compact('quiz','choiseOption','answer'));
     }
     
-    //get.admin/article/{article}/edit  编辑文章
+    //get.admin/quiz/{quiz}/edit  编辑文章
     public function edit($id)
     {    
         //view()->bind($abstract);
-        $field = Quiz::find($id);
-        return view('admin.article.edit',compact('data','field'));
+        $quiz = Quiz::find($id);
+        if(!$quiz){
+            return back()->with('errors','来错地方了');
+        }
+        
+        $choiseOption = array(
+            array('index'=>1,'value'=>''),
+            array('index'=>2,'value'=>''),
+            array('index'=>3,'value'=>''),
+            array('index'=>4,'value'=>''),
+        );
+        
+        $indexMapFlip = array_flip($quiz->choice['indexMap']);        
+        foreach ($choiseOption as &$row){
+            
+            if(isset($indexMapFlip[$row['index']])){
+                $row['value'] = $quiz->choice['data'][$indexMapFlip[$row['index']]];
+            }
+        }
+        
+        $answer = $quiz->choice['indexMap'][$quiz->answer];
+        
+        return view('admin.quiz.add',compact('quiz','choiseOption','answer'));
     }
 
     
     
-    //post.admin/article  添加文章提交
+    //post.admin/quiz  添加文章提交
     public function store()
     {
         return $this->save();
     }
     
-        //delete.admin/article/{article}   删除单个文章
+        //delete.admin/quiz/{quiz}   删除单个文章
     public function destroy($id)
     {
         $re = Quiz::where('id',$id)->delete();
@@ -69,6 +98,11 @@ class QuizController extends Controller
     protected function save($id=0){
         $input = Input::except('_token');
         $input['create_time'] = date('Y-m-d H:i:s');
+        
+        if(isset($input['id'])){
+            $id = (int)$input['id'];
+            unset($input['id']);
+        }
 
         $rules = [
             'subject'=>'required',
@@ -108,13 +142,14 @@ class QuizController extends Controller
             $choiceIndexMapFlip = array_flip($choiceIndexMap);
             $input['answer'] = $choiceIndexMapFlip[$input['answer']];
             if($id){
-                 $re = Article::where('id',$id)->update($input);
+                $input['choice'] = json_encode($input['choice']);
+                $re = Quiz::where('id',$id)->update($input);
             }
             else{
                 $re = Quiz::create($input);
             }
             if($re){
-                return redirect('admin/article');
+                return redirect('admin/quiz');
             }else{
                 return back()->with('errors','数据填充失败，请稍后重试！');
             }
