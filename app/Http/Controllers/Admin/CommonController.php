@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
+use Exception;
 
 class CommonController extends Controller
 {
@@ -20,5 +21,19 @@ class CommonController extends Controller
             $filepath = 'uploads/'.$newName;
             return $filepath;
         }
+    }
+    
+    
+    public function uploadVideo(){
+        $request = request();
+        $name = 'video';
+        if (!$request->hasFile($name)) {
+            throw new Exception('请上传');
+        }
+        $file = $request->file($name);
+        $extension = $file->getClientOriginalExtension();
+        $newName = date('YmdHis').mt_rand(100,999).'.'.$extension;
+        $path = $file -> move(base_path().'/uploads/video',$newName);
+        return array('path'=>$path->getPathname(),'file_name'=>$path->getFilename(),'url'=>"/uploads/video/{$newName}",'attach'=>'');
     }
 }

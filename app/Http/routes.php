@@ -46,7 +46,11 @@ Route::group(['middleware' => ['web','admin.login'],'prefix'=>'admin','namespace
 
     Route::any('upload', 'CommonController@upload');
     
-    Route::resource('quiz', 'quizController');
+    Route::resource('quiz', 'QuizController');
+    
+    Route::get('video/uploadView', 'VideoController@uploadView');
+    Route::get('video', 'VideoController@index');
+    Route::post('video/upload', 'VideoController@upload');
 
 });
 
