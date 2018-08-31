@@ -7,6 +7,9 @@
 <body>  
 
 <input type="file" accept="image/*" capture="camera"> 
+<div>
+<input type="file" accept="image/*"> 
+</div>
 </body>  
 <script type="text/javascript">  
 </script>  
