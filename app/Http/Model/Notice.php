@@ -4,9 +4,9 @@ namespace App\Http\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Video extends Model
+class Notice extends Model
 {
-    protected $table='video';
+    protected $table='notice';
     protected $primaryKey='id';
     public $timestamps=false;
     protected $guarded=[];

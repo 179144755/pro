@@ -10,7 +10,7 @@
 <!--结果集标题与导航组件 开始-->
 <div class="result_wrap">
     <div class="result_title">
-        <h3>添加题目</h3>
+        <h3>添加知识问答</h3>
         @if(count($errors)>0)
             <div class="mark">
                 @if(is_object($errors))
@@ -25,8 +25,8 @@
     </div>
     <div class="result_content">
         <div class="short_wrap">
-            <a href="{{url('admin/quiz/create')}}"><i class="fa fa-plus"></i>添加题目</a>
-            <a href="{{url('admin/quiz')}}"><i class="fa fa-recycle"></i>全部题目</a>
+            <a href="{{url('admin/quiz/create')}}"><i class="fa fa-plus"></i>添加知识问答</a>
+            <a href="{{url('admin/quiz')}}"><i class="fa fa-recycle"></i>全部知识问答</a>
         </div>
     </div>
 </div>

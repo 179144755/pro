@@ -51,7 +51,15 @@ Route::group(['middleware' => ['web','admin.login'],'prefix'=>'admin','namespace
     Route::get('video/uploadView', 'VideoController@uploadView');
     Route::get('video', 'VideoController@index');
     Route::post('video/upload', 'VideoController@upload');
+    
+    Route::get('notice/{type?}', 'NoticeController@index');
+    Route::get('notice/create/{id?}', 'NoticeController@create');
+    Route::post('notice/save', 'NoticeController@save');
 
+    Route::get('narcotics', 'NarcoticsController@index');
+    Route::get('narcotics/create/{id?}', 'NarcoticsController@create');
+    Route::post('narcotics/save', 'NarcoticsController@save');
+    
 });
 
 

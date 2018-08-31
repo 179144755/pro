@@ -11,15 +11,15 @@
     <div class="video">
         <div class="imgcontent over-flow">
             <div class="imgcontent1">
-                <img src="/resources/views/web/images/a.png" alt="" class="imgv1">
+                <a href="{{route('xddl')}}"><img src="/resources/views/web/images/a.png" alt="" class="imgv1"></a>
                 <p class="p1">吸毒后的脸</p>
             </div>
             <div class="imgcontent2">
-                <img src="/resources/views/web/images/b.png" alt="" class="imgv1">
+                <a href="{{route('jd')}}"><img src="/resources/views/web/images/b.png" alt="" class="imgv1"></a>
                 <p class="p1">禁毒先锋</p>
             </div>
             <div class="imgcontent3">
-                <a href="{{route('xc')}}"><img src="/resources/views/web/images/c.png" alt="" class="imgv1"></a>
+                <a href="{{route('jd')}}"><img src="/resources/views/web/images/c.png" alt="" class="imgv1"></a>
                 <p class="p1">在线问答</p>
             </div>
             <div class="imgcontent3">
@@ -27,11 +27,11 @@
                 <p class="p1">宣传视频</p>
             </div>
             <div class="imgcontent3">
-                <img src="/resources/views/web/images/e.png" alt="" class="imgv1">
+                <a href="{{route('rs')}}"><img src="/resources/views/web/images/e.png" alt="" class="imgv1"></a>
                 <p class="p1">认识毒品</p>
             </div>
             <div class="imgcontent3">
-                <img src="/resources/views/web/images/f.png" alt="" class="imgv1">
+                <a href="{{route('gz')}}"><img src="/resources/views/web/images/f.png" alt="" class="imgv1"></a>
                 <p class="p1">工作状态</p>
             </div>
         </div>

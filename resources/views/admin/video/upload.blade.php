@@ -3,7 +3,7 @@
         <!--面包屑导航 开始-->
 <div class="crumb_warp">
     <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
-    <i class="fa fa-home"></i> <a href="{{url('admin/info')}}">首页</a> &raquo; 题目管理
+    <i class="fa fa-home"></i> <a href="{{url('admin/info')}}">首页</a> &raquo; 上传视频
 </div>
 <!--面包屑导航 结束-->
 
@@ -25,8 +25,7 @@
     </div>
     <div class="result_content">
         <div class="short_wrap">
-            <a href="{{url('admin/quiz/create')}}"><i class="fa fa-plus"></i>添加题目</a>
-            <a href="{{url('admin/quiz')}}"><i class="fa fa-recycle"></i>全部题目</a>
+            <a href="{{url('admin/video/upload')}}"><i class="fa fa-plus"></i>上传本地视频</a>
         </div>
     </div>
 </div>

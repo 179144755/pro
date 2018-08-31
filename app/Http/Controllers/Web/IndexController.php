@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers\Web;
 
+use Illuminate\Http\Request;
+
+use App\Http\Model\Video;
+use App\Http\Model\Notice;
+
 class IndexController extends CommonController
-{
-    public function index()
+{   
+    public function index(Request $request)
     {  
+        
+        
         return view('web.index');
     }
     
@@ -13,7 +20,16 @@ class IndexController extends CommonController
         return view('web.jindu_dpxq');
     }
     
-    public function gz(){
+    /**
+     * 公告
+     * @return type
+     */
+    public function gz(Request $request){
+        if($request->isXmlHttpRequest()){
+            $type = $request->input('type', 1);
+            $data = Notice::orderBy('id','desc')->where('type',$type)->paginate(10);
+            return $data;
+        }
         return view('web.jindu_gz');
     }
     
@@ -25,7 +41,15 @@ class IndexController extends CommonController
         return view('web.jindu_rs');
     }
     
-    public function xc(){
+    /**
+     * 视频宣传
+     * @return type
+     */
+    public function xc(Request $request){
+        if($request->isXmlHttpRequest()){
+            $data = Video::orderBy('id','desc')->paginate(10);
+            return $data;
+        }
         return view('web.jindu_xc');
     }
     

@@ -8,6 +8,8 @@
             @yield('title','禁毒')
     </title>
     <link type="text/css" rel="stylesheet" href="{{asset('resources/views/web/css/index.css')}}">
+    <script type="text/javascript" src="{{asset('resources/views/public/vue.js')}}"></script>
+    <script type="text/javascript" src="{{asset('resources/views/admin/style/js/jquery.js')}}"></script>
 </head>
 <body>
 <div class="body" style="width: 100%;">
