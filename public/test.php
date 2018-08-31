@@ -6,11 +6,15 @@
 </head>  
 <body>  
 
-<input type="file" accept="image/*" capture="camera"> 
+<!-- <input type="file" accept="image/*" capture="camera">  -->
 <div>
-<input type="file" accept="image/*"> 
+<input type="file" onchange="a(this)" accept="image/*"> 
 </div>
 </body>  
 <script type="text/javascript">  
+function a(_this){
+    alert(_this.value;
+}
+
 </script>  
 <html>
