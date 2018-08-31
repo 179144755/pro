@@ -8,20 +8,14 @@
 <video id="video" autoplay><ideo>  
 </body>  
 <script type="text/javascript">  
-var getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);   
-getUserMedia.call(navigator, {   
-video: true,   
-audio: true   
-}, function(localMediaStream) {   
-var video = document.getElementById('video');   
-video.src = window.URL.createObjectURL(localMediaStream);   
-video.onloadedmetadata = function(e) {   
-console.log("Label: " + localMediaStream.label);   
-console.log("AudioTracks" , localMediaStream.getAudioTracks());   
-console.log("VideoTracks" , localMediaStream.getVideoTracks());   
-};   
-}, function(e) {   
-console.log('Reeeejected!', e);   
-});   
+navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+.then(function(stream) {
+  /* 使用这个stream stream */
+  console.log(stream);
+})
+.catch(function(err) {
+    console.log(err);
+  /* 处理error */
+});
 </script>  
 <html>
