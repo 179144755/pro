@@ -5,7 +5,8 @@
 <title>GetUserMedia实例</title>  
 </head>  
 <body>  
-<input type="file" accept="video/*" capture="camera">  
+
+<input type="file" accept="image/*" capture="camera"> 
 </body>  
 <script type="text/javascript">  
 </script>  
