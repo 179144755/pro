@@ -19,7 +19,7 @@
       overflow: hidden;
     }
   </style>
-  <script src="http://www.test.com/resources/views/admin/style/js/jquery.js"></script>
+  <script src="http://code.jquery.com/jquery.js"></script>
 </head>  
 <body>
   <div id="box">
