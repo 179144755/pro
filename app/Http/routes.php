@@ -11,15 +11,15 @@
 |
 */
 
-Route::group(['middleware' => ['web']], function () {
-
-    Route::get('/', 'Home\IndexController@index');
-    Route::get('/cate/{cate_id}', 'Home\IndexController@cate');
-    Route::get('/a/{art_id}', 'Home\IndexController@article');
-
-    Route::any('admin/login', 'Admin\LoginController@login');
-    Route::get('admin/code', 'Admin\LoginController@code');
-});
+//Route::group(['middleware' => ['web']], function () {
+//
+//    Route::get('/', 'Home\IndexController@index');
+//    Route::get('/cate/{cate_id}', 'Home\IndexController@cate');
+//    Route::get('/a/{art_id}', 'Home\IndexController@article');
+//
+//    Route::any('admin/login', 'Admin\LoginController@login');
+//    Route::get('admin/code', 'Admin\LoginController@code');
+//});
 
 
 Route::group(['middleware' => ['web','admin.login'],'prefix'=>'admin','namespace'=>'Admin'], function () {
@@ -66,8 +66,9 @@ Route::group(['middleware' => ['web','admin.login'],'prefix'=>'admin','namespace
     
 });
 
+//'prefix'=>'web',
 
-Route::group(['middleware' => ['web'] , 'prefix'=>'web','namespace'=>'Web'], function () {
+Route::group(['middleware' => ['web'] , 'namespace'=>'Web'], function () {
     Route::get('/', 'IndexController@index')->name('index');
     Route::get('/dpxq', 'IndexController@dpxq')->name('dpxq');
     Route::get('/gz', 'IndexController@gz')->name('gz');
@@ -80,4 +81,4 @@ Route::group(['middleware' => ['web'] , 'prefix'=>'web','namespace'=>'Web'], fun
 });
 
 
-Route::get('/test', 'Web\IndexController@test')->name('test');
+//Route::get('/test', 'Web\IndexController@test')->name('test');
