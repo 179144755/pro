@@ -19,8 +19,10 @@ class FaceplusplusFace implements FaceInterface{
         $this->faceplusplus = new Faceplusplus($config);
     }
 
-    public function mergeface($template_base64, $merge_base64) {
-        return $this->faceplusplus->mergeface($template_base64, $merge_base64);
+    public function mergeface($template, $merge) {
+        $template_base64 = file_get_contents(base64_encode($template));
+        $merge_base64 = file_get_contents(base64_encode($merge));
+        return $this->faceplusplus->mergeface($merge_base64, $template_base64);
     }
     
     /**

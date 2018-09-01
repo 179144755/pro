@@ -24,7 +24,12 @@ class Face{
         $this->factory($this->driveIndex);
     }
     
-    /**
+    
+    public function mergeface($year,$avatar){
+        return $this->getDrive()->mergeface($this->getTemplate($year),$avatar);
+    }
+
+        /**
      * 
      * @param type $driveIndex
      * @return \App\Service\Contract\Faceplusplus\FaceInterface
@@ -68,9 +73,18 @@ class Face{
         return $this->drives[$driveIndex];
         
     }
-    
+
     public function __call($name, $arguments) {
         return $this->getDrive()->{$name}(...$arguments);
+    }
+    
+    /**
+     * 获取模板
+     * @param type $year
+     * @return type
+     */
+    public function getTemplate($year){
+        return $this->config['template'][$this->driveIndex][$year];
     }
     
 

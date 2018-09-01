@@ -3,35 +3,14 @@
 @section('content')
 <div id="app">
     <div class="drug">
-
-        <img src="/resources/views/web/images/camera.png" id="show_img" onclick="img_click()" alt="" class="camera">
+        <img src="/resources/views/web/images/camera.png"  onclick="img_click()" alt="" class="camera">
         <input type="file" id="img" v-show="ok" v-on:change="img_change" accept="image/*" >
         <div class="camera_ct">点击摄像机拍照<br>系统将自动为你生成吸毒后的脸</div>
     </div>
     <div class="camera_img">
-        <div class="font_ctimg">
-            <img src="/resources/views/web/images/camera_1.png" alt="" class="camera_img1">
-            <p class="paa">未吸毒</p>
-        </div>
-        <div class="font_ctimg">
-            <img src="/resources/views/web/images/camera_2.png" alt="" class="camera_img1">
-            <p class="paa">吸毒两年</p>
-        </div>
-        <div class="font_ctimg">
-            <img src="/resources/views/web/images/camera_3.png" alt="" class="camera_img1"><br>
-            <p class="paa">吸毒四年</p>
-        </div>
-        <div class="font_ctimg">
-            <img src="/resources/views/web/images/camera_4.png" alt="" class="camera_img1">
-            <p class="paa">吸毒六年</p>
-        </div>
-        <div class="font_ctimg">
-            <img src="/resources/views/web/images/camera_5.png" alt="" class="camera_img1">
-            <p class="paa">吸毒八年</p>
-        </div>
-        <div class="font_ctimg">
-            <img src="/resources/views/web/images/camera_6.png" alt="" class="camera_img1">
-            <p class="paa">吸毒十年</p>
+        <div class="font_ctimg" v-for="item in years" v-show="item.show">
+            <img v-bind:src="item.src"   alt="" class="camera_img1">
+            <p class="paa">@{{item.name}}</p>
         </div>
     </div>
 </div>
@@ -39,29 +18,77 @@
  var vue = new Vue({
      el:'#app',
      data:{
-        ok:false
+        ok:false,
+        years:{
+            year_0 :   {src:'',name:'未吸毒'},
+            year_2 :   {src:'',name:'吸毒两年'},
+            year_4 :   {src:'',name:'吸毒四年'},
+            year_6 :   {src:'',name:'吸毒六年'},
+            year_8 :   {src:'',name:'吸毒八年'},
+            year_10 :  {src:'',name:'吸毒十年'}
+        }
      },
      methods:{
         img_change:function(){
             this.show_img();
         },
+        show_year_img:function(index,src){
+            var index = 'year_'+index;
+            var year = this.years[index];
+            year.src = src;
+            year.show = true;
+            this.$set(this.years,index,year);
+        },
         show_img:function(){
-            //获取input file的files文件数组;
-            //$('#filed')获取的是jQuery对象，.get(0)转为原生对象;
-            //这边默认只能选一个，但是存放形式仍然是数组，所以取第一个元素使用[0];
+            
+              var _this = this;
+            
               var file = $('#img').get(0).files[0];
-            //创建用来读取此文件的对象
+
               var reader = new FileReader();
-            //使用该对象读取file文件
+
               reader.readAsDataURL(file);
-            //读取文件成功后执行的方法函数
+
               reader.onload=function(e){
-            //读取成功后返回的一个参数e，整个的一个进度事件
-             //console.log(e);
-            //选择所要显示图片的img，要赋值给img的src就是e中target下result里面
-            //的base64编码格式的地址
-                $('#show_img').get(0).src = e.target.result;
-              }
+                    _this.show_year_img(0,e.target.result);
+            };
+        },
+        year_img:function(){
+            var fileObj = document.getElementById("FileUpload").files[0]; // js 获取文件对象
+            if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
+                alert("请选择图片");
+                return;
+            }
+            var formFile = new FormData();
+            //formFile.append("action", "UploadVMKImagePath");  
+            formFile.append("drug_avatar", fileObj); //加入文件对象
+            
+            
+            $.post('',formFile,function(result){
+                
+                if(result.error){
+                    alert(result.message);
+                    return;
+                }
+                
+                
+                
+                
+            });
+            
+            var data = formFile;
+               $.ajax({
+                   url: "/Admin/Ajax/VMKHandler.ashx",
+                   data: data,
+                   type: "Post",
+                   dataType: "json",
+                   cache: false,//上传文件无需缓存
+                   processData: false,//用于对data参数进行序列化处理 这里必须false
+                   contentType: false, //必须
+                   success: function (result) {
+                       alert("上传完成!");
+                   },
+            })
         }
     }
  });

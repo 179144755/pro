@@ -15,6 +15,11 @@ namespace App\Service\Contract\Faceplusplus;
  */
 interface FaceInterface {
         
-    public function mergeface($template_base64,$merge_base64);
+    /**
+     * 
+     * @param type $template
+     * @param type $merge
+     */
+    public function mergeface($template,$merge);
 
 }

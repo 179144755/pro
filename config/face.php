@@ -10,6 +10,16 @@
             ),
         ),
         
+        'template'=> array(
+            'faceplusplus' => array(
+                    2 => base_path('resources/views/web/images/camera_2.png'),
+                    4 => base_path('resources/views/web/images/camera_3.png'),
+                    6 => base_path('resources/views/web/images/camera_4.png'),
+                    8 => base_path('resources/views/web/images/camera_5.png'),
+                    10 => base_path('resources/views/web/images/camera_6.png'),
+            ),
+        ),
+        
         
     );
      

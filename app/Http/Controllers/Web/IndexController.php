@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Model\Video;
 use App\Http\Model\Notice;
 use App\Http\Model\Quiz;
+use App\Http\Model\Member;
 
 class IndexController extends CommonController
 {   
@@ -80,9 +81,7 @@ class IndexController extends CommonController
                 'fraction' => $correct * 5
             );
         }
-        
-        throw new Exception('你来错了哦');
-        
+        throw new Exception('你来错了哦');        
     }
 
     public function rs(Request $request){
@@ -107,10 +106,51 @@ class IndexController extends CommonController
         return view('web.jindu_xc');
     }
     
-    public function xddl(){
+    public function xddl(Request $request){
+        if($request->isXmlHttpRequest()){
+            $user = $this->getUser();
+            $dirName = '/drug_avatar';
+            $filename = $user->id.'_0';
+            $filepath = $this->upload('drug_avatar', $filename,$dirName);
+            if(!$filepath){
+                throw new Exception('上传失败');  
+            }
+            
+            $base64Url = app('face')->mergeface(2,$filepath);
+            
+            return array(
+                'year_img'=> array('2'=>$base64Url),
+            );
+            
+//            try{
+//                DB::beginTransaction();
+//                
+//                 
+//                
+//                if(!Member::where('id',$user->id)->update(array('no_drug_photo'=>$filepath))){
+//                    throw new Exception('上传失败#2');  
+//                }
+//                
+//                DB::commit();
+//            }
+//            catch (\Exception $e){
+//                DB::rollBack();
+//                 throw $e;
+//            }
+            
+            
+            //$this->xd_year(2);
+        }
         return view('web.jindu_xddl');
     }
     
+    
+    public function xd_year($year){
+        
+    }
+
+    
+
     public function jddt_start(){
         return view('web.jindu_jddt_start');
     }
