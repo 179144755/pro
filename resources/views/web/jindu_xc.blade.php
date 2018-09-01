@@ -21,7 +21,6 @@
             <div class="xcvideo1" style="float: right" v-on:click="like(item)">
                 <img src="/resources/views/web/images/like.png" alt="" class="icon1">
             </div>
-
         </div>
     </div>
 </div>

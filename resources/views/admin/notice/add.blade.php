@@ -54,10 +54,21 @@
                 </td>
             </tr>
             
-            
             <tr>
                 <th><i class="require">*</i> 内容：</th>
                 <td>
+                    <textarea name="content" class="lg">
+                        {{$notice->content}}
+                    </textarea>
+                </td>
+            </tr>
+
+<!--            <tr>
+                <th><i class="require">*</i> 内容：</th>
+                <td>
+                    <textarea>
+                        {$notice->content!!}
+                    </textarea>
                     <script type="text/javascript" charset="utf-8" src="{{asset('resources/org/ueditor/ueditor.config.js')}}"></script>
                     <script type="text/javascript" charset="utf-8" src="{{asset('resources/org/ueditor/ueditor.all.min.js')}}"> </script>
                     <script type="text/javascript" charset="utf-8" src="{{asset('resources/org/ueditor/lang/zh-cn/zh-cn.js')}}"></script>
@@ -72,7 +83,7 @@
                         div.edui-box{overflow: hidden; height:22px;}
                     </style>
                 </td>
-            </tr>
+            </tr>-->
 
             <tr>
                 <th></th>

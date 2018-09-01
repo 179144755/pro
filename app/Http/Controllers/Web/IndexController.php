@@ -37,7 +37,13 @@ class IndexController extends CommonController
         return view('web.jindu_jd');
     }
     
-    public function rs(){
+    public function rs(Request $request){
+        if($request->isXmlHttpRequest()){
+            $field = array('id','title','tag','create_time','short_content');
+            $type = $request->input('type', 1);
+            $data = Notice::orderBy('id','desc')->where('type',3)->paginate(10);
+            return $data;
+        }
         return view('web.jindu_rs');
     }
     
