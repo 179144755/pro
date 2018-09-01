@@ -8,6 +8,9 @@ use App\Http\Model\Video;
 use App\Http\Model\Notice;
 use App\Http\Model\Quiz;
 use App\Http\Model\Member;
+use App\Http\Model\MemberDrugPhoto;
+use Illuminate\Support\Facades\DB;
+use Exception;
 
 class IndexController extends CommonController
 {   
@@ -111,42 +114,54 @@ class IndexController extends CommonController
             $user = $this->getUser();
             $dirName = '/drug_avatar';
             $filename = $user->id.'_0';
-            $filepath = $this->upload('drug_avatar', $filename,$dirName);
-            if(!$filepath){
+            $path = $this->upload('drug_avatar', $filename,$dirName);
+            if(!$path){
                 throw new Exception('上传失败');  
             }
+            $filepath = $path['path'];
             
             $base64Url = app('face')->mergeface(2,$filepath);
             
+            $imgPathData = $this->saveImg(base64_decode($base64Url), $user->id.'_2.'.$path['entension'],'/drug_avatar');
+            if(!$imgPathData){
+                throw new Exception('上传失败#2');  
+            }
+            try{
+                DB::beginTransaction();
+                
+                Member::where('id',$user->id)->update(array('no_drug_photo'=>$path['url']));
+                MemberDrugPhoto::saveYear($user->id,2,$imgPathData['url']);
+                
+                DB::commit();
+            }
+            catch (\Exception $e){
+                DB::rollBack();
+                throw $e;
+            }           
             return array(
-                'year_img'=> array('2'=>$base64Url),
+                'year_imgs'=> array(
+                    array('index'=>2,'src'=>$imgPathData['url']),
+                ),
             );
-            
-//            try{
-//                DB::beginTransaction();
-//                
-//                 
-//                
-//                if(!Member::where('id',$user->id)->update(array('no_drug_photo'=>$filepath))){
-//                    throw new Exception('上传失败#2');  
-//                }
-//                
-//                DB::commit();
-//            }
-//            catch (\Exception $e){
-//                DB::rollBack();
-//                 throw $e;
-//            }
-            
-            
-            //$this->xd_year(2);
         }
         return view('web.jindu_xddl');
     }
-    
-    
-    public function xd_year($year){
-        
+     
+
+    public function xd_year(Request $rquest){
+        if($rquest->isXmlHttpRequest()){
+            $index = $rquest->input('index');
+            
+            $user = $this->getUser();
+            $base64Url = app('face')->mergeface($index, $this->getRealPathByUrl($user->no_drug_photo));
+            $imgPathData = $this->saveImg(base64_decode($base64Url), $user->id."_{$index}".strstr($user->no_drug_photo, '.'),'/drug_avatar');
+            return array(
+                'year_imgs'=> array(
+                    array('index'=>$index,'src'=>$imgPathData['url']),
+                ),
+            );
+        }
+        throw new Exception('你来错了哦'); 
     }
 
     

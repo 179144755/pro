@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service\Contract\Faceplusplus;
+namespace App\Service\Face\Contract;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

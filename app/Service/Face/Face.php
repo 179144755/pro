@@ -60,7 +60,7 @@ class Face{
         
         switch ($driveIndex){
             case 'faceplusplus':
-                $this->drives[$driveIndex] = new Faceplusplus\Faceplusplus($this->config['drives'][$driveIndex]);
+                $this->drives[$driveIndex] = new Faceplusplus\FaceplusplusFace($this->config['drives'][$driveIndex]);
                 break;
         }
         

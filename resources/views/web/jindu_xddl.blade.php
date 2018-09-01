@@ -19,18 +19,28 @@
      el:'#app',
      data:{
         ok:false,
+        csrf_token:'{{csrf_token()}}',
         years:{
-            year_0 :   {src:'',name:'未吸毒'},
-            year_2 :   {src:'',name:'吸毒两年'},
-            year_4 :   {src:'',name:'吸毒四年'},
-            year_6 :   {src:'',name:'吸毒六年'},
-            year_8 :   {src:'',name:'吸毒八年'},
-            year_10 :  {src:'',name:'吸毒十年'}
+            year_0 :   {src:'',name:'未吸毒',index:0},
+            year_2 :   {src:'',name:'吸毒两年',index:2},
+            year_4 :   {src:'',name:'吸毒四年',index:4},
+            year_6 :   {src:'',name:'吸毒六年',index:6},
+            year_8 :   {src:'',name:'吸毒八年',index:8},
+            year_10 :  {src:'',name:'吸毒十年',index:10}
         }
      },
      methods:{
         img_change:function(){
             this.show_img();
+            this.year_img();
+            
+            for(i in this.years){
+                var year = this.years[i];
+                if(year.src=='' && i!='year_0'){
+                    this.get_year_img(year.index);
+                }
+            }
+            
         },
         show_year_img:function(index,src){
             var index = 'year_'+index;
@@ -53,42 +63,73 @@
                     _this.show_year_img(0,e.target.result);
             };
         },
+        get_year_img:function(year){
+            var _this = this;
+//            $.post('{{route("xd_year")}}',{index:year,_token:this.csrf_token},function(result){
+//                if(result.error){
+//                    alert(result.message);
+//                    return;
+//                }
+//                for(i in result.year_imgs){
+//                    _this.show_year_img(result.year_imgs[i].index,result.year_imgs[i].src);
+//                }
+//            },'json');
+//            
+            $.ajax({
+                url: '{{route("xd_year")}}',
+                data: {index:year,_token:this.csrf_token},
+                type: "POST",
+                dataType: "json",
+                async : false,
+                success: function (result) {
+                    if(result.error){
+                        alert(result.message);
+                        return;
+                    }
+                        
+                    for(i in result.year_imgs){
+                        _this.show_year_img(result.year_imgs[i].index,result.year_imgs[i].src);
+                    }
+                }
+            });
+            
+            
+        },
         year_img:function(){
-            var fileObj = document.getElementById("FileUpload").files[0]; // js 获取文件对象
+            var fileObj = $('#img').get(0).files[0]; // js 获取文件对象
             if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
                 alert("请选择图片");
                 return;
             }
             var formFile = new FormData();
-            //formFile.append("action", "UploadVMKImagePath");  
+  
             formFile.append("drug_avatar", fileObj); //加入文件对象
             
+            formFile.append("_token",  this.csrf_token); //加入文件对象
             
-            $.post('',formFile,function(result){
-                
-                if(result.error){
-                    alert(result.message);
-                    return;
-                }
-                
-                
-                
-                
-            });
-            
+            var _this = this;
+
             var data = formFile;
                $.ajax({
-                   url: "/Admin/Ajax/VMKHandler.ashx",
+                   url: "",
                    data: data,
-                   type: "Post",
+                   type: "POST",
                    dataType: "json",
+                   async : false,
                    cache: false,//上传文件无需缓存
                    processData: false,//用于对data参数进行序列化处理 这里必须false
                    contentType: false, //必须
                    success: function (result) {
-                       alert("上传完成!");
+                       if(result.error){
+                            alert(result.message);
+                            return;
+                        }
+                        
+                        for(i in result.year_imgs){
+                            _this.show_year_img(result.year_imgs[i].index,result.year_imgs[i].src);
+                        }
                    },
-            })
+                })
         }
     }
  });

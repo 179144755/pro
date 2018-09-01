@@ -2,7 +2,7 @@
 
 namespace App\Service\Face\Faceplusplus;
 
-use App\Service\Contract\Faceplusplus\FaceInterface;
+use App\Service\Face\Contract\FaceInterface;
 
 class FaceplusplusFace implements FaceInterface{
     
@@ -20,8 +20,8 @@ class FaceplusplusFace implements FaceInterface{
     }
 
     public function mergeface($template, $merge) {
-        $template_base64 = file_get_contents(base64_encode($template));
-        $merge_base64 = file_get_contents(base64_encode($merge));
+        $template_base64 = base64_encode(file_get_contents($template));
+        $merge_base64 = base64_encode(file_get_contents($merge));
         return $this->faceplusplus->mergeface($merge_base64, $template_base64);
     }
     
