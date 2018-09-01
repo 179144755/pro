@@ -19,7 +19,7 @@
                 <p class="p1">禁毒先锋</p>
             </div>
             <div class="imgcontent3">
-                <a href="{{route('jd')}}"><img src="/resources/views/web/images/c.png" alt="" class="imgv1"></a>
+                <a href="{{route('jddt_start')}}"><img src="/resources/views/web/images/c.png" alt="" class="imgv1"></a>
                 <p class="p1">在线问答</p>
             </div>
             <div class="imgcontent3">

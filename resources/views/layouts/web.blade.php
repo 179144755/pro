@@ -12,6 +12,10 @@
     <script type="text/javascript" src="{{asset('resources/views/admin/style/js/jquery.js')}}"></script>
 </head>
 <body>
+
+@hasSection ('body')
+@yield('body')
+@else
 <div class="body" style="width: 100%;">
     <div class="header" style="width: 100%;background: black;">
         @section('headerfont')
@@ -23,5 +27,6 @@
     </div>
      @yield('content')
 </div>
+@endif 
 </body>
 </html>

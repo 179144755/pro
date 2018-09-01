@@ -64,7 +64,6 @@ Route::group(['middleware' => ['web','admin.login'],'prefix'=>'admin','namespace
 
 
 Route::group(['middleware' => ['web'] , 'prefix'=>'web','namespace'=>'Web'], function () {
-    
     Route::get('/', 'IndexController@index')->name('index');
     Route::get('/dpxq', 'IndexController@dpxq')->name('dpxq');
     Route::get('/gz', 'IndexController@gz')->name('gz');
@@ -72,6 +71,8 @@ Route::group(['middleware' => ['web'] , 'prefix'=>'web','namespace'=>'Web'], fun
     Route::get('/rs', 'IndexController@rs')->name('rs');
     Route::get('/xc', 'IndexController@xc')->name('xc');
     Route::get('/xddl', 'IndexController@xddl')->name('xddl');
+    Route::get('/jddt_start', 'IndexController@jddt_start')->name('jddt_start');
+    Route::any('/jd_answer', 'IndexController@jd_answer')->name('jd_answer');
 });
 
 
