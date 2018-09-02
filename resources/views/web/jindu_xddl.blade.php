@@ -154,6 +154,8 @@
             
             this.message = '正在生成...';
             
+            var isFalse = false;
+            
             var data = formFile;
                $.ajax({
                    url: "{{route('xddl_upload')}}",
@@ -166,6 +168,7 @@
                    contentType: false, //必须
                    success: function (result) {
                         if(_this.ajaxerrorshow(result)){
+                            isFalse = true;
                             return ;
                         }
                         for(i in _this.years){
@@ -175,9 +178,12 @@
                                 _this.$set(_this.years,i,year);
                         }
                         _this.merger_year_img(result);
-                        this.message = '';
                    }
                 });
+                
+             if(!isFalse){
+                this.message = '';
+             }
         }
     }
  });
