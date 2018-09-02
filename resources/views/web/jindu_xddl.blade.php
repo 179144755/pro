@@ -5,8 +5,11 @@
     <div class="drug">
         <img src="/resources/views/web/images/camera.png"  onclick="img_click()" alt="" class="camera">
         <input type="file" id="img" v-show="ok" v-on:change="img_change" accept="image/*" >
-        <div class="camera_ct">点击摄像机拍照<br>系统将自动为你生成吸毒后的脸</div>
+        <div class="camera_ct" style="color:#CCC">点击摄像机拍照<br>系统将自动为你生成吸毒后的脸<br>
+            <span  style="color:#000">@{{message}}</span>
+        </div>
     </div>
+    
     <div class="camera_img">
         <div class="font_ctimg" v-for="item in years" v-show="item.show">
             <img v-bind:src="item.src"   alt="" class="camera_img1">
@@ -21,6 +24,7 @@
      data:{
         ok:false,
         csrf_token:'{{csrf_token()}}',
+        message : '',
         years:{
             year_0 :   {src:'',name:'未吸毒',index:0},
             year_2 :   {src:'',name:'吸毒两年',index:2},
@@ -36,19 +40,40 @@
      methods:{
         init_data:function(){
             var _this = this;
+            _this.message = '加载数据...';
             $.get('',{},function(result){
-                if(jindu_commmon.ajaxError(result)){
-                    return;
-                } 
+                
+                if(_this.ajaxerrorshow(result)){
+                    return ;
+                }
+                
+
                 _this.merger_year_img(result);
                 
-            },'json');
-            
+                for(i in _this.years){
+                    var year = _this.years[i];
+                    if(year.src=='' && i!='year_0'){
+                        _this.message = '正在生成...';
+                        _this.get_year_img(year.index);
+                    }
+                }
+                _this.message = '';
+            },'json');            
         }, 
-        img_change:function(){
-            //this.show_img();
+        ajaxerrorshow:function(result){
+            var error = jindu_commmon.ajaxError(result);
+            if(error){
+                this.message = error.code+':'+error.message;
+                return true;
+            } 
+            return false;
+        },
+        img_change:function(){ 
+            var fileObj = $('#img').get(0).files[0]; // js 获取文件对象
+            if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
+                return;
+            }
             this.upload_img();
-            
             for(i in this.years){
                 var year = this.years[i];
                 if(year.src=='' && i!='year_0'){
@@ -56,8 +81,14 @@
                 }
             }
             
+            
         },
         show_year_img:function(index,src){
+            
+            if(!src){
+                return ;
+            }
+            
             var index = 'year_'+index;
             var year = this.years[index];
             year.src = src;
@@ -87,6 +118,7 @@
             }            
         },
         get_year_img:function(year){
+            this.message = '正在生成...';
             var _this = this;
             $.ajax({
                 url: '{{route("xd_year")}}',
@@ -95,19 +127,17 @@
                 dataType: "json",
                 async : false,
                 success: function (result) {
-                    if(jindu_commmon.ajaxError(result)){
-                        return;
-                    } 
+                    if(_this.ajaxerrorshow(result)){
+                        return ;
+                    }
                     _this.merger_year_img(result);
+                    this.message = '';
                 }
             });
-            
-            
         },
         upload_img:function(){
             var fileObj = $('#img').get(0).files[0]; // js 获取文件对象
             if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
-                alert("请选择图片");
                 return;
             }
             var formFile = new FormData();
@@ -117,7 +147,9 @@
             formFile.append("_token",  this.csrf_token); //加入文件对象
             
             var _this = this;
-
+            
+            this.message = '正在生成...';
+            
             var data = formFile;
                $.ajax({
                    url: "{{route('xddl_upload')}}",
@@ -129,8 +161,8 @@
                    processData: false,//用于对data参数进行序列化处理 这里必须false
                    contentType: false, //必须
                    success: function (result) {
-                        if(jindu_commmon.ajaxError(result)){
-                            return;
+                        if(_this.ajaxerrorshow(result)){
+                            return ;
                         }
                         for(i in _this.years){
                             var year = _this.years[i];
@@ -139,6 +171,7 @@
                                 _this.$set(_this.years,i,year);
                         }
                         _this.merger_year_img(result);
+                        this.message = '';
                    }
                 });
         }

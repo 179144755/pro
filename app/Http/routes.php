@@ -87,4 +87,4 @@ Route::group(['middleware' => ['web'] , 'namespace'=>'Web'], function () {
 });
 
 
-//Route::get('/test', 'Web\IndexController@test')->name('test');
+Route::get('/test', 'Web\IndexController@test')->name('test');

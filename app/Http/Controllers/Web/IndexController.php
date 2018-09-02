@@ -129,21 +129,22 @@ class IndexController extends CommonController
             $user = $this->getUser();
             $extension = $request->file('drug_avatar')->getClientOriginalExtension();
             $temp_path = $request->file('drug_avatar')->getPathname(); 
-            
+            $oldNoDrugPhoto = $user->no_drug_photo;
             $base64Url = app('face')->mergeface(2,$temp_path);
-
-            $path = $this->upload('drug_avatar', $user->id.'_0.'.$extension,'/drug_avatar');
+            
+            $path = $this->upload('drug_avatar', $user->id.'_0_'.date('YmdHis'),'/drug_avatar');
             if(!$path){
                 throw new Exception('上传失败');  
             }
             
-            $imgPathData = $this->saveImg(base64_decode($base64Url),$user->id.'_2.'.$extension,'/drug_avatar');
+            $imgPathData = $this->saveImg(base64_decode($base64Url),$user->id.'_2_'.date('YmdHis').'.'.$extension,'/drug_avatar');
             if(!$imgPathData){
                 throw new Exception('上传失败#2');  
             }
+            $oldMemberDrugPhoto = MemberDrugPhoto::where('member_id',$user->id)->select('photo')->get();
             try{
                 DB::beginTransaction();
-                MemberDrugPhoto::where('member_id',$user->id)->update(array('photo'=>''));
+                MemberDrugPhoto::where('member_id',$user->id)->update(array('photo'=>''));                
                 Member::where('id',$user->id)->update(array('no_drug_photo'=>$path['url']));
                 MemberDrugPhoto::saveYear($user->id,2,$imgPathData['url']);
                 DB::commit();
@@ -151,12 +152,23 @@ class IndexController extends CommonController
             catch (\Exception $e){
                 DB::rollBack();
                 throw $e;
-            }           
+            }
+            
+            foreach ($oldMemberDrugPhoto as $row){
+                file_exists($this->getRealPathByUrl($row['photo'])) && unlink($this->getRealPathByUrl($row['photo']));
+            }
+            
+            if($oldNoDrugPhoto){
+                 file_exists($this->getRealPathByUrl($oldNoDrugPhoto)) && unlink($this->getRealPathByUrl($oldNoDrugPhoto));
+            }
+            
+                        
+            
             return array(
                 'year_imgs'=> array(
                     array('year'=>2,'photo'=>$imgPathData['url']),
                 ),
-                'no_drug_avatar' =>$path['url'],
+                'no_drug_avatar' =>$path['url']
             );
         }
         
@@ -169,7 +181,7 @@ class IndexController extends CommonController
             $index = is_null($index) ? $rquest->input('index') : $index;
             $user = $this->getUser();
             $base64Url = app('face')->mergeface($index, $this->getRealPathByUrl($user->no_drug_photo));
-            $imgPathData = $this->saveImg(base64_decode($base64Url), $user->id."_{$index}".strstr($user->no_drug_photo, '.'),'/drug_avatar');
+            $imgPathData = $this->saveImg(base64_decode($base64Url), $user->id."_{$index}_".date('ymdHis').strrchr($user->no_drug_photo, '.'),'/drug_avatar');
             MemberDrugPhoto::saveYear($user->id,$index,$imgPathData['url']);
             return array(
                 'year_imgs'=> array(
@@ -188,11 +200,13 @@ class IndexController extends CommonController
 
         public function test(){
         
-        $merge_base64 = base64_encode(file_get_contents(base_path('resources/views/web/images/camera_1.png')));
+        //$merge_base64 = base64_encode(file_get_contents(base_path('resources/views/web/images/camera_1.png')));
 
-        $template_base64 = base64_encode(file_get_contents(app('face_templete')(2)));
+        //$template_base64 = base64_encode(file_get_contents(app('face_templete')(2)));
         
-        $result = app('face')->mergeface($merge_base64,$template_base64);
+        $result = app('face')->mergeface(4,'E:\application\pro\uploads\drug_avatar\1_0.jpg.jpg');
+        
+        var_dump($result);
 
         return view('test',array('face_tow_img'=>$result));
     }
