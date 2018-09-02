@@ -38,6 +38,9 @@ class Faceplusplus {
         //$data['merge_rectangle'] = implode(',', array($faceRectangle['top'],$faceRectangle['left'],$faceRectangle['width'],$faceRectangle['height']));
         
         $templeteDetectResult = $this->detect($template_base64);
+        if(!$templeteDetectResult){
+            throw new Exception('error face template photo ');
+        }
         $templeteFaceRectangle = $templeteDetectResult['face_rectangle'];
         $data['template_rectangle'] = implode(',', array($templeteFaceRectangle['top'],$templeteFaceRectangle['left'],$templeteFaceRectangle['width'],$templeteFaceRectangle['height']));
         
@@ -59,8 +62,7 @@ class Faceplusplus {
         $data['return_landmark'] = $return_landmark;
         
         $response = $this->curl('https://api-cn.faceplusplus.com/facepp/v3/detect', $data);
-
-        return $response['faces'][0];
+        return $response['faces'] ? $response['faces'][0] : false;
     }
     
     protected function curl($curl_url,$data) {

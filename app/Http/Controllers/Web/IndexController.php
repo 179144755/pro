@@ -112,26 +112,40 @@ class IndexController extends CommonController
     public function xddl(Request $request){
         if($request->isXmlHttpRequest()){
             $user = $this->getUser();
-            $dirName = '/drug_avatar';
-            $filename = $user->id.'_0';
-            $path = $this->upload('drug_avatar', $filename,$dirName);
+            return array(
+                'year_imgs' => MemberDrugPhoto::where('member_id',$user->id)->get() ?: array(),
+                'no_drug_avatar' => $user->no_drug_photo,
+            );          
+        }
+        return view('web.jindu_xddl');
+    }
+    
+    public function xddl_upload(Request $request){
+        if($request->isXmlHttpRequest()){
+            if(!$request->file('drug_avatar')->isValid()){
+                throw new Exception('非法图片'); 
+            }
+            
+            $user = $this->getUser();
+            $extension = $request->file('drug_avatar')->getClientOriginalExtension();
+            $temp_path = $request->file('drug_avatar')->getPathname(); 
+            
+            $base64Url = app('face')->mergeface(2,$temp_path);
+
+            $path = $this->upload('drug_avatar', $user->id.'_0.'.$extension,'/drug_avatar');
             if(!$path){
                 throw new Exception('上传失败');  
             }
-            $filepath = $path['path'];
             
-            $base64Url = app('face')->mergeface(2,$filepath);
-            
-            $imgPathData = $this->saveImg(base64_decode($base64Url), $user->id.'_2.'.$path['entension'],'/drug_avatar');
+            $imgPathData = $this->saveImg(base64_decode($base64Url),$user->id.'_2.'.$extension,'/drug_avatar');
             if(!$imgPathData){
                 throw new Exception('上传失败#2');  
             }
             try{
                 DB::beginTransaction();
-                
+                MemberDrugPhoto::where('member_id',$user->id)->update(array('photo'=>''));
                 Member::where('id',$user->id)->update(array('no_drug_photo'=>$path['url']));
                 MemberDrugPhoto::saveYear($user->id,2,$imgPathData['url']);
-                
                 DB::commit();
             }
             catch (\Exception $e){
@@ -140,24 +154,26 @@ class IndexController extends CommonController
             }           
             return array(
                 'year_imgs'=> array(
-                    array('index'=>2,'src'=>$imgPathData['url']),
+                    array('year'=>2,'photo'=>$imgPathData['url']),
                 ),
+                'no_drug_avatar' =>$path['url'],
             );
         }
-        return view('web.jindu_xddl');
+        
+        throw new Exception('你来错了哦'); 
     }
-     
 
-    public function xd_year(Request $rquest){
+    
+    public function xd_year(Request $rquest,$index = null){
         if($rquest->isXmlHttpRequest()){
-            $index = $rquest->input('index');
-            
+            $index = is_null($index) ? $rquest->input('index') : $index;
             $user = $this->getUser();
             $base64Url = app('face')->mergeface($index, $this->getRealPathByUrl($user->no_drug_photo));
             $imgPathData = $this->saveImg(base64_decode($base64Url), $user->id."_{$index}".strstr($user->no_drug_photo, '.'),'/drug_avatar');
+            MemberDrugPhoto::saveYear($user->id,$index,$imgPathData['url']);
             return array(
                 'year_imgs'=> array(
-                    array('index'=>$index,'src'=>$imgPathData['url']),
+                    array('year'=>$index,'photo'=>$imgPathData['url']),
                 ),
             );
         }

@@ -76,10 +76,14 @@ Route::group(['middleware' => ['web'] , 'namespace'=>'Web'], function () {
     Route::get('/jd', 'IndexController@jd')->name('jd');
     Route::get('/rs', 'IndexController@rs')->name('rs');
     Route::get('/xc', 'IndexController@xc')->name('xc');
-    Route::any('/xddl', 'IndexController@xddl')->name('xddl')->middleware(['web.login']);
+    
+
     Route::get('/jddt_start', 'IndexController@jddt_start')->name('jddt_start');
     Route::any('/jd_answer', 'IndexController@jd_answer')->name('jd_answer');
-    Route::any('/xd_year', 'IndexController@xd_year')->name('xd_year');
+    
+    Route::any('/xddl', 'IndexController@xddl')->name('xddl')->middleware(['web.login']);
+    Route::any('/xddl_upload', 'IndexController@xddl_upload')->name('xddl_upload')->middleware(['web.login']);
+    Route::any('/xd_year', 'IndexController@xd_year')->name('xd_year')->middleware(['web.login']);;
 });
 
 

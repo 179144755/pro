@@ -10,6 +10,7 @@
     <link type="text/css" rel="stylesheet" href="{{asset('resources/views/web/css/index.css')}}">
     <script type="text/javascript" src="{{asset('resources/views/public/vue.js')}}"></script>
     <script type="text/javascript" src="{{asset('resources/views/admin/style/js/jquery.js')}}"></script>
+    <script type="text/javascript" src="{{asset('resources/views/web/js/common.js')}}"></script>
 </head>
 <body>
 
