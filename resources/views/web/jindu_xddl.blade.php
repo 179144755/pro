@@ -184,7 +184,10 @@
                                 _this.$set(_this.years,i,year);
                         }
                         _this.merger_year_img(result);
-                   }
+                   },
+                   error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status+'@'+XMLHttpRequest.readyState+'2'+textStatus);
+                    },
                 });
                 
              if(!isFalse){
