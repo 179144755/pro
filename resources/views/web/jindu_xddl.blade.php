@@ -172,6 +172,7 @@
                    processData: false,//用于对data参数进行序列化处理 这里必须false
                    contentType: false, //必须
                    success: function (result) {
+                                       
                         if(_this.ajaxerrorshow(result)){
                             isFalse = true;
                             return ;

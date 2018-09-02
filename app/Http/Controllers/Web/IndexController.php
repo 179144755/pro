@@ -155,19 +155,17 @@ class IndexController extends CommonController
             }
             
             foreach ($oldMemberDrugPhoto as $row){
-                file_exists($this->getRealPathByUrl($row['photo'])) && unlink($this->getRealPathByUrl($row['photo']));
+                $row['photo'] && file_exists($this->getRealPathByUrl($row['photo'])) && unlink($this->getRealPathByUrl($row['photo']));
             }
             
             if($oldNoDrugPhoto){
                  file_exists($this->getRealPathByUrl($oldNoDrugPhoto)) && unlink($this->getRealPathByUrl($oldNoDrugPhoto));
             }
-            
-                        
-            
+            $result = $this->xd_year($request,array(4,6,8,10));
             return array(
-                'year_imgs'=> array(
+                'year_imgs'=> array_merge(array(
                     array('year'=>2,'photo'=>$imgPathData['url']),
-                ),
+                ),$result['year_imgs']),
                 'no_drug_avatar' =>$path['url']
             );
         }
@@ -176,17 +174,21 @@ class IndexController extends CommonController
     }
 
     
-    public function xd_year(Request $rquest,$index = null){
-        if($rquest->isXmlHttpRequest()){
-            $index = is_null($index) ? $rquest->input('index') : $index;
+    public function xd_year(Request $request,$index = null){
+        if($request->isXmlHttpRequest()){
+            $index = is_null($index) ? $request->input('index') : $index;
+            $year_imgs = array();
+            $indexs = (array)$index;
             $user = $this->getUser();
-            $base64Url = app('face')->mergeface($index, $this->getRealPathByUrl($user->no_drug_photo));
-            $imgPathData = $this->saveImg(base64_decode($base64Url), $user->id."_{$index}_".date('ymdHis').strrchr($user->no_drug_photo, '.'),'/drug_avatar');
-            MemberDrugPhoto::saveYear($user->id,$index,$imgPathData['url']);
+                    
+            foreach ($indexs as $index){
+                $base64Url = app('face')->mergeface($index, $this->getRealPathByUrl($user->no_drug_photo));
+                $imgPathData = $this->saveImg(base64_decode($base64Url), $user->id."_{$index}_".date('ymdHis').strrchr($user->no_drug_photo, '.'),'/drug_avatar');
+                MemberDrugPhoto::saveYear($user->id,$index,$imgPathData['url']);
+                $year_imgs[] = array('year'=>$index,'photo'=>$imgPathData['url']);
+            }
             return array(
-                'year_imgs'=> array(
-                    array('year'=>$index,'photo'=>$imgPathData['url']),
-                ),
+                'year_imgs'=> $year_imgs,
             );
         }
         throw new Exception('你来错了哦'); 
