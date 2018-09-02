@@ -124,6 +124,7 @@
         get_year_img:function(year){
             this.message = '正在生成...';
             var _this = this;
+             var isFalse = false;
             $.ajax({
                 url: '{{route("xd_year")}}',
                 data: {index:year,_token:this.csrf_token},
@@ -132,12 +133,16 @@
                 async : false,
                 success: function (result) {
                     if(_this.ajaxerrorshow(result)){
+                        isFalse = true;
                         return ;
                     }
                     _this.merger_year_img(result);
                     this.message = '';
                 }
             });
+            if(!isFalse){
+                this.message = '';
+             }
         },
         upload_img:function(){
             var fileObj = $('#img').get(0).files[0]; // js 获取文件对象
