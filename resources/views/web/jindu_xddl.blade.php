@@ -50,13 +50,17 @@
 
                 _this.merger_year_img(result);
                 
-                for(i in _this.years){
+                if(result.no_drug_avatar){
+                    for(i in _this.years){
                     var year = _this.years[i];
                     if(year.src=='' && i!='year_0'){
                         _this.message = '正在生成...';
                         _this.get_year_img(year.index);
                     }
                 }
+                }
+                
+
                 _this.message = '';
             },'json');            
         }, 
