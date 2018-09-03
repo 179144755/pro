@@ -26,17 +26,22 @@ class CommonController extends Controller
     public function upload($index='image',$filename='',$dir='')
     {
         $file = Input::file($index);
-        if(!$file -> isValid()){
+        if(!$file || !$file -> isValid()){
             return false;
         }
         
+                
+        if($file->getSize()>1024 * 1024 * 2){
+            throw new Exception('超过2M'); 
+        }
+       
         if(!$filename){
             $filename = date('YmdHis').mt_rand(100,999);
         }      
         $entension = $file -> getClientOriginalExtension(); //上传文件的后缀.
         $newName = $filename.'.'.$entension;
         $path = $file -> move(base_path().'/uploads'.$dir,$newName);
-        
+
         return array(
             'path'=>$path->getPathname(),
             'file_name'=>$path->getFilename(),

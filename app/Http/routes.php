@@ -60,7 +60,7 @@ Route::group(['middleware' => ['web','admin.login'],'prefix'=>'admin','namespace
     Route::get('notice/create/{id?}', 'NoticeController@create');
     Route::post('notice/save', 'NoticeController@save');
 
-    Route::get('narcotics', 'NarcoticsController@index');
+    Route::get('narcotics/{type?}', 'NarcoticsController@index');
     Route::get('narcotics/create/{id?}', 'NarcoticsController@create');
     Route::post('narcotics/save', 'NarcoticsController@save');
     
@@ -83,7 +83,13 @@ Route::group(['middleware' => ['web'] , 'namespace'=>'Web'], function () {
     
     Route::any('/xddl', 'IndexController@xddl')->name('xddl')->middleware(['web.login']);
     Route::any('/xddl_upload', 'IndexController@xddl_upload')->name('xddl_upload')->middleware(['web.login']);
-    Route::any('/xd_year', 'IndexController@xd_year')->name('xd_year')->middleware(['web.login']);;
+    Route::any('/xd_year', 'IndexController@xd_year')->name('xd_year')->middleware(['web.login']);
+    
+    Route::get('/jdxf', 'IndexController@jdxf')->name('jdxf')->middleware(['web.login']);
+    Route::post('/jdxf_upload', 'IndexController@jdxf_upload')->name('jdxf_upload')->middleware(['web.login']);
+    Route::get('/jdxf_show', 'IndexController@jdxf_show')->name('jdxf_show')->middleware(['web.login']);
+    Route::get('/jdxf_list', 'IndexController@jdxf_list')->name('jdxf_list');
+
 });
 
 

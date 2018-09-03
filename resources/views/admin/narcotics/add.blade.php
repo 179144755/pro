@@ -55,8 +55,19 @@
                     <input type="text" class="lg" name="title" value="{{$narcotics->title}}">
                 </td>
             </tr>
+            
             <tr>
-                <th><i class="require">*</i> 选项：</th>
+                <th><i class="require">*</i> 分类：</th>
+                <td>
+                    <select name="type">
+                        <option value="3">认识毒品</option>
+                        <option value="4">毒品危害</option>
+                    </select>
+                </td>
+            </tr>
+            
+            <tr>
+                <th><i class="require">*</i> 毒品类型：</th>
                 <td>
                     <select name="tag">
                         <option value="传统毒品">传统毒品</option>
@@ -65,8 +76,10 @@
                 </td>
             </tr>
             
+            
+            
             <tr>
-                <th><i class="require">*</i> 毒品简介：</th>
+                <th><i class="require">*</i> 简介：</th>
                 <td>
                     <textarea  class="lg" name="short_content" >{{$narcotics->short_content}}</textarea>
                 </td>
@@ -74,16 +87,9 @@
             
             
             <tr>
-                <th><i class="require">*</i> 毒品介绍：</th>
+                <th><i class="require">*</i> 内容介绍：</th>
                 <td>
                     <script id="editor" name="content" type="text/plain" style="width:860px;height:400px;">{!!$narcotics->content!!}</script>
-                </td>
-            </tr>
-            
-            <tr>
-                <th><i class="require">*</i> 毒品危害：</th>
-                <td>
-                    <script id="editor_2" name="content_2" type="text/plain" style="width:860px;height:400px;">{!!$narcotics->content_2!!}</script>
                 </td>
             </tr>
 
@@ -103,7 +109,6 @@
 
 <script type="text/javascript">
     var ue = UE.getEditor('editor');
-    var ue_2 = UE.getEditor('editor_2');
 </script>
 
 @endsection

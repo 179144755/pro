@@ -10,6 +10,7 @@
     font-size: 16px;
     font-style:normal;
 }
+
 .header3{
 	height:54px;
 	width:100%;
@@ -139,6 +140,9 @@
     height: 150px;
     width: 100%;
 }
+
+
+
 .headerfontxc{
     color: #ffff;
     margin-top: -30px;
@@ -157,7 +161,7 @@
 }
 .gztitle{
     height: 80px;
-    background: #262938;
+    background: #000000;
 }
 
 .button1{
@@ -234,6 +238,10 @@
     margin-top: 20px;
     height: 200px;
 }
+.drug0{
+    
+    height: 180px;
+}
 .drug2{
     margin-top: -180px;
     height: 200px;
@@ -267,9 +275,31 @@
     margin-left: 33.3%;
     height: 120px;
 }
+.camera4{
+    margin-top: 250px;
+    margin-left: 35%;
+    height: 100px;
+}
+.camera5{
+    margin-top: 230px;
+    margin-left: 39%;
+    height: 80px;
+}
 .camera_ct{
     text-align: center;
 	color: #fff;
+}
+.camera_ctt{
+    text-align: center;
+}
+.camera_ctt1{
+    text-align: center;
+	color:#960A23;
+}
+.jdxf{
+	text-align: center;
+	font-size:14px;
+	color:#8E8E8E;
 }
 .camera_ct1{
     text-align: center;
@@ -287,9 +317,49 @@
     height: 116px;
     width: 116px;
 }
+.camera_img4{
+   
+	height: 116px;
+    width: 116px;
+	border:1px solid #E6BEC6;
+    margin-top: 45px;
+     border-radius:58px;overflow:hidden;
+}
+.camera_img5{
+    border-color:#000000 ;
+	height: 116px;
+    width: 116px;
+	border:1px solid #E6BEC6;
+	 border-radius:58px;overflow:hidden;
+    
+}
+.font_ctimg0{
+    float: left;
+margin:0 auto;	
+}
+.font_ctimg0 p{
+    text-align: center;	
+	margin-top: 1px;
+}
+.xuanfu{
+	left: -15px;
+	
+	position: fixed;
+	bottom: 70px;
+	width: 100%;
+	z-index: 100;
+}
+.xuanfu1{
+  
+	height: 60px;
+    width: 60px;
+	float:right;
+    
+}
 
 .font_ctimg{
     float: left;
+	
 }
 .ewm_img1 {
 
@@ -297,9 +367,7 @@
 .font_ctimg1{
 
 	margin-top: 40px;
-	width:100px;
-    height:90px;
-	border:4px solid #E4F4FC;
+	c
     float: left;
    
 }
@@ -322,7 +390,7 @@
 }
 .dp_time{
 height: 20px;
-background: red;
+
 }
 .dp_read{
     font-size: 14px;
@@ -438,8 +506,68 @@ background: red;
 	  text-align:center;
 	  
  }
-
-	  
+  .font_ctimg9{
+	 width:95%;
+    height:50px;
+	border:1px solid #DEDEDE;
+	margin:0 auto; 
+	margin-top: 30px;
+	 border-radius:30px;overflow:hidden;
+	  color:#000;
+	  text-indent:1em;
+ }
+ .font_ctimg10{
+	 width:85%;
+    height:50px;
+	border:1px solid #25D6B9;
+	margin:0 auto; 
+	margin-top: 30px;
+	 border-radius:30px;overflow:hidden;
+	  background: #25D6B9;
+	  color:#FFFFFF;
+	text-align:center;
+ }
+ .font_ctimg11{
+	 width:85%;
+    
+	border:1px solid #E1E0E0;
+	margin:0 auto; 
+	margin-top: 30px;
+	 border-radius:30px;overflow:hidden;
+	  color:#E1E0E0;
+	  text-indent:1em;
+ }
+  .font_ctimg12{
+	  color:#FF9130;
+	  text-indent:3em;
+	  font-size:14px;
+ }
+.fade{
+    width:100%;
+    height:100%;
+    background:rgba(0, 0, 0, 0.5);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99;
+}
+.succ-pop{
+    width: 90%;
+    height: 280px;
+    background: #fff;
+    position: fixed;
+    left: 53%;
+    top: 24%;
+    margin-left: -200px;
+   
+    z-index: 999;
+    border-radius: 5px;
+}
+.succ-pop h4.title{
+    text-align: center;
+    font-size: 18px;
+    
+}    
  .sett_x_l{ float: left; width: 50%;margin-top: -10px;}
  .sett_x_l p{  font-size: 16px; color: #000; }
  .sett_x_l img{ height: 30px; float: right; margin-right: 0px; display: block; margin-top: 10px}

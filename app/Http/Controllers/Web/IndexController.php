@@ -9,23 +9,115 @@ use App\Http\Model\Notice;
 use App\Http\Model\Quiz;
 use App\Http\Model\Member;
 use App\Http\Model\MemberDrugPhoto;
+use App\Http\Model\MemberVanguard;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
 class IndexController extends CommonController
 {   
     public function index(Request $request)
-    {  
-        
-        
-        return view('web.index');
+    {          
+        return view('web.index',array('active'=>'home'));
     }
     
     public function dpxq(){
         return view('web.jindu_dpxq');
     }
     
+    
     /**
+     * 禁毒先锋
+     * @return type
+     */
+    public function jdxf(){
+        $user = $this->getUser();
+        $memberVanguard = MemberVanguard::where('member_id',$user->id)->first();
+        if($memberVanguard){
+            return $this->jdxf_show();
+        }
+        return view('web.jindu_jdxf',array('active'=>'first'));
+    }
+    
+        
+    /**
+     * 禁毒先锋
+     * @return type
+     */
+    public function jdxf_list(Request $request){
+        if($request->isXmlHttpRequest()){
+            $data = MemberVanguard::orderBy('id','desc')->paginate(10);
+            return $data;
+        }
+        return view('web.jindu_jdxf_list',array('active'=>'first'));
+    }
+
+        
+    /**
+     * 禁毒先锋
+     * @return type
+     */
+    public function jdxf_show($memberVanguard = null){
+        if(!$memberVanguard){
+            $user = $this->getUser();
+            $memberVanguard = MemberVanguard::where('member_id',$user->id)->first();
+        }
+        if(!$memberVanguard){
+            throw new Exception('来错地方拉'); 
+        }
+        return view('web.jindu_jdxf_show',array('memberVanguard' =>$memberVanguard,'active'=>'first'));
+    }
+
+        /**
+     * 禁毒先锋
+     * @return type
+     */
+    public function jdxf_upload(Request $request){
+        if($request->isXmlHttpRequest()){
+            $user = $this->getUser();
+            
+            if(MemberVanguard::where('member_id',$user->id)->first()){
+                throw new Exception('非法上传',-100); 
+            }
+            
+            $filename =  $user->id.'_0_'.date('YmdHis');
+            $name = '';
+            $path = $this->upload('img', $filename ,'/vanguard_avatar');
+            if(!$path){
+                throw new Exception('上传失败');  
+            }
+            try{
+                $index = 2;                
+                $base64Url = app('face')->mergeface($index,$path['path']);
+                $extension = ltrim($path['entension'],'.');
+                $imgPathData = $this->saveImg(base64_decode($base64Url),$user->id."_{$index}_".date('YmdHis').'.'.$extension,'/vanguard_avatar');
+                
+                $id = MemberVanguard::create(array(
+                    'member_id' => $user->id,
+                    'name' => $name,
+                    'img' => $path['url'],
+                    'drug_img' => $imgPathData['url'],
+                    'create_time' => date('Y-m-d H:i:s')
+                ));
+                if(!$id){
+                    throw new Exception('上传失败');  
+                } 
+                return array(
+                    'id' => $id,
+                    'img' => $path['url'],
+                    'drug_img' => $imgPathData['url'],
+                );
+            }
+            catch(Exception $e){
+                unlink($path['path']);
+                isset($imgPathData) && $imgPathData && unlink($imgPathData['path']);
+                throw  $e;
+            }
+        }
+        throw new Exception('你来错了哦');   
+    }
+    
+
+     /**
      * 公告
      * @return type
      */
@@ -35,7 +127,7 @@ class IndexController extends CommonController
             $data = Notice::orderBy('id','desc')->where('type',$type)->paginate(10);
             return $data;
         }
-        return view('web.jindu_gz');
+        return view('web.jindu_gz',array('active'=>'work'));
     }
     
     /**
@@ -86,15 +178,22 @@ class IndexController extends CommonController
         }
         throw new Exception('你来错了哦');        
     }
-
+    
+    /**
+     * 
+     *认识毒品
+     * @param Request $request
+     * @return type
+     */
     public function rs(Request $request){
         if($request->isXmlHttpRequest()){
             $field = array('id','title','tag','create_time','short_content');
-            $type = $request->input('type', 1);
-            $data = Notice::orderBy('id','desc')->where('type',3)->paginate(10);
+            $type = $request->input('type', 3);
+            
+            $data = Notice::orderBy('id','desc')->where('type',$type)->paginate(10);
             return $data;
         }
-        return view('web.jindu_rs');
+        return view('web.jindu_rs',array('active'=>'eye'));
     }
     
     /**
@@ -156,16 +255,10 @@ class IndexController extends CommonController
             }
             
 
-            
             $imgPathData = $this->saveImg(base64_decode($base64Url),$user->id.'_2_'.date('YmdHis').'.'.$extension,'/drug_avatar');
             if(!$imgPathData){
                 throw new Exception('上传失败#2');  
             }
-            
-            $temp_path = $this->imgMoreSmall($imgPathData['path'],1);
-            header('Content-Type: image/png');
-             echo file_get_contents($temp_path);
-              exit;
             
             $oldMemberDrugPhoto = MemberDrugPhoto::where('member_id',$user->id)->select('photo')->get();
             try{

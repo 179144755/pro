@@ -15,9 +15,13 @@ class NarcoticsController extends CommonController
 {
     
     //get.admin/quiz 全部题库
-    public function index()
+    public function index($type=3)
     {   
-        $data = Notice::orderBy('id','desc')->where('type',3)->select('id','short_content','tag','title','create_time')->paginate(10);        
+        if(!in_array($type, array(3,4))){
+            $type = 3;
+        }
+        
+        $data = Notice::orderBy('id','desc')->where('type',$type)->select('id','short_content','tag','title','create_time')->paginate(10);        
         return view('admin.narcotics.index',compact('data'));
     }
     
@@ -31,7 +35,6 @@ class NarcoticsController extends CommonController
     public function save(){
         $input = Input::except('_token');
         $input['create_time'] = date('Y-m-d H:i:s');
-        $input['type'] = 3;
         
         $id = (int)$input['id'];
         unset($input['id']);
@@ -42,7 +45,6 @@ class NarcoticsController extends CommonController
             'type'=>'required',
             'title'=>'required',
             'content'=>'required',
-            'content_2'=>'required',
             'tag'=>'required',
             'short_content'=>'required',
         ];

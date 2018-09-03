@@ -16,7 +16,8 @@
         <div class="result_content">
             <div class="short_wrap">
                 <a href="{{url('admin/narcotics/create')}}"><i class="fa fa-plus"></i>添加毒品</a>
-                <a href="{{url('admin/narcotics')}}"><i class="fa fa-recycle"></i>毒品</a>
+                <a href="{{url('admin/narcotics/3')}}"><i class="fa fa-recycle"></i>认识毒品</a>
+                <a href="{{url('admin/narcotics/4')}}"><i class="fa fa-recycle"></i>毒品危害</a>
             </div>
         </div>
         <!--快捷导航 结束-->
