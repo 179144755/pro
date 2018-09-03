@@ -1,4 +1,5 @@
 @extends('layouts.web')
+@section('title', '工作动态')
 @section('headerfont') 工作动态 @endsection()
 @section('content')
     <div class="gztitle" id="app">

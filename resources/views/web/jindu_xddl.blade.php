@@ -1,4 +1,5 @@
 @extends('layouts.web')
+@section('title','吸毒后的脸')
 @section('headerfont') 吸毒后的脸 @endsection()
 @section('content')
 <div id="app">

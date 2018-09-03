@@ -1,4 +1,5 @@
 @extends('layouts.web')
+@section('title','禁毒知识竞赛')
 @section('body')
 <div class="body" style="width: 100%;" id="app">
 <template v-if="ok">    

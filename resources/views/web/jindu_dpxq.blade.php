@@ -1,4 +1,5 @@
 @extends('layouts.web')
+@section('title', '毒品危害')
 @section('headerfont') 毒品危害 @endsection()
 @section('content')
     <h2 class="dp_title">海洛因</h2>

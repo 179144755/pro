@@ -1,4 +1,5 @@
 @extends('layouts.web')
+@section('title','在线竞答')
 @section('body')
 <div class="body" style="width: 100%;">
     <div class="header3" style="width: 100%;background: #262938;">在线竞答

@@ -1,4 +1,5 @@
 @extends('layouts.web')
+@section('title','宣传视频')
 @section('headerfont') 宣传视频 @endsection()
 @section('content')
 
