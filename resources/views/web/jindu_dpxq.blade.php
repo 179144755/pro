@@ -2,10 +2,10 @@
 @section('title', '毒品危害')
 @section('headerfont') 毒品危害 @endsection()
 @section('content')
-    <h2 class="dp_title">海洛因</h2>
+    <h2 class="dp_title">{{$notice->title}}</h2>
     <div class="dp_time">
-    	<p class="dp_read">阅读量：900</p>
-    	<p class="dp_readtime">2018-09-12</p>
+    	<p class="dp_read">阅读量：{{$notice->reading_volume}}</p>
+    	<p class="dp_readtime">{{date('Y-m-d',strtotime($notice->create_time))}}</p>
     </div>
     <div class="dp_content">
     	打发大水阿士大夫撒阿斯蒂芬啊

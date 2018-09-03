@@ -20,8 +20,12 @@ class IndexController extends CommonController
         return view('web.index',array('active'=>'home'));
     }
     
-    public function dpxq(){
-        return view('web.jindu_dpxq');
+    public function dpxq($id){
+        $notice = Notice::find((int)$id);
+        if(!$notice){
+             throw new Exception('来错地方拉'); 
+        }
+        return view('web.jindu_dpxq', compact('notice'));
     }
     
     
