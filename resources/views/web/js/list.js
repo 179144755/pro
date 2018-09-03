@@ -9,8 +9,9 @@
     if(typeof list.queryData === 'undefined'){
         list.queryData = {};
     }
+
     
-    var vue = new Vue({
+    var vue_init_data = {
         el: '#app',
         data: {
             list : [],
@@ -46,17 +47,22 @@
                 this.loadData();
             }
         }
-   });
+   };
    
-   //点赞
-   if(typeof list.methods.like === 'undefined'){
-       vue.like = function(){
+   for(index in list.methods){
+       vue_init_data.methods[index] =list.methods[index];
+   }
+   
+      //点赞
+   if(typeof vue_init_data.methods.like === 'undefined'){
+       vue_init_data.methods.like = function(){
            //alert(1);
        }
    }
-   else{
-        vue.like = list.methods.like;
-   }
+   
+   var vue = new Vue(vue_init_data);
+   
+
 
 
    $(function(){

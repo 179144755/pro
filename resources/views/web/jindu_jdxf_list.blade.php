@@ -16,13 +16,19 @@
     </div>
 </div>
 
-<script type="text/javascript" src="{{asset('resources/views/web/js/list.js')}}"></script>
-   
+ 
 <script>
-     vue.joinDrug = function(){
-        location.href="{{route('jdxf')}}";
-     };    
+    var list = {
+        methods:{
+            joinDrug : function(){
+                location.href="{{route('jdxf')}}";
+            }
+        }
+    }    
 </script>
+
+<script type="text/javascript" src="{{asset('resources/views/web/js/list.js')}}"></script>
+  
 
 
 @endsection()
