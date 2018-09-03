@@ -187,7 +187,7 @@ class IndexController extends CommonController
             if($oldNoDrugPhoto){
                  file_exists($this->getRealPathByUrl($oldNoDrugPhoto)) && unlink($this->getRealPathByUrl($oldNoDrugPhoto));
             }
-            //$result = $this->xd_year($request,array(4,6,8,10));
+            $result = $this->xd_year($request,array(4,6,8,10));
             $result=  array('year_imgs'=>array());
             return array(
                 'year_imgs'=> array_merge(array(
