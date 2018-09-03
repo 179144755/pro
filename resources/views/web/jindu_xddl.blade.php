@@ -36,36 +36,7 @@
             year_10 :  {src:'',name:'吸毒十年',index:10}
         }
      },
-     created:function(){
-         this.init_data();
-     },
      methods:{
-        init_data:function(){
-            var _this = this;
-            _this.message = '加载数据...';
-            $.get('',{},function(result){
-                
-                if(_this.ajaxerrorshow(result)){
-                    return ;
-                }
-                
-
-                _this.merger_year_img(result);
-                
-                if(result.no_drug_avatar){
-                    for(i in _this.years){
-                    var year = _this.years[i];
-                    if(year.src=='' && i!='year_0'){
-                        _this.message = '正在生成...';
-                        _this.get_year_img(year.index);
-                    }
-                }
-                }
-                
-
-                _this.message = '';
-            },'json');            
-        }, 
         ajaxerrorshow:function(result){
             var error = jindu_commmon.ajaxError(result);
             if(error){
@@ -80,17 +51,9 @@
                 return;
             }
             this.upload_img();
-            for(i in this.years){
-                var year = this.years[i];
-                if(year.src=='' && i!='year_0'){
-                    this.get_year_img(year.index);
-                }
-            }
-            
-            
+            $('#img').val('');
         },
         show_year_img:function(index,src){
-            
             if(!src){
                 return ;
             }
@@ -123,29 +86,6 @@
                this.show_year_img(result.year_imgs[i].year,result.year_imgs[i].photo);
             }            
         },
-        get_year_img:function(year){
-            this.message = '正在生成...';
-            var _this = this;
-             var isFalse = false;
-            $.ajax({
-                url: '{{route("xd_year")}}',
-                data: {index:year,_token:this.csrf_token},
-                type: "POST",
-                dataType: "json",
-                async : false,
-                success: function (result) {
-                    if(_this.ajaxerrorshow(result)){
-                        isFalse = true;
-                        return ;
-                    }
-                    _this.merger_year_img(result);
-                    this.message = '';
-                }
-            });
-            if(!isFalse){
-                this.message = '';
-             }
-        },
         upload_img:function(){
             var fileObj = $('#img').get(0).files[0]; // js 获取文件对象
             if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
@@ -173,17 +113,10 @@
                    cache: false,//上传文件无需缓存
                    processData: false,//用于对data参数进行序列化处理 这里必须false
                    contentType: false, //必须
-                   success: function (result) {
-                                       
+                   success: function (result) { 
                         if(_this.ajaxerrorshow(result)){
                             isFalse = true;
                             return ;
-                        }
-                        for(i in _this.years){
-                            var year = _this.years[i];
-                                year.src='';
-                                year.show = false;
-                                _this.$set(_this.years,i,year);
                         }
                         _this.merger_year_img(result);
                    },

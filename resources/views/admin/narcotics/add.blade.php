@@ -44,7 +44,7 @@
 <!--结果集标题与导航组件 结束-->
 
 <div class="result_wrap" id="app">
-    <form action="{{url('admin/narcotics/save')}}" method="post">
+    <form action="{{url('admin/narcotics/save')}}" enctype="multipart/form-data" method="post">
         {{csrf_field()}}
         <input type="hidden" value="{{$narcotics->id}}" name="id" />
         <table class="add_tab">
@@ -53,6 +53,19 @@
                 <th><i class="require">*</i> 毒品名称：</th>
                 <td>
                     <input type="text" class="lg" name="title" value="{{$narcotics->title}}">
+                </td>
+            </tr>
+            
+            <tr>
+                <th><i class="require">*</i> 宣传图：</th>
+                <td>
+                    @if($narcotics->img)
+                    <image src="{{$narcotics->img}}" style="width:200px;height:100px"  />
+                    @elseif($narcotics)
+                      
+                    @else
+                    <input type="file" class="lg" name="img" value="{{$narcotics->img}}">
+                    @endif
                 </td>
             </tr>
             

@@ -8,22 +8,9 @@
     	<p class="dp_readtime">{{date('Y-m-d',strtotime($notice->create_time))}}</p>
     </div>
     <div class="dp_content">
-    	打发大水阿士大夫撒阿斯蒂芬啊
-    	爱的色放啥地方 发大水发发送到
-    	 沙发士大夫撒旦法阿萨德阿斯顿发送到发生
-    	 啥的范德萨发大水发生撒范德萨的
-    	 sadfasdfasdfsaasdfasfsdgsdgsdf
-    	 沙发士大夫根深蒂固火热还有人
-    	 维尔问题为而我也热图有问题
-    	 打发大水阿士大夫撒阿斯蒂芬啊
-    	爱的色放啥地方 发大水发发送到
-    	 沙发士大夫撒旦法阿萨德阿斯顿发送到发生
-    	 啥的范德萨发大水发生撒范德萨的
-    	 sadfasdfasdfsaasdfasfsdgsdgsdf
-    	 沙发士大夫根深蒂固火热还有人
-    	 维尔问题为而我也热图有问
+        {!!$notice->content!!}
     </div>
 	<div class="dp_image">
-	<img src="/resources/views/web/images/cocaine.png" alt="" class="dp_img">
+	<img src="{{$notice->img}}" alt="" class="dp_img">
 	</div>
 @endsection

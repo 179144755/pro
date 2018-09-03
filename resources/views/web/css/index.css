@@ -155,9 +155,19 @@
     margin-right: 10px;
     margin-bottom: -10px;
 }
+.xcvideo2{
+    margin-top: 8px;
+    float: right;
+    margin-right: 10px;
+    margin-bottom: -10px;
+}
 .icon1{
     height: 18px;
     margin-right: 10px;
+}
+.icon2{
+    height: 18px;
+   
 }
 .gztitle{
     height: 80px;
@@ -166,14 +176,15 @@
 
 .button1{
     height: 35px;
-    margin-left: 30%;
     margin-top:30px;
 	 border-radius:20px;overflow:hidden;
 	  background-color: #25D6B9;
 }
 .button2{
     height: 35px;
+    margin-top:30px;
 	 border-radius:20px;overflow:hidden;
+	 
 }
 .gzcontent{
     height: 220px;

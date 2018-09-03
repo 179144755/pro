@@ -56,6 +56,15 @@ class NarcoticsController extends CommonController
         ];
         $validator = Validator::make($input,$rules,$message);
         if($validator->passes()){
+            
+            //上传数据
+            $path = $this->uploadImg('img', '', '/narcotics');
+            if(!$path){
+                return back()->with('errors','上传图片失败');
+            }
+            
+            $input['img'] = $path['url'];
+            
             if($id){
                $re = Notice::where('id',$id)->update($input); 
             }
@@ -64,7 +73,7 @@ class NarcoticsController extends CommonController
             }
             
             if($re){
-                return redirect('admin/notice');
+                return redirect('admin/narcotics');
             }else{
                 return back()->with('errors','数据填充失败，请稍后重试！');
             }

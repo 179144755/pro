@@ -56,11 +56,11 @@ Route::group(['middleware' => ['web','admin.login'],'prefix'=>'admin','namespace
     Route::get('video', 'VideoController@index');
     Route::post('video/upload', 'VideoController@upload');
     
-    Route::get('notice/{type?}', 'NoticeController@index');
+    Route::get('notice/{type?}', 'NoticeController@index')->where('type', '[1-9]');
     Route::get('notice/create/{id?}', 'NoticeController@create');
     Route::post('notice/save', 'NoticeController@save');
 
-    Route::get('narcotics/{type?}', 'NarcoticsController@index');
+    Route::get('narcotics/{type?}', 'NarcoticsController@index')->where('type', '[1-9]');
     Route::get('narcotics/create/{id?}', 'NarcoticsController@create');
     Route::post('narcotics/save', 'NarcoticsController@save');
     
@@ -71,7 +71,7 @@ Route::group(['middleware' => ['web','admin.login'],'prefix'=>'admin','namespace
 Route::group(['middleware' => ['web'] , 'namespace'=>'Web'], function () {
     
     Route::get('/', 'IndexController@index')->name('index');
-    Route::get('/dpxq', 'IndexController@dpxq')->name('dpxq');
+    Route::get('/dpxq/{id}', 'IndexController@dpxq')->name('dpxq')->where('id','[1-9]\d*');
     Route::get('/gz', 'IndexController@gz')->name('gz');
     Route::get('/jd', 'IndexController@jd')->name('jd');
     Route::get('/rs', 'IndexController@rs')->name('rs');
@@ -83,7 +83,7 @@ Route::group(['middleware' => ['web'] , 'namespace'=>'Web'], function () {
     
     Route::any('/xddl', 'IndexController@xddl')->name('xddl')->middleware(['web.login']);
     Route::any('/xddl_upload', 'IndexController@xddl_upload')->name('xddl_upload')->middleware(['web.login']);
-    Route::any('/xd_year', 'IndexController@xd_year')->name('xd_year')->middleware(['web.login']);
+    //Route::any('/xd_year', 'IndexController@xd_year')->name('xd_year')->middleware(['web.login']);
     
     Route::get('/jdxf', 'IndexController@jdxf')->name('jdxf')->middleware(['web.login']);
     Route::post('/jdxf_upload', 'IndexController@jdxf_upload')->name('jdxf_upload')->middleware(['web.login']);

@@ -16,7 +16,8 @@
         data: {
             list : [],
             page : 1,
-            is_bottom : false
+            is_bottom : false,
+            queryData:{}
         },
         created:function(){
             this.loadData()
@@ -25,6 +26,9 @@
             loadData:function(){
                 var _this = this;
                 list.queryData.page = _this.page;
+                
+                this.queryData = list.queryData;
+                
                 $.get('',list.queryData,function(result){
                     if(result.data.length < 1){
                         _this.is_bottom = true;

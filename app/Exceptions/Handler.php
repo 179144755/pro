@@ -46,10 +46,10 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $e)
     {   
         if($request->isXmlHttpRequest()){
-            return array(
-                'error' => $e->getCode(),
-                'message' => $e->getMessage(),
-            );
+//            return array(
+//                'error' => $e->getCode(),
+//                'message' => $e->getMessage(),
+//            );
         }
         return parent::render($request, $e);
     }

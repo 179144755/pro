@@ -23,7 +23,32 @@ class CommonController extends Controller
         }
     }
     
+    public function uploadImg($index,$filename='',$dir=''){
+        $file = Input::file($index);
+        if($file && $file -> isValid()){
+            $entension = $file -> getClientOriginalExtension(); //上传文件的后缀.
+            if(!$filename){
+                $newName = date('YmdHis').mt_rand(100,999).'.'.$entension;
+            }
+            else{
+                $newName = $newName;
+            }
+            
+            $path = $file -> move(base_path()."/uploads{$dir}",$newName);
+            
+            return array(
+                'path'=>$path->getPathname(),
+                'file_name'=>$path->getFilename(),
+                'url'=>"/uploads{$dir}/{$newName}",
+                'attach'=>''
+            );
+        }
+        
+        return false;
+    }
+
     
+
     public function uploadVideo(){
         $request = request();
         $name = 'video';
