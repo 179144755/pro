@@ -68,4 +68,49 @@ class CommonController extends Controller
     public function getRealPathByUrl($url){
         return base_path() . $url;
     }
+    
+    public function imgMoreSmall($filename,$percent=0.5){
+        list($width, $height, $type) = getimagesize($filename);
+        $extension = ltrim(image_type_to_extension($type),'.');
+        // 获取新的尺寸
+        $new_width = $width * $percent;
+        $new_height = $height * $percent;
+        // 重新取样
+        $image_p = imagecreatetruecolor($new_width, $new_height);
+        
+        $imagecreatefrom = 'imagecreatefrom'.$extension;
+        
+        $image = $imagecreatefrom($filename);
+        imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+        // 输出
+        
+        $input_image = 'image'.$extension;
+        
+        $input_image($image_p, $filename);
+        return $filename;
+    }
+    
+    public function imgSoupot($imgFormat){
+        return array(
+            'png' => array('from' =>'imagecreatefrompng','to'=>'imagepng'),
+            'jpeg' => array('from' =>'imagecreatefromjpeg','to'=>'imagejpeg'),
+            'gif' => array('from' =>'imagecreatefromgif','to'=>'imagegif'),
+            'bmp' => array('from' =>'imagecreatefrombmp','to'=>'imagebmp'),
+        );
+    }
+    
+    
+    public function checkImg($filename) {
+        $imageinfo = array();
+        $size = getimagesize($filename,$imageinfo);
+       
+//        if($size > ){
+//            
+//        }
+        
+        
+        
+    }
+    
+    
 }

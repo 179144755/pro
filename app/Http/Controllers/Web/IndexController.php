@@ -128,7 +128,25 @@ class IndexController extends CommonController
             
             $user = $this->getUser();
             $extension = $request->file('drug_avatar')->getClientOriginalExtension();
-            $temp_path = $request->file('drug_avatar')->getPathname(); 
+            $temp_path = $request->file('drug_avatar')->getPathname();
+            if($request->file('drug_avatar')->getSize()>1024 * 1024 * 2){
+                throw new Exception('超过2M');  
+            }
+            
+//            list($tempwidth)  = getimagesize($temp_path);
+//            
+//            if($request->file('drug_avatar')->getSize() > 1024 * 512){
+//                if($tempwidth > 500){
+//                    $percent = round(500/$tempwidth,1);
+//                }
+//                else{
+//                   $percent = 1;
+//                }
+//                $temp_path = $this->imgMoreSmall($temp_path,1);
+//            }
+//            echo file_get_contents($temp_path);
+//            header('Content-Type: image/jpeg');exit;
+//            
             $oldNoDrugPhoto = $user->no_drug_photo;
             $base64Url = app('face')->mergeface(2,$temp_path);
             
@@ -137,10 +155,18 @@ class IndexController extends CommonController
                 throw new Exception('上传失败');  
             }
             
+
+            
             $imgPathData = $this->saveImg(base64_decode($base64Url),$user->id.'_2_'.date('YmdHis').'.'.$extension,'/drug_avatar');
             if(!$imgPathData){
                 throw new Exception('上传失败#2');  
             }
+            
+            $temp_path = $this->imgMoreSmall($imgPathData['path'],1);
+            header('Content-Type: image/png');
+             echo file_get_contents($temp_path);
+              exit;
+            
             $oldMemberDrugPhoto = MemberDrugPhoto::where('member_id',$user->id)->select('photo')->get();
             try{
                 DB::beginTransaction();
