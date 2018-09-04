@@ -15,10 +15,9 @@ class AdminLogin
      */
     public function handle($request, Closure $next)
     {
-        if(!session('user')){
-            return redirect('admin/login');
+        if(!session()->get('user_id')){
+            throw new Exception('请登陆');
         }
-
         return $next($request);
     }
 }

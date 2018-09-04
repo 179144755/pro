@@ -16,7 +16,7 @@ use Exception;
 class IndexController extends CommonController
 {   
     public function index(Request $request)
-    {          
+    {
         return view('web.index',array('active'=>'home'));
     }
     
@@ -25,6 +25,7 @@ class IndexController extends CommonController
         if(!$notice){
              throw new Exception('来错地方拉'); 
         }
+         $notice->increment('reading_volume');
         return view('web.jindu_dpxq', compact('notice'));
     }
     
@@ -129,6 +130,11 @@ class IndexController extends CommonController
         if($request->isXmlHttpRequest()){
             $type = $request->input('type', 1);
             $data = Notice::orderBy('id','desc')->where('type',$type)->paginate(10);
+            
+            foreach ($data as $notice){
+                $notice->increment('reading_volume');
+            }
+            
             return $data;
         }
         return view('web.jindu_gz',array('active'=>'work'));
@@ -256,7 +262,14 @@ class IndexController extends CommonController
     }
 
     
+    public function like_num(Request $request){
+        $id = (int)$request->input('id');
+        return array(
+            'like_num' => Notice::where('id',$id)->increment('like_num')
+        );
+    }
 
+    
     public function jddt_start(){
         return view('web.jindu_jddt_start');
     }

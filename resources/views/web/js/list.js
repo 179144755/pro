@@ -16,6 +16,7 @@
         data: {
             list : [],
             page : 1,
+            has_like:{},
             is_bottom : false,
             queryData:{}
         },
@@ -59,16 +60,22 @@
    
       //点赞
    if(typeof vue_init_data.methods.like === 'undefined'){
-       vue_init_data.methods.like = function(){
-           //alert(1);
+       vue_init_data.methods.like = function(item,i){ 
+           if(this.has_like[item.id]){
+               return ;
+           }
+           
+           $.get('/like_num/notice',{id:item.id},function(){
+               
+           },'json');
+                      
+           this.$set(this.has_like,item.id,true);
+           
        }
    }
    
    var vue = new Vue(vue_init_data);
    
-
-
-
    $(function(){
          $(window).scroll(function(){
                 var scrollTop = $(this).scrollTop();  //scrollTop() 方法返回或设置匹配元素的滚动条的垂直位置

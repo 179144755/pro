@@ -16,7 +16,7 @@ Route::group(['middleware' => ['web']], function () {
 //    Route::get('/', 'Home\IndexController@index');
 //    Route::get('/cate/{cate_id}', 'Home\IndexController@cate');
 //    Route::get('/a/{art_id}', 'Home\IndexController@article');
-//
+//  
     Route::any('admin/login', 'Admin\LoginController@login');
     Route::get('admin/code', 'Admin\LoginController@code');
 });
@@ -89,6 +89,11 @@ Route::group(['middleware' => ['web'] , 'namespace'=>'Web'], function () {
     Route::post('/jdxf_upload', 'IndexController@jdxf_upload')->name('jdxf_upload')->middleware(['web.login']);
     Route::get('/jdxf_show', 'IndexController@jdxf_show')->name('jdxf_show')->middleware(['web.login']);
     Route::get('/jdxf_list', 'IndexController@jdxf_list')->name('jdxf_list');
+    
+    Route::get('/user/center','UserController@center')->name('user.center');
+    
+     Route::get('/like_num/notice','IndexController@like_num')->name('like_num.notice');
+    
 
 });
 

@@ -3,7 +3,6 @@
 @section('body')
 
 <div class="body" style="width: 100%;" id="app">
-    
     <div class="gztitle">
         <div class="gztitle1" style="text-align: center">
             <input type="button"  v-on:click = "build_query_loadData({type:3})" value="毒品种类"  v-bind:class="queryData.type!=4 ? 'button1' : 'button2'">
@@ -19,7 +18,6 @@
         </div>
         <div class="dupintype">毒品类型：&nbsp;&nbsp;&nbsp;@{{item.tag}}</div>
     </div><br>
-    
 </div>
 <script type="text/javascript" src="{{asset('resources/views/web/js/list.js')}}"></script>
 

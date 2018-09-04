@@ -14,12 +14,10 @@ class WebLogin
      * @return mixed
      */
     public function handle($request, Closure $next)
-    {
-//        if(!session('web_user')){
-//            throw new \Exception('请登陆');
-//        }
-        
-        
+    {   
+        if(session('user_id')){
+            
+        }
         
         return $next($request);
     }
