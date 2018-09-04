@@ -61,7 +61,7 @@
                 <td>
                     @if($narcotics->img)
                     <image src="{{$narcotics->img}}" style="width:200px;height:100px"  />
-                    @elseif($narcotics)
+                    @elseif($narcotics->id)
                       
                     @else
                     <input type="file" class="lg" name="img" value="{{$narcotics->img}}">
