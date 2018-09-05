@@ -1,14 +1,26 @@
 @extends('layouts.web')
 
-@section('headerfont') 龙华禁毒在线 @endsection()
+@section('title','龙华禁毒在线')
+
        
 
-@section('content')
-        <div class="topimg">
-        <img src="/resources/views/web/images/1.jpg" alt="" class="headerimg"
-             style="height: 160px;width:100%;margin-top:16px">
+@section('body')
+
+
+<div class="body" style="width: 100%;" id="app">
+    <div style="height: 50px;width:100%;" class="headerfont3">龙华禁毒在线
     </div>
-    <div class="video">
+    <div class="topimg">
+        <template v-if="webconfig.advertising && webconfig.advertising.value" >
+            <img v-bind:src="webconfig.advertising.value" alt="" class="headerimg" style="height: 160px;width:100%;">
+        </template>
+        <template v-else>
+            <div style="height: 160px;width:100%;text-align: center">
+                
+            </div>
+        </template>    
+    </div>
+     <div class="video">
         <div class="imgcontent over-flow">
             <div class="imgcontent1">
                 <a href="{{route('xddl')}}"><img src="/resources/views/web/images/a.png" alt="" class="imgv1"></a>
@@ -36,29 +48,67 @@
             </div>
         </div>
     </div>
-    <div class="videos">
+    <div class="videos" v-show="xc_list.length>0">
         <div class="videostitle">
-            <div class="videogd"><a href="#">更多视频</a></div>
+            <div class="videogd"><a href="route('xc)" v-show="xc_list_more">更多视频</a></div>
             <div class="videoxc">宣传视频</div>
         </div>
         <div class="videoimg">
-            <div class="videosimgzs">
-                <img src="/resources/views/web/images/video_jindu1.png" alt="" class="image1">
+            <div class="videosimgzs" v-for="xc in xc_list">
+                <video v-bind:src="xc.attach+xc.url"  v-bind:key="xc.id" controls="controls" class="image1" >您的浏览器不支持 video 标签。</video>
             </div>
-            <div class="videosimgzs">
-                <img src="/resources/views/web/images/video_jindu2.png" alt="" class="image2">
-            </div>
-
         </div>
     </div>
-    <div class="footercontent">
-        <div class="footertitle">吸毒后的脸
-        </div>
+    
+    <template v-if="webconfig.drug_face && webconfig.drug_face.value" >
         <div class="footercontent">
-            <img src="/resources/views/web/images/footer_img.png" alt="" class="footerimg">
+            <div class="footertitle">吸毒后的脸
+            </div>
+            <div class="footercontent">
+                <img v-bind:src="webconfig.drug_face.value" alt="" class="footerimg">
+            </div>
         </div>
-    </div>
-    <div class="footer">
+    </template>
 
-    </div>
+    
+
+</div>
+
+<script>
+var vue = new Vue({
+    'el' : '#app',
+    data:{
+       xc_list:[],
+       xc_list_more:false,
+       webconfig:{},
+       csrf_token:'{{csrf_token()}}'
+    },
+    created:function (){        
+       this.xc();
+       this.webconfighome();
+    },
+    methods:{
+      xc:function(){
+        var _this = this;
+        $.get('{{route("xc")}}',{size:2,_token:this.csrf_token},function(result){
+             _this.xc_list_more = result.total > 2;
+             _this.xc_list = result.data; 
+        },'json');
+      },
+      webconfighome:function(){
+        var _this = this;
+        $.get('{{route("webconfig")}}',{_token:this.csrf_token},function(result){
+              _this.webconfig = result; 
+        },'json');
+      }
+    }
+    
+});
+
+
+</script>
+
 @endsection
+
+
+

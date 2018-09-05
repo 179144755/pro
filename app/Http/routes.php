@@ -64,6 +64,11 @@ Route::group(['middleware' => ['web','admin.login'],'prefix'=>'admin','namespace
     Route::get('narcotics/create/{id?}', 'NarcoticsController@create');
     Route::post('narcotics/save', 'NarcoticsController@save');
     
+    
+    Route::get('webconfig/index', 'WebconfigController@index');
+    Route::get('webconfig/edit/{id}', 'WebconfigController@edit')->where('id', '[1-9]\d*');
+    Route::post('webconfig/save/{id}', 'WebconfigController@save')->where('id', '[1-9]\d*');
+    
 });
 
 //'prefix'=>'web',
@@ -92,7 +97,9 @@ Route::group(['middleware' => ['web'] , 'namespace'=>'Web'], function () {
     
     Route::get('/user/center','UserController@center')->name('user.center');
     
-     Route::get('/like_num/notice','IndexController@like_num')->name('like_num.notice');
+    Route::get('/like_num/notice','IndexController@like_num')->name('like_num.notice');
+    
+    Route::get('/webconfig','IndexController@config')->name('webconfig');
     
 
 });

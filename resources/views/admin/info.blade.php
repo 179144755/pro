@@ -8,7 +8,7 @@
 <!--面包屑导航 结束-->
 
 <!--结果集标题与导航组件 开始-->
-<div class="result_wrap">
+<!--<div class="result_wrap">
     <div class="result_title">
         <h3>快捷操作</h3>
     </div>
@@ -19,7 +19,7 @@
             <a href="#"><i class="fa fa-refresh"></i>更新排序</a>
         </div>
     </div>
-</div>
+</div>-->
 <!--结果集标题与导航组件 结束-->
 
 
@@ -60,14 +60,14 @@
         <h3>使用帮助</h3>
     </div>
     <div class="result_content">
-        <ul>
+<!--        <ul>
             <li>
                 <label>官方交流网站：</label><span><a href="#">http://bbs.houdunwang.com</a></span>
             </li>
             <li>
                 <label>官方交流QQ群：</label><span><a href="#"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png"></a></span>
             </li>
-        </ul>
+        </ul>-->
     </div>
 </div>
 <!--结果集列表组件 结束-->

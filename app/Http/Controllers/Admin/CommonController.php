@@ -31,8 +31,13 @@ class CommonController extends Controller
                 $newName = date('YmdHis').mt_rand(100,999).'.'.$entension;
             }
             else{
-                $newName = $newName;
+                $newName = $filename;
             }
+            
+            if(strpos($newName,'.')===false){
+                $newName.='.'.$entension;
+            }
+            
             
             $path = $file -> move(base_path()."/uploads{$dir}",$newName);
             

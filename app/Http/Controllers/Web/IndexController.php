@@ -8,6 +8,7 @@ use App\Http\Model\Video;
 use App\Http\Model\Notice;
 use App\Http\Model\Quiz;
 use App\Http\Model\Member;
+use App\Http\Model\WebConfig;
 use App\Http\Model\MemberDrugPhoto;
 use App\Http\Model\MemberVanguard;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,23 @@ class IndexController extends CommonController
     {
         return view('web.index',array('active'=>'home'));
     }
+    
+    
+    public function config(Request $request){        
+        $name = $request->input('name',array('advertising','drug_face'));
+        
+        $object = new \stdClass();
+        
+        $data = WebConfig::whereIn('name',$name)->get();
+        
+        foreach ($data as $row){
+            $object->{$row->name} = array('value'=>$row->value,'type'=>$row->type);
+        }
+        
+        return json_encode($object);
+
+    }
+
     
     public function dpxq($id){
         $notice = Notice::find((int)$id);
@@ -212,7 +230,7 @@ class IndexController extends CommonController
      */
     public function xc(Request $request){
         if($request->isXmlHttpRequest()){
-            $data = Video::orderBy('id','desc')->paginate(10);
+            $data = Video::orderBy('id','desc')->paginate($request->input('size',10));
             return $data;
         }
         return view('web.jindu_xc');
@@ -230,8 +248,11 @@ class IndexController extends CommonController
             
             if($request->file('drug_avatar')->getSize()>1024 * 1024 * 2){
                 throw new Exception('超过2M');  
-            } 
-            $result = $this->xd_year(array(2,4,6,8,10),$request->file('drug_avatar')->getPathname());
+            }
+            
+            $entension = $request->file('drug_avatar') -> getClientOriginalExtension(); //上传文件的后缀.
+            
+            $result = $this->xd_year(array(2,4,6,8,10),$request->file('drug_avatar')->getPathname(),$entension);
             $path = $this->upload('drug_avatar','','/drug_avatar');
             if(!$path){
                 throw new Exception('上传失败');  
@@ -247,12 +268,12 @@ class IndexController extends CommonController
     }
 
     
-    public function xd_year($index,$img){
+    public function xd_year($index,$img,$entension){
             $year_imgs = array();
             $indexs = (array)$index;
             foreach ($indexs as $index){
                 $base64Url = app('face')->mergeface($index, $img);
-                $filename = uniqid(date('Ymd').'_').strrchr($img, '.');
+                $filename = uniqid(date('Ymd').'_').'.'.$entension;
                 $imgPathData = $this->saveImg(base64_decode($base64Url),$filename,'/drug_avatar');
                 $year_imgs[] = array('year'=>$index,'photo'=>$imgPathData['url']);
             }

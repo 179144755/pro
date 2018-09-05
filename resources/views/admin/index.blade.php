@@ -33,6 +33,7 @@
                                 <li><a href="{{url('admin/quiz')}}" target="main"><i class="fa fa-fw fa-list-ul"></i>知识问答</a></li>
                                 <li><a href="{{url('admin/narcotics')}}" target="main"><i class="fa fa-fw fa-list-ul"></i>毒品</a></li>
                                 <li><a href="{{url('admin/video')}}" target="main"><i class="fa fa-fw fa-list-ul"></i>宣传视频</a></li>
+                                <li><a href="{{url('admin/webconfig/index')}}" target="main"><i class="fa fa-fw fa-list-ul"></i>配置</a></li>
 			</ul>
 		</li>
 <!--		<li>
