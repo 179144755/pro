@@ -13,7 +13,7 @@ class CommonController extends Controller
     protected $user = null;
     
     public function __construct() {      
-       $this->weixinlogin();
+       //$this->weixinlogin();
     }
         
     public function weixinlogin(){   
@@ -57,7 +57,7 @@ class CommonController extends Controller
     }
 
     public function getUser(){
-        return Member::find(session()->get('user_id')?:0);
+        return Member::find(session()->get('user_id')?:1);
     }
     //061o43bP0cCVFa2IzpeP0EufbP0o43bj
     public function getWeixinUserinfo($accessTokenResult){

@@ -12,48 +12,39 @@
         <div v-show="!show">
             <div  style="background: #262938;font-size:15px;">
                 <div style="width: 80px; height: 80px; margin: 0px auto;border-radius:50%;overflow:hidden;" >
-                    <img src="/resources/views/web/images/grzx.png" style="" alt="" >
+                    <img v-bind:src="deault_avatar" style="" alt="" >
                 </div>
-                <div class="camera_ct">欧阳菲菲</div>
+                <div class="camera_ct">@{{user.nickname}}</div>
             </div>
             <img src="/resources/views/web/images/bl3.png" alt="" style="height: 100px;width: 100%" >
         </div>
-        
+
         <div>
             <div  style="background: #262938;font-size:15px;height: 150px;">
                 <div style="width: 80px; height: 80px; margin: 0px auto;border-radius:50%;overflow:hidden;" >
-                    <img src="/resources/views/web/images/grzx.png" style="" alt="" >
+                    <img v-bind:src="deault_avatar" style="" alt="" >
                 </div>
-                <div class="camera_ct">欧阳菲菲</div>
+                <div class="camera_ct">@{{user.nickname}}</div>
             </div>
         </div>
-        
+
     </div>
 
     <div style="margin-top: 10px;color:#FFF">
-        
-        <div class="fade">
-            <div class="succ-pop" style="margin:0px auto;left:0px;width:80%; margin-left: 10%;height: 150px;">
-                <div>修改</div>
-                <div style="text-align: center"><input type="" style="width: 80%;height: 30px;"></div>
-                <div class="font_ctimg10" style="margin-top:10px;height:35px;line-height: 35px;width: 40%">确定</div>
-            </div>
-        </div>
-
 
         <div style="width:100%;" class="sett_x_l clear_wl">
             <img src="/resources/views/web/images/jt.png">
             <p>头像</p>
             <hr style="height:1px;width:100%;border:none;border-top:1px solid #EEEEEE;" />
         </div>
-        
-        
-        <div class="sett_xiug mt10" id="phone_uid">
+
+
+        <div class="sett_xiug mt10" v-on:click="nickname" id="phone_uid">
             <div class="sett_x_l clear_wl">
                 <p>昵称</p>
             </div>
             <div class="sett_x_r clear_wl">
-                <p>欧阳菲菲</p>
+                <p>@{{user.nickname}}</p>
             </div>
             <hr style="height:1px;width:100%;border:none;border-top:1px solid #EEEEEE;" />
         </div>
@@ -68,7 +59,7 @@
             </div>
             <hr style="height:1px;width:100%;border:none;border-top:1px solid #EEEEEE;" /> 	 
         </div>
-        
+
         <div class="sett_xiug mt10" id="phone_uid">
             <div class="sett_x_l clear_wl">
                 <p>手机号码</p>
@@ -114,8 +105,20 @@
         </ul>
         <div style="clear:left"></div>
     </div>
-</div>
 
+
+    Ï<div class="fade" v-show="fade">            
+        <div class="succ-pop" style="margin:0px auto;left:0px;width:80%; margin-left: 7%;">
+            <div style="height: 20px;" v-on:click="close"><img src="/resources/views/web/images/x.png" style="float: right;height: 18px;height: 18px;"></div>
+            <div></div>
+            <div style="text-align: center">
+                <input type="text" placeholder="placeholder" id="placeholder" v-model="update_val" placeholder="" style="width: 80%;height: 30px;border: 1px solid #ccc">
+            </div>
+            <div style="height:20px;line-height: 20px;text-align: center;font-size: 15px;color:red">@{{update_msg}}</div>
+            <div class="font_ctimg10" v-on:click="updatesb" style="margin-top:10px;height:35px;line-height: 35px;width: 40%">确定</div>
+        </div>
+    </div>Ï 
+</div>
 
 <script>
     var vue = new Vue({
@@ -127,13 +130,31 @@
             background: 'url(/resources/views/web/images/jd1.png)',
             webconfig: {},
             csrf_token: '{{csrf_token()}}',
-            message: ''
+            message: '',
+            fade: false,
+            update_val: '',
+            update_name: '',
+            update_index:'',
+            update_msg:'',
+            deault_avatar:'/resources/views/web/images/grzx.png'
+
         },
         created: function () {
             this.webconfighome();
             this.userinfo();
         },
+        computed:{
+            avatar:function(){
+                return this.user.avatar ? this.user.avatar : this.deault_avatar
+            }
+        },
         methods: {
+            close: function () {
+                $('#placeholder').attr('placeholder','');
+                this.update_val = '';
+                this.update_index = '';
+                this.fade = false;
+            },
             userinfo: function () {
                 var _this = this;
                 $.get('{{route("user.user")}}', {_token: this.csrf_token}, function (result) {
@@ -148,6 +169,26 @@
                         _this.background = result.advertising.value;
                     }
                 }, 'json');
+            },
+            nickname: function () {
+                $('#placeholder').attr('placeholder','请输入昵称');
+//                this.update_val=this.user.nickname;
+                this.fade = true;
+                this.update_index = '';
+                
+            },
+            updatesb:function(){
+                var data = {
+                    _token:this.csrf_token,
+                    name:this.update_index,
+                    value:this.update_val
+                }
+                
+                
+                //alert(this.update_val);
+                
+                
+                
             }
         }
     });
