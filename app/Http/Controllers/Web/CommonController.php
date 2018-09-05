@@ -13,7 +13,7 @@ class CommonController extends Controller
     protected $user = null;
     
     public function __construct() {        
-        $this->weixinlogin();
+       // $this->weixinlogin();
     }
         
     public function weixinlogin(){   
