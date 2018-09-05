@@ -27,7 +27,7 @@ class IndexController extends CommonController
         
         $object = new \stdClass();
         
-        $data = WebConfig::whereIn('name',$name)->get();
+        $data = WebConfig::whereIn('name',(array)$name)->get();
         
         foreach ($data as $row){
             $object->{$row->name} = array('value'=>$row->value,'type'=>$row->type);
@@ -37,7 +37,6 @@ class IndexController extends CommonController
 
     }
 
-    
     public function dpxq($id){
         $notice = Notice::find((int)$id);
         if(!$notice){

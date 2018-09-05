@@ -97,6 +97,8 @@ Route::group(['middleware' => ['web'] , 'namespace'=>'Web'], function () {
     
     Route::get('/user/center','UserController@center')->name('user.center');
     
+    Route::get('/user/user','UserController@user')->name('user.user');
+    
     Route::get('/like_num/notice','IndexController@like_num')->name('like_num.notice');
     
     Route::get('/webconfig','IndexController@config')->name('webconfig');

@@ -12,8 +12,8 @@ class CommonController extends Controller
 {   
     protected $user = null;
     
-    public function __construct() {        
-       // $this->weixinlogin();
+    public function __construct() {      
+       $this->weixinlogin();
     }
         
     public function weixinlogin(){   
@@ -22,6 +22,7 @@ class CommonController extends Controller
         } 
         session()->put('weixinlogin_count',session()->get('weixinlogin_count',0)+1);
         $result = $this->getWeixinAccessToken();
+        session()->put('weixinAccessToken',$result);
         $member = Member::where('openid',$result['openid'])->select('id')->first();
         if(!$member){
             $member = new Member();
