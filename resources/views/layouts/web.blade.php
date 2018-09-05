@@ -182,6 +182,10 @@
      @yield('content')     
 </div>
 @endif
+
+@hasSection ('foot')
+@yield('foot')
+@else
     <ul class="m-menu">
 	<li><a href="{{route('index')}}" class="{{isset($active) && $active=='home' ? 'active' : ''}}"><i class="ico-home"></i>首页</a></li>
 	<li><a href="{{route('rs')}}" class="{{isset($active) && $active=='eye' ? 'active' : ''}}"><i class="ico-eye"></i>认识毒品</a></li> 
@@ -189,5 +193,6 @@
 	<li><a href="{{route('gz')}}" class="{{isset($active) && $active=='work' ? 'active' : ''}}"><i class="ico-work"></i>工作动态</a></li>
         <li><a href="{{route('index')}}" class="{{isset($active) && $active=='user' ? 'active' : ''}}"><i class="ico-user"></i>个人中心</a></li>
     </ul>
+@endif
 </body>
 </html>
