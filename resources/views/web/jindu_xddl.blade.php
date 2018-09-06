@@ -43,6 +43,7 @@
         created: function () {
             var _this = this;
             for (i in [1, 2, 3, 4, 5, 6]) {
+                setTimeout( function (){
                 $('#ss').html($('#ss').html()+'<p>'+i+'</p>');
                 $.ajax({
                     url: '',
@@ -53,7 +54,7 @@
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert(XMLHttpRequest.status + '@' + XMLHttpRequest.readyState + '2' + textStatus);
                     }
-                });
+                })},100);
 //                $.get('', {}, function (result) {
 //                    _this.show_year_img(result.year, result.photo);
 //                }, 'json');
