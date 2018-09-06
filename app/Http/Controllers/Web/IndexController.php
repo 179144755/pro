@@ -239,7 +239,9 @@ class IndexController extends CommonController
         
         if($request->isXmlHttpRequest()){
             sleep(rand(1, 5));
-            return array('year'=> array_rand(array(2,4,6,8,10)),'photo'=>'https://www.baidu.com/img/baidu_jgylogo3.gif');
+            $a = array(2,4,6,8,10);
+            $key = array_rand($a);
+            return array('year'=> $a[$key],'photo'=>'https://www.baidu.com/img/baidu_jgylogo3.gif');
         }
         
         return view('web.jindu_xddl');
