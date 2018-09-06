@@ -54,7 +54,7 @@
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert(XMLHttpRequest.status + '@' + XMLHttpRequest.readyState + '2' + textStatus);
                     }
-                })},100);
+                })},1000);
 //                $.get('', {}, function (result) {
 //                    _this.show_year_img(result.year, result.photo);
 //                }, 'json');
