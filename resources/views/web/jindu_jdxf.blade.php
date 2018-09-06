@@ -9,15 +9,15 @@
          <img src="/resources/views/web/images/jdxf.png" alt="" class="headerimg" style="height: 160px;width:100%;">
     </div>
     
-    <div class="hidden" id="show_name">
-        <div class="fade"></div>
-        <div class="succ-pop">
-            <h4 class="title">
+    <div class=" fade" id="show_name">
+<!--        <div class="fade"></div>-->
+        <div style="width: 90%;margin: 0px auto;background: #FFF;padding: 3px;margin-top:45%" >
+            <h4 style="text-align: center;margin:5px auto">
                 禁毒先锋
             </h4>
-                <div class="font_ctimg11"><p>请输入你的真实姓名</p></div>
-                <div class="font_ctimg12">每位用户只需提交一次即可</div>
-                <div class="font_ctimg10" v-on:click="submit"><p>提交上传</p></div>
+            <div class="font_ctimg11" style="margin-top:5px;"><p>请输入你的真实姓名</p></div>
+                <div class="font_ctimg12" style="padding:0px;margin: 0px;height: 18px;line-height: 18px;">每位用户只需提交一次即可</div>
+                <div class="font_ctimg10" style="margin:5px auto;height: 40px;" v-on:click="submit"><p style="height: 40px;line-height: 40px;padding: 0px;margin: 0px">提交上传</p></div>
         </div>
     </div>
     

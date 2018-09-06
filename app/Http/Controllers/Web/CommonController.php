@@ -12,10 +12,15 @@ class CommonController extends Controller
 {   
     protected $user = null;
     
-    public function __construct() {      
+    protected $user_id;
+
+
+    public function __construct() {    
+        $this->user_id = session('user_id') ?: 1;
        //$this->weixinlogin();
     }
-        
+    
+
     public function weixinlogin(){   
         if($this->isLogin() || !$this->isWeixin() || session()->get('weixinlogin_count',0) > 3){
             return ;
@@ -53,11 +58,11 @@ class CommonController extends Controller
     }
 
     public function isLogin(){
-        return session()->get('user_id') ? true : false;
+        return $this->user_id ? true : false;
     }
 
     public function getUser(){
-        return Member::find(session()->get('user_id')?:1);
+        return Member::find($this->user_id);
     }
     //061o43bP0cCVFa2IzpeP0EufbP0o43bj
     public function getWeixinUserinfo($accessTokenResult){

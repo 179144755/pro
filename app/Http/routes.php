@@ -95,14 +95,15 @@ Route::group(['middleware' => ['web'] , 'namespace'=>'Web'], function () {
     Route::get('/jdxf_show', 'IndexController@jdxf_show')->name('jdxf_show')->middleware(['web.login']);
     Route::get('/jdxf_list', 'IndexController@jdxf_list')->name('jdxf_list');
     
-    Route::get('/user/center','UserController@center')->name('user.center');
-    
+    Route::get('/user/center','UserController@center')->name('user.center'); 
     Route::get('/user/user','UserController@user')->name('user.user');
+    Route::post('/user/update','UserController@update')->name('user.update');
+    Route::post('/user/avatar','UserController@upload_avatar')->name('user.avatar');
     
     Route::get('/like_num/notice','IndexController@like_num')->name('like_num.notice');
     
     Route::get('/webconfig','IndexController@config')->name('webconfig');
-    
+
 
 });
 

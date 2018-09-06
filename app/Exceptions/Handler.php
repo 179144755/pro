@@ -51,10 +51,10 @@ class Handler extends ExceptionHandler
         }
         
         if($request->isXmlHttpRequest()){
-//            return array(
-//                'error' => $e->getCode(),
-//                'message' => $e->getMessage(),
-//            );
+            return array(
+                'error' => $e->getCode(),
+                'message' => $e->getMessage(),
+            );
         }
         
 
