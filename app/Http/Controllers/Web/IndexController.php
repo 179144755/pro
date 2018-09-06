@@ -238,10 +238,10 @@ class IndexController extends CommonController
     public function xddl(Request $request){
         
         if($request->isXmlHttpRequest()){
-            sleep(rand(1, 5));
+            sleep(rand(3, 10));
             $a = array(2,4,6,8,10);
             $key = array_rand($a);
-            return array('year'=> $a[$key],'photo'=>'https://www.baidu.com/img/baidu_jgylogo3.gif');
+            return array('year'=> uniqid());
         }
         
         return view('web.jindu_xddl');

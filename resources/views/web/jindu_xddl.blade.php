@@ -47,7 +47,7 @@
                 $.ajax({
                     url: '',
                     success: function (result) {
-                        $('#ss').html($('#ss').html()+'<p>'+result.photo+result.year+'</p>');
+                        $('#ss').html($('#ss').html()+'<p>'+result.year+'</p>');
                         _this.show_year_img(result.year, result.photo);
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
