@@ -5,7 +5,7 @@
     <div style="z-index:100" >
 
         <div style="margin-top:70%">
-            <img src="{{$memberVanguard->drug_img}}" style="width:100px;height: 100px;margin: 0px auto;display: block" alt="">
+            <img src="{{$memberVanguard->drug_img}}" style="width:100px;height: 100px;margin: 0px auto;padding: 0px;display: block;outline: none;border: none" alt="">
             <div class="camera_ctt1">{{$memberVanguard->name}}</div>
             <div class="camera_ctt1">{{date('Y-m-d',strtotime($memberVanguard->create_time))}}加入禁毒志愿者队伍</div>
         </div>

@@ -187,15 +187,22 @@ border: none;
     background-color: rgba(0, 0, 0, 0.5);
     color:#FFF ;
     border: none;
+    width: 70px;
+    outline: none;
+    float: left;
+    display: block;
     /*opacity:0.8;*/
 }
 .button2{
     height: 35px;
     border: none;
-	 border-radius:20px;overflow:hidden;
-	 background-color: #25D6B9;
-             border-width: 0px;
-             opacity:0.9;
+    border-radius:30px;overflow:hidden;
+    background-color: #25D6B9;
+    opacity:0.9;
+    outline: none;
+    width: 70px;
+    float: left;
+    display: block;
 }
 .gzcontent{
     /*height: 220px;*/

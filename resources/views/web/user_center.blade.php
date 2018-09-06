@@ -107,7 +107,7 @@
             </div>
 
             <div v-show="update_type=='sex'" style="text-align: center" placeholder="">
-                <select style="width: 80%"  v-model="update_val">
+                <select style="width: 80%;border: 1px solid #ccc"  v-model="update_val">
                     <option value="">性别</option>
                     <option value="1" selected="selected">男</option>
                     <option value="2">女</option>
