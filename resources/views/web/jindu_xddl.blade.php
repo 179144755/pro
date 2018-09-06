@@ -44,7 +44,7 @@
             var _this = this;
             for (i in [1, 2, 3, 4, 5, 6]) {
                 setTimeout( function (){
-                $('#ss').html($('#ss').html()+'<p>'+i+'</p>');
+                $('#ss').html($('#ss').html()+'<p>222'+i+'</p>');
                 $.ajax({
                     url: '',
                     success: function (result) {
@@ -54,7 +54,7 @@
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert(XMLHttpRequest.status + '@' + XMLHttpRequest.readyState + '2' + textStatus);
                     }
-                })},1000);
+                });},1000);
 //                $.get('', {}, function (result) {
 //                    _this.show_year_img(result.year, result.photo);
 //                }, 'json');
