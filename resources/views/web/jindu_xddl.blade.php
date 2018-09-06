@@ -36,6 +36,14 @@
             year_10 :  {src:'',name:'吸毒十年',index:10}
         }
      },
+     created:function (){
+         var _this = this;
+         for(i in [1,2,3,4,5,6]){
+            $.get('',{},function(result){
+                _this.show_year_img(result.year,result.photo);
+            },'json');
+        }
+     },
      methods:{
         ajaxerrorshow:function(result){
             var error = jindu_commmon.ajaxError(result);

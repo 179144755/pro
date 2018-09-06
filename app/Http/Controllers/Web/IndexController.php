@@ -235,7 +235,13 @@ class IndexController extends CommonController
         return view('web.jindu_xc');
     }
     
-    public function xddl(){
+    public function xddl(Request $request){
+        
+        if($request->isXmlHttpRequest()){
+            sleep(rand(1, 5));
+            return array('year'=> array_rand(array(2,4,6,8,10)),'photo'=>'https://www.baidu.com/img/baidu_jgylogo3.gif');
+        }
+        
         return view('web.jindu_xddl');
     }
     
