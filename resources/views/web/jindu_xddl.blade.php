@@ -17,6 +17,10 @@
             <p class="paa">@{{item.name}}</p>
         </div>
     </div>
+    <div id="ss">
+        
+        
+    </div>
 </div>
 
 <script>
@@ -39,9 +43,11 @@
         created: function () {
             var _this = this;
             for (i in [1, 2, 3, 4, 5, 6]) {
+                $('#ss').html($('#ss').html()+'<p>'+i+'</p>');
                 $.ajax({
                     url: '',
                     success: function (result) {
+                        $('#ss').html($('#ss').html()+'<p>'+result.photo+result.year+'</p>');
                         _this.show_year_img(result.year, result.photo);
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
