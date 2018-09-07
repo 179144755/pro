@@ -197,6 +197,10 @@ var vue = new Vue({
         loadimg: function () {
             hiiden_fade_message();
         },
+        show_error_message(message){        
+            show_fade_message(message);
+            setTimeout('hiiden_fade_message()',400);
+        },
         webconfighome: function () {
             var _this = this;
             $.get('{{route("webconfig")}}', {_token: this.csrf_token, name: 'advertising'}, function (result) {
@@ -281,7 +285,7 @@ var vue = new Vue({
                     hiiden_fade_message();
                     var error = jindu_commmon.ajaxError(result);
                     if (error) {
-                        alert(error.message);
+                        _this.show_error_message(error.message);
                         return;
                     }
                     _this.user.avatar = result.avatar;
