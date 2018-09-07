@@ -139,6 +139,9 @@ class CommonController extends Controller
         }
         
         if(!$file -> isValid()){
+            if($file->getError()==UPLOAD_ERR_FORM_SIZE){
+                throw new Exception('上传错误：超过设置大小'. ini_get('max_file_uploads')); 
+            }
             //$request->file()->getError();
             throw new Exception('上传错误：'.$file->getErrorMessage()); 
             
