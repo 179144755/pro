@@ -134,8 +134,14 @@ class CommonController extends Controller
     public function upload($index='image',$filename='',$dir='',$resize=array())
     {
         $file = Input::file($index);
-        if(!$file || !$file -> isValid()){
-            return false;
+        if(!$file){
+           throw new Exception('上传文件不存在'); 
+        }
+        
+        if(!$file -> isValid()){
+            //$request->file()->getError();
+            throw new Exception('上传错误：'+$file->getErrorMessage()); 
+            
         }
             
         if($file->getSize()>1024 * 1024 * 2){
