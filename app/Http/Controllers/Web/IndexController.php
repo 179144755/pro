@@ -299,8 +299,40 @@ class IndexController extends CommonController
         //$merge_base64 = base64_encode(file_get_contents(base_path('resources/views/web/images/camera_1.png')));
 
         //$template_base64 = base64_encode(file_get_contents(app('face_templete')(2)));
+            
+            //IMG_FILTER_SELECTIVE_BLUR
+            
+          
+            $a = 'E:\application\zintao\backend\branches\dev\1.jpg';
+            $b = 'E:\application\zintao\backend\branches\dev\2.jpg';
+          
+            
+            
+        $srcImg = imagecreatefromstring($a);
+        $srcWidth = imagesx($srcImg);
+        $srcHeight = imagesy($srcImg);
+        //创建新图
+        $newWidth = round($srcWidth / 1);
+        $newHeight = round($srcHeight / 1);
+        $newImg = imagecreatetruecolor($newWidth, $newHeight);
+        //分配颜色 + alpha，将颜色填充到新图上
+//        $alpha = imagecolorallocatealpha($newImg, 0, 0, 0, 127);
+//        imagefill($newImg, 0, 0, $alpha);
         
-        $result = app('face')->mergeface(4,'E:\application\pro\uploads\drug_avatar\1_0.jpg.jpg');
+        //将源图拷贝到新图上，并设置在保存 PNG 图像时保存完整的 alpha 通道信息
+        imagecopyresampled($newImg, $srcImg, 0, 0, 0, 0, $newWidth, $newHeight, $srcWidth, $srcHeight);
+        imagesavealpha($newImg, true);
+        imagejpeg($newImg,$destfile);
+            
+            
+            
+         $img = imagecreatefromjpeg($a);
+        
+         imagefilter($img,IMG_FILTER_SELECTIVE_BLUR);
+         
+         imagejpeg($img,$b);
+         //exit;
+        $result = app('face')->mergeface(4,$b);
         
         var_dump($result);
 

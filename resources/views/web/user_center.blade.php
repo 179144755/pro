@@ -301,16 +301,16 @@ var vue = new Vue({
 });
 
 function show_fade_message(message){
-//    $('#fade_message .message').html(message);
-//    $('#fade_message').removeClass('hidden');
-    vue.$set(vue.$data,'fade_message',message);
+    $('#fade_message .message').html(message);
+    $('#fade_message').removeClass('hidden');
+//    vue.$set(vue.$data,'fade_message',message);
 }
 
 function hiiden_fade_message(){
-//    $('#fade_message').addClass('hidden');
-//    $('#fade_message message').html('');
+    $('#fade_message').addClass('hidden');
+    $('#fade_message message').html('');
 //    
-    vue.$set(vue.$data,'fade_message','');
+//    vue.$set(vue.$data,'fade_message','');
 
 }
 
