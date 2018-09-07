@@ -285,7 +285,7 @@ var vue = new Vue({
                         return;
                     }
                     _this.user.avatar = result.avatar;
-                    hiiden_fade_message('图片加载中...');
+                    show_fade_message('图片加载中...');
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     hiiden_fade_message('');

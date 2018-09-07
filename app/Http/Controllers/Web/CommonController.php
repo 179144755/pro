@@ -123,13 +123,15 @@ class CommonController extends Controller
     }
 
     /**
-     *  图片上传
+     * 图片上传
      * @param type $index
      * @param string $filename
      * @param type $dir
-     * @return boolean|string
+     * @param type $resize
+     * @return boolean
+     * @throws Exception
      */
-    public function upload($index='image',$filename='',$dir='')
+    public function upload($index='image',$filename='',$dir='',$resize=array())
     {
         $file = Input::file($index);
         if(!$file || !$file -> isValid()){
@@ -151,6 +153,15 @@ class CommonController extends Controller
         
         $newName = $filename.'.'.$entension;
         $path = $file -> move(base_path().'/uploads'.$dir,$newName);
+        
+        if($resize){
+            $new_width = isset($resize['width']) ? $resize['width'] : 0;
+            $new_height = isset($resize['height']) ? $resize['height'] : 0;
+            $this->resizeImg($path->getPathname(),$new_width,$new_height);
+        }
+        else{
+            $this->resizeImg($path->getPathname());
+        }
 
         return array(
             'path'=>$path->getPathname(),
@@ -161,6 +172,33 @@ class CommonController extends Controller
         );
     }
     
+    
+    public function resizeImg($filename,$new_width=0,$new_height=0){
+        // 获取新的尺寸
+        list($width, $height, $type) = getimagesize($filename);
+        $extension = ltrim(image_type_to_extension($type),'.');
+        
+        
+        if(!$new_width){
+            $new_width = $width;
+        }
+        
+        if(!$new_height){
+            $new_height = $height;
+        }
+        
+        // 重新取样
+        $image_p = imagecreatetruecolor($new_width, $new_height);
+        $imagecreatefrom = 'imagecreatefrom'.$extension;
+        $image = $imagecreatefrom($filename);
+        imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+        $input_image = 'image'.$extension;
+        $input_image($image_p, $filename);
+    }
+
+    
+
     /**
      * 
      * @param type $data
@@ -203,28 +241,6 @@ class CommonController extends Controller
         
         $input_image($image_p, $filename);
         return $filename;
-    }
-    
-    public function imgSoupot($imgFormat){
-        return array(
-            'png' => array('from' =>'imagecreatefrompng','to'=>'imagepng'),
-            'jpeg' => array('from' =>'imagecreatefromjpeg','to'=>'imagejpeg'),
-            'gif' => array('from' =>'imagecreatefromgif','to'=>'imagegif'),
-            'bmp' => array('from' =>'imagecreatefrombmp','to'=>'imagebmp'),
-        );
-    }
-    
-    
-    public function checkImg($filename) {
-        $imageinfo = array();
-        $size = getimagesize($filename,$imageinfo);
-       
-//        if($size > ){
-//            
-//        }
-        
-        
-        
     }
     
     

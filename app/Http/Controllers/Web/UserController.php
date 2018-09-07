@@ -20,7 +20,7 @@ class UserController extends CommonController
     
     public function upload_avatar(){
         $filename = $this->user_id.'_'.date('YmdHis');
-        $path = $this->upload('avatar', $filename,'/avatar');
+        $path = $this->upload('avatar', $filename,'/avatar',array('width'=>120,'height'=>120));
         if(!$path){
             throw  new Exception('非法操作!');
         }
