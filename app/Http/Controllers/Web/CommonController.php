@@ -140,7 +140,7 @@ class CommonController extends Controller
         
         if(!$file -> isValid()){
             //$request->file()->getError();
-            throw new Exception('上传错误：'+$file->getErrorMessage()); 
+            throw new Exception('上传错误：'.$file->getErrorMessage()); 
             
         }
             
