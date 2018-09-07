@@ -29,7 +29,7 @@
         <div v-show="show">
             <div  style="background: #262938;font-size:15px;height: 150px;">
                 <div style="width: 80px; height: 80px; margin: 0px auto;border-radius:100%;overflow:hidden;" >
-                    <img v-bind:src="avatar" style="width: 80px; height: 80px;" alt="" >
+                    <img v-bind:src="avatar" v-on:load="loadimg" style="width: 80px; height: 80px;" alt="" >
                 </div>
                 <div class="camera_ct">@{{user.nickname}}</div>
             </div>
@@ -194,6 +194,9 @@ var vue = new Vue({
                 _this.user = result;
             }, 'json');
         },
+        loadimg: function () {
+            hiiden_fade_message();
+        },
         webconfighome: function () {
             var _this = this;
             $.get('{{route("webconfig")}}', {_token: this.csrf_token, name: 'advertising'}, function (result) {
@@ -262,7 +265,7 @@ var vue = new Vue({
             var _this = this;
 
 //            this.fade_message = '请耐心等待...';
-            show_fade_message('请耐心等待...');
+            show_fade_message('图片上传中...');
 
             var data = formFile;
             $.ajax({
@@ -275,13 +278,14 @@ var vue = new Vue({
                 processData: false, //用于对data参数进行序列化处理 这里必须false
                 contentType: false, //必须
                 success: function (result) {
-                    hiiden_fade_message('');
+                    hiiden_fade_message();
                     var error = jindu_commmon.ajaxError(result);
                     if (error) {
                         alert(error.message);
                         return;
                     }
                     _this.user.avatar = result.avatar;
+                    hiiden_fade_message('图片加载中...');
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     hiiden_fade_message('');
@@ -293,16 +297,16 @@ var vue = new Vue({
 });
 
 function show_fade_message(message){
-    $('#fade_message .message').html(message);
-    $('#fade_message').removeClass('hidden');
-//        vue.$set(this.$data,'fade_message',message);
+//    $('#fade_message .message').html(message);
+//    $('#fade_message').removeClass('hidden');
+    vue.$set(vue.$data,'fade_message',message);
 }
 
 function hiiden_fade_message(){
-    $('#fade_message').addClass('hidden');
-    $('#fade_message message').html('');
-    
-//    vue.$set(this.$data,'fade_message',message,'')
+//    $('#fade_message').addClass('hidden');
+//    $('#fade_message message').html('');
+//    
+    vue.$set(vue.$data,'fade_message','');
 
 }
 

@@ -27,7 +27,7 @@ class UserController extends CommonController
         $user = $this->getUser();
         $oldavatar = $user['avatar'];
         if(Member::where('id', $this->user_id)->update(array('avatar'=>$path['url']))){
-            $oldavatar && file_exists($oldavatar) && unlink($oldavatar);
+            $oldavatar && file_exists($this->getRealPathByUrl($oldavatar)) && unlink($this->getRealPathByUrl($oldavatar));
         }
         return array(
             'avatar' => $path['url'],

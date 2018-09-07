@@ -7,6 +7,8 @@ use App\Http\Model\Member;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 
+use Exception;
+
 
 class CommonController extends Controller
 {   
@@ -142,6 +144,11 @@ class CommonController extends Controller
             $filename = date('YmdHis').mt_rand(100,999);
         }      
         $entension = $file -> getClientOriginalExtension(); //上传文件的后缀.
+        
+        if(!in_array($entension, array('png','gif','bmp','jpeg','jpg'))){
+            throw new Exception('图片只支持png,gif,bmp,jpeg格式'); 
+        }
+        
         $newName = $filename.'.'.$entension;
         $path = $file -> move(base_path().'/uploads'.$dir,$newName);
 
