@@ -14,7 +14,7 @@
         <div style="text-align:center;width: 100%;color:#fff;height:30px;line-height: 30px;background: #262938;font-size:20px;">
             个人中心
         </div>
-        <img src="/resources/views/web/images/xg.png" v-on:click="usersetting" style="height: 22px;width:22px;float: right;margin-top:-25px;margin-right: 10px" >
+        <!--<img src="/resources/views/web/images/xg.png" v-on:click="usersetting" style="height: 22px;width:22px;float: right;margin-top:-25px;margin-right: 10px" >-->
 
         <div v-show="!show">
             <div  style="background: #262938;font-size:15px;">
@@ -138,7 +138,7 @@
 var vue = new Vue({
     el: '#app',
     data: {
-        show: false,
+        show: true,
         user: {},
         //deault_avatar: '/resources/views/web/images/rt.png',
         background: 'url(/resources/views/web/images/jd1.png)',

@@ -236,14 +236,6 @@ class IndexController extends CommonController
     }
     
     public function xddl(Request $request){
-        
-        if($request->isXmlHttpRequest()){
-            sleep(rand(3, 10));
-            $a = array(2,4,6,8,10);
-            $key = array_rand($a);
-            return array('year'=> uniqid());
-        }
-        
         return view('web.jindu_xddl');
     }
     
@@ -260,7 +252,7 @@ class IndexController extends CommonController
             $entension = $request->file('drug_avatar') -> getClientOriginalExtension(); //上传文件的后缀.
             
             $result = $this->xd_year(array(2,4,6,8,10),$request->file('drug_avatar')->getPathname(),$entension);
-            $path = $this->upload('drug_avatar','','/drug_avatar');
+            $path = $this->upload('drug_avatar','','/drug_avatar',array('height'=>120,'width'=>120));
             if(!$path){
                 throw new Exception('上传失败');  
             }
@@ -281,7 +273,7 @@ class IndexController extends CommonController
             foreach ($indexs as $index){
                 $base64Url = app('face')->mergeface($index, $img);
                 $filename = uniqid(date('Ymd').'_').'.'.$entension;
-                $imgPathData = $this->saveImg(base64_decode($base64Url),$filename,'/drug_avatar');
+                $imgPathData = $this->saveImg(base64_decode($base64Url),$filename,'/drug_avatar',array('height'=>120,'width'=>120));
                 $year_imgs[] = array('year'=>$index,'photo'=>$imgPathData['url']);
             }
             return array(

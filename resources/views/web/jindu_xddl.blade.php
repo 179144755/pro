@@ -40,26 +40,6 @@
                 year_10: {src: '', name: '吸毒十年', index: 10}
             }
         },
-        created: function () {
-            var _this = this;
-            for (i in [1, 2, 3, 4, 5, 6]) {
-                setTimeout( function (){
-                $('#ss').html($('#ss').html()+'<p>222'+i+'</p>');
-                $.ajax({
-                    url: '',
-                    success: function (result) {
-                        $('#ss').html($('#ss').html()+'<p>'+result.year+'</p>');
-                        _this.show_year_img(result.year, result.photo);
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert(XMLHttpRequest.status + '@' + XMLHttpRequest.readyState + '2' + textStatus);
-                    }
-                });},1000);
-//                $.get('', {}, function (result) {
-//                    _this.show_year_img(result.year, result.photo);
-//                }, 'json');
-            }
-        },
         methods: {
             ajaxerrorshow: function (result) {
                 var error = jindu_commmon.ajaxError(result);
