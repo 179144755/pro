@@ -2,6 +2,13 @@
 @section('title','个人中心')
 @section('body')
 
+<style>
+    .hidden{
+        display: none;
+    }
+    
+</style>
+
 <div class="body" id="app" style="width: 100%;">
     <div>
         <div style="text-align:center;width: 100%;color:#fff;height:30px;line-height: 30px;background: #262938;font-size:20px;">
@@ -98,6 +105,10 @@
         <div class="succ-pop" style="left:0px;width:80%;line-height: 30px;padding: 0px; margin-left: 10%;text-align: center">@{{fade_message}}</div>
     </div>
 
+    <div class="fade hidden"  id="fade_message">
+        <div class="succ-pop message" style="left:0px;width:80%;line-height: 30px;padding: 0px; margin-left: 10%;text-align: center"></div>
+    </div>
+    
     <div class="fade" style="display: none" v-show="fade">            
         <div class="succ-pop" style="margin:0px auto;left:0px;width:80%; margin-left: 7%;">
             <div style="height: 20px;" v-on:click="close"><img src="/resources/views/web/images/x.png" style="float: right;height: 18px;height: 18px;"></div>
@@ -250,7 +261,8 @@ var vue = new Vue({
 
             var _this = this;
 
-            this.fade_message = '请耐心等待...';
+//            this.fade_message = '请耐心等待...';
+            show_fade_message('请耐心等待...');
 
             var data = formFile;
             $.ajax({
@@ -263,7 +275,8 @@ var vue = new Vue({
                 processData: false, //用于对data参数进行序列化处理 这里必须false
                 contentType: false, //必须
                 success: function (result) {
-                    _this.fade_message = '';
+                    hiiden_fade_message('');
+                    return;
                     var error = jindu_commmon.ajaxError(result);
                     if (error) {
                         alert(error.message);
@@ -272,12 +285,27 @@ var vue = new Vue({
                     _this.user.avatar = result.avatar;
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    _this.fade_message = '';
+                    hiiden_fade_message('');
                     alert(XMLHttpRequest.status + '@' + XMLHttpRequest.readyState + '2' + textStatus);
                 },
             });
         }
     }
 });
+
+function show_fade_message(message){
+    $('#fade_message .message').html(message);
+    $('#fade_message').removeClass('hidden');
+//        vue.$set(this.$data,'fade_message',message);
+}
+
+function hiiden_fade_message(){
+    $('#fade_message').addClass('hidden');
+    $('#fade_message message').html('');
+    
+//    vue.$set(this.$data,'fade_message',message,'')
+
+}
+
 </script>
 @endsection
