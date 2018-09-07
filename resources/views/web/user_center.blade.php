@@ -276,7 +276,6 @@ var vue = new Vue({
                 contentType: false, //必须
                 success: function (result) {
                     hiiden_fade_message('');
-                    return;
                     var error = jindu_commmon.ajaxError(result);
                     if (error) {
                         alert(error.message);
