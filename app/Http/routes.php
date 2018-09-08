@@ -65,9 +65,9 @@ Route::group(['middleware' => ['web','admin.login'],'prefix'=>'admin','namespace
     Route::post('narcotics/save', 'NarcoticsController@save');
     
     
-    Route::get('webconfig/index', 'WebconfigController@index');
-    Route::get('webconfig/edit/{id}', 'WebconfigController@edit')->where('id', '[1-9]\d*');
-    Route::post('webconfig/save/{id}', 'WebconfigController@save')->where('id', '[1-9]\d*');
+    Route::get('webconfig/index', 'WebConfigController@index');
+    Route::get('webconfig/edit/{id}', 'WebConfigController@edit')->where('id', '[1-9]\d*');
+    Route::post('webconfig/save/{id}', 'WebConfigController@save')->where('id', '[1-9]\d*');
     
 });
 
