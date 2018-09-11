@@ -95,10 +95,17 @@
                         var player = new tvp.Player(320, 240);
                         //设置播放器初始化时加载的视频
                         player.setCurVideo(video);
+                        player.addParam('type','2');  //设置播放器为直播状态，1表示直播，2表示点播，默认为2
+//                        player.addParam("wmode","transparent"); ////设置透明化，不设置时，视频为最高级，总是处于页面的最上面，此时设置z-index无效
+                        player.addParam('autoplay',0);           //是否自动播放
+                        player.addParam('pic','');    ////播放器默认图，当autoplay=0时有效；不传入则使用视频截图                                  
+                        player.addParam('showend',0)                 //结束时是否有广告
+                        player.addParam("loadingswf","http://imgcache.qq.com/minivideo_v1/vd/res/skins/web_small_loading.swf");
+                        
                         //设置精简皮肤，仅点播有效
-                        //player.addParam("flashskin", "http://imgcache.qq.com/minivideo_v1/vd/res/skins/TencentPlayerMiniSkin.swf");
+//                        player.addParam("flashskin", "http://imgcache.qq.com/minivideo_v1/vd/res/skins/TencentPlayerMiniSkin.swf");
                         //输出播放器,参数就是上面div的id，希望输出到哪个HTML元素里，就写哪个元素的id
-                        player.addParam("autoplay","1");
+//                        player.addParam("autoplay","1");
                         player.addParam("wmode","transparent");
                         //player.addParam("pic","http://img1.gtimg.com/ent/pics/hv1/75/182/1238/80547435.jpg");
                         player.write("mod_player_skin");
