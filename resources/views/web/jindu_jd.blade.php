@@ -1,6 +1,14 @@
 @extends('layouts.web')
 @section('title','禁毒知识竞赛')
 @section('body')
+
+
+<style>
+    .hidden{
+        display: none;
+    }
+</style>
+
 <div class="body" style="width: 100%;" id="app">
 <template v-if="ok">    
     <div class="font_ctimg5">
@@ -11,10 +19,15 @@
         <div  v-for="quiz in quizs" v-bind:key="quiz.id" >
             <div><p>@{{quiz.subject}}</p></div>	
             <div class="font_ctimg6" v-for="(item,index) in quiz.choice.data" v-bind:key="index">
-                <p v-on:click="next(quiz,index)">@{{index}}、@{{item}}</p>
+                <p v-on:click="answersed(quiz,index)">@{{index}}、@{{item}}</p>
             </div>
         </div>
     </div>
+    
+    <div class="fade hidden"  id="fade_message">
+        <div class="succ-pop message" style="left:0px;width:80%;line-height: 30px;padding: 0px; margin-left: 10%;text-align: center"></div>
+    </div>
+    
 </template>
 <template v-else>
     <div class="dtjg" >
@@ -65,9 +78,21 @@ var vue = new Vue({
                 _this.count = result.total;
             },'json');
         },
-        next:function(quiz,index){
-            this.$set(this.answers,quiz.id,index);
-            console.log(this.answers);
+        
+        answersed:function(quiz,index){
+            this.$set(this.answers,quiz.id,index);            
+            if(index!==quiz.answer){
+                show_fade_message(quiz.answer);
+                setTimeout('shownext()',1000);
+            }
+            else{
+                this.next();
+            }
+        },
+        
+        next:function(){
+            //this.$set(this.answers,quiz.id,index);
+            //console.log(this.answers);
             if(this.is_bottom){
                 this.is_end = true;
             }
@@ -78,8 +103,7 @@ var vue = new Vue({
             
             if(this.is_end){
                 this.end();
-            }
-            
+            } 
         },
         end:function(){
             this.ok=false;
@@ -91,6 +115,20 @@ var vue = new Vue({
     }
 });  
 
+function show_fade_message(message){
+    $('#fade_message .message').html('正确答案'+message);
+    $('#fade_message').removeClass('hidden');
+}
+
+function shownext(){
+    hiiden_fade_message();
+    vue.next();
+}
+
+function hiiden_fade_message(){
+    $('#fade_message').addClass('hidden');
+    $('#fade_message message').html('');
+}
 
 </script>
 

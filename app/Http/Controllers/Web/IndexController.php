@@ -289,10 +289,10 @@ class IndexController extends CommonController {
         //$template_base64 = base64_encode(file_get_contents(app('face_templete')(2)));
         //IMG_FILTER_SELECTIVE_BLUR
 
-
-        $a = 'E:\application\zintao\backend\branches\dev\1.jpg';
-        $b = 'E:\application\zintao\backend\branches\dev\2.jpg';
-        $c = '/tmp/1.jpeg';
+//
+//        $a = 'E:\application\zintao\backend\branches\dev\1.jpg';
+//        $b = 'E:\application\zintao\backend\branches\dev\2.jpg';
+//        $c = '/tmp/1.jpeg';
 
 
 
@@ -320,9 +320,12 @@ class IndexController extends CommonController {
 //         
 //         imagejpeg($img,$b);
         //exit;
-        $result = app('face')->mergeface(4, $c);
-
-        var_dump($result);
+//        $result = app('face')->mergeface(4, $c);
+        
+        $result = array();
+        
+        
+        //var_dump($result);
 
         return view('test', array('face_tow_img' => $result));
     }
