@@ -92,7 +92,7 @@
                         //向视频对象传入视频vid
                         video.setVid("c0146k6imdf");
                         //定义播放器对象
-                        var player = new tvp.Player(300, 300);
+                        var player = new tvp.Player(800, 800);
                         //设置播放器初始化时加载的视频
                         player.setCurVideo(video);
                         player.addParam('type','2');  //设置播放器为直播状态，1表示直播，2表示点播，默认为2
