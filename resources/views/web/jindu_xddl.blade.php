@@ -1,19 +1,28 @@
 @extends('layouts.web')
 @section('title','吸毒后的脸')
-@section('headerfont') 吸毒后的脸 @endsection()
-@section('content')
+@section('body')
 <div id="app">
+    
+    <div class="header" style="width: 100%;text-align:  center;height: 50px;line-height: 50px;background: black;color: #FFF">吸毒后的脸</div> 
+    
+    
+    <div v-show="message" style="line-height: 20px;background-color: #F33;text-align: center;padding: 5px 10px;">
+        @{{message}}
+    </div>
+    
     <div class="drug">
-        <img src="/resources/views/web/images/camera.png"  onclick="img_click()" alt="" class="camera">
+        <img src="/resources/views/web/images/camera.png"  onclick="img_click()"  class="camera">
         <input type="file" id="img" v-show="ok" v-on:change="img_change" accept="image/*" >
         <div class="camera_ct" style="color:#CCC">点击摄像机拍照<br>系统将自动为你生成吸毒后的脸<br>
-            <span  style="color:#000">@{{message}}</span>
+            
         </div>
     </div>
+    
+    
 
     <div class="camera_img">
-        <div class="font_ctimg" v-for="item in years" v-show="item.show">
-            <img v-bind:src="item.src"   alt="" class="camera_img1">
+        <div class="font_ctimg" v-for="item in years"  v-show="item.show">
+            <img v-bind:src="item.src" v-on:load="loadimg(item)"   alt="" class="camera_img1">
             <p class="paa">@{{item.name}}</p>
         </div>
     </div>
@@ -31,6 +40,7 @@
             ok: false,
             csrf_token: '{{csrf_token()}}',
             message: '',
+            path : '',
             years: {
                 year_0: {src: '', name: '未吸毒', index: 0},
                 year_2: {src: '', name: '吸毒两年', index: 2},
@@ -49,12 +59,42 @@
                 }
                 return false;
             },
+            loadimg : function(item){
+                  if(item.index=='10'){
+                     this.message = ''; 
+                  }
+            },
+            upload_year: function(year){
+                if(!this.path){
+                    return ;
+                }
+                
+                var _this = this; 
+                
+                $.post('{{route("xd_year")}}',{year:year,filename:this.path,_token:this.csrf_token},function(result){
+                    if (_this.ajaxerrorshow(result)) {
+                        isFalse = true;
+                        return;
+                    }
+                    _this.merger_year_img(result);
+                    
+                },'json');
+                
+                
+            },
             img_change: function () {
                 var fileObj = $('#img').get(0).files[0]; // js 获取文件对象
                 if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
                     return;
                 }
+                
                 this.upload_img();
+                this.message = '图片加载中...';    
+                this.upload_year(2);
+                this.upload_year(4);
+                this.upload_year(6);
+                this.upload_year(8);
+                this.upload_year(10);
                 $('#img').val('');
             },
             show_year_img: function (index, src) {
@@ -103,9 +143,7 @@
 
                 var _this = this;
 
-                this.message = '正在生成...';
-
-                var isFalse = false;
+                this.message = '正在上传...';
 
                 var data = formFile;
                 $.ajax({
@@ -123,15 +161,13 @@
                             return;
                         }
                         _this.merger_year_img(result);
+                        _this.path = result.path;
+                        _this.message = '';
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert(XMLHttpRequest.status + '@' + XMLHttpRequest.readyState + '2' + textStatus);
-                    },
+                        _this.message = XMLHttpRequest.status + '@' + XMLHttpRequest.readyState + '2' + textStatus;
+                    }
                 });
-
-                if (!isFalse) {
-                    this.message = '';
-                }
             }
         }
     });

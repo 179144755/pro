@@ -151,13 +151,18 @@ class CommonController extends Controller {
 
         $newName = $filename . '.' . $entension;
         $path = $file->move(base_path() . '/uploads' . $dir, $newName);
-
-        if ($resize) {
-            $new_width = isset($resize['width']) ? $resize['width'] : 0;
-            $new_height = isset($resize['height']) ? $resize['height'] : 0;
-            $this->resizeImg($path->getPathname(), $new_width, $new_height);
-        } else {
-            $this->resizeImg($path->getPathname());
+        
+        if(!is_null($resize)){
+            if($resize=='linux'){
+                $this->imgMoreLessByLinuxCommand($path->getPathname());
+            }
+            elseif ($resize) {
+                $new_width = isset($resize['width']) ? $resize['width'] : 0;
+                $new_height = isset($resize['height']) ? $resize['height'] : 0;
+                $this->resizeImg($path->getPathname(), $new_width, $new_height);
+            }else {
+                $this->resizeImg($path->getPathname());
+            }
         }
 
         return array(
@@ -251,5 +256,29 @@ class CommonController extends Controller {
         $input_image($image_p, $filename);
         return $filename;
     }
+    
+    public function imgMoreLessByLinuxCommand($filename){
+        $size = filesize($filename);
+        
+        if($size>1024*1024){
+           $quality = 50;
+        }
+        else{
+            $quality = 75;
+        }
+         
+        chmod($filename, 0777);
 
+        $command = "/usr/local/bin/convert {$filename} -quality {$quality} {$filename} 2>&1";
+        
+        exec($command, $output, $return_val);
+        
+//        print_r($output);
+//        print_r($return_val);
+        
+//        echo system($command);
+       
+//      exit;
+    }
+    
 }

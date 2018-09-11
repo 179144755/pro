@@ -9,7 +9,7 @@
         <p class="dp_readtime">{{date('Y-m-d',strtotime($notice->create_time))}}</p>
     </div>
 
-    <div style="font-size: 14px;">
+    <div style="font-size: 18px;">
         {!!$notice->content!!}
 
     </div>

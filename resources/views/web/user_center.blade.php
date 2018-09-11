@@ -9,7 +9,7 @@
     
 </style>
 
-<div class="body" id="app" style="width: 100%;">
+<div class="body" id="app" style="width: 100%">
     <div>
         <div style="text-align:center;width: 100%;color:#fff;height:30px;line-height: 30px;background: #262938;font-size:20px;">
             个人中心
@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <div style="margin-top: 10px;color:#FFF" v-show="show">
+    <div style="margin-top: 10px;color:#FFF;padding:0px 10px;" v-show="show">
 
         <div style="width:100%;" class="sett_x_l clear_wl" v-on:click="img_click">
             <img src="/resources/views/web/images/jt.png">

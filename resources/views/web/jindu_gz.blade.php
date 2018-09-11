@@ -17,11 +17,11 @@
         <div class="gz_content1">
             <div class="gz_img">
                 <img src="/resources/views/web/images/jinc_hz.png" alt="" class="img_ct">
-                <div class="gz_font">@{{item.title}}</div>
+                <div class="gz_font"><a v-bind:href="'dpxq/'+item.id" style="text-decoration:none;color:#000">@{{item.title}}</a></div>
                 <div class="gz_font1">@{{item.create_time}}</div>
             </div>
         </div>
-        <div class="font_ct"> @{{item.content}}</div>
+        <div class="font_ct"> @{{item.short_content}}</div>
         <div style="margin-top:10px;">
             <div style="width:25%;float: left">
                 <div class="gz_font1" style="margin-left: 10px;">浏览@{{item.reading_volume}}次</div>

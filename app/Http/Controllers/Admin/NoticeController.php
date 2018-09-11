@@ -34,9 +34,6 @@ class NoticeController extends CommonController
         
         $id = (int)$input['id'];
         unset($input['id']);
-        if($id){
-            return back()->with('errors','数据填充失败，请稍后重试！#1');
-        }
         $rules = [
             'type'=>'required',
             'title'=>'required',
@@ -65,7 +62,23 @@ class NoticeController extends CommonController
         }
     }
     
-    
+  
+    public function del($id) {
+        $re = Notice::where('id', $id)->delete();
+        if ($re) {
+            $data = [
+                'status' => 0,
+                'msg' => '文章删除成功！',
+            ];
+        } else {
+            $data = [
+                'status' => 1,
+                'msg' => '文章删除失败，请稍后重试！',
+            ];
+        }
+        return $data;
+    }
+  
     
     
    

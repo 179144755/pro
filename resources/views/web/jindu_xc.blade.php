@@ -1,10 +1,12 @@
 @extends('layouts.web')
 @section('title','宣传视频')
-@section('headerfont') 宣传视频 @endsection()
-@section('content')
+@section('body')
 
 
 <div id="app">
+    <div class="header" style="width: 100%;background: black;color:#fff;text-align: center;height: 40px;line-height: 40px;"> 宣传视频</div>
+   
+    
     <div v-for="item in list" v-bind:key="item.id">
         <div class="iconcontent">
             <video v-bind:src="item.attach+item.url" controls="controls" height="200px" width="100%" style="margin-top:16px">您的浏览器不支持 video 标签。</video>

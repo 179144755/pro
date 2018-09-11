@@ -27,7 +27,7 @@
                 <p class="p1">吸毒后的脸</p>
             </div>
             <div class="imgcontent2">
-                <a href="{{route('jd')}}"><img src="/resources/views/web/images/b.png" alt="" class="imgv1"></a>
+                <a href="{{route('jdxf_list')}}"><img src="/resources/views/web/images/b.png" alt="" class="imgv1"></a>
                 <p class="p1">禁毒先锋</p>
             </div>
             <div class="imgcontent3">
@@ -44,7 +44,7 @@
             </div>
             <div class="imgcontent3">
                 <a href="{{route('gz')}}"><img src="/resources/views/web/images/f.png" alt="" class="imgv1"></a>
-                <p class="p1">工作状态</p>
+                <p class="p1">工作动态</p>
             </div>
         </div>
     </div>

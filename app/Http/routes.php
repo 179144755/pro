@@ -59,10 +59,12 @@ Route::group(['middleware' => ['web','admin.login'],'prefix'=>'admin','namespace
     Route::get('notice/{type?}', 'NoticeController@index')->where('type', '[1-9]');
     Route::get('notice/create/{id?}', 'NoticeController@create');
     Route::post('notice/save', 'NoticeController@save');
+    Route::delete('notice/del/{id}', 'NoticeController@del')->where('id', '[1-9]\d*');
 
     Route::get('narcotics/{type?}', 'NarcoticsController@index')->where('type', '[1-9]');
     Route::get('narcotics/create/{id?}', 'NarcoticsController@create');
     Route::post('narcotics/save', 'NarcoticsController@save');
+    Route::delete('narcotics/del/{id}', 'NarcoticsController@del')->where('id', '[1-9]\d*');
     
     
     Route::get('webconfig/index', 'WebConfigController@index');
@@ -88,7 +90,7 @@ Route::group(['middleware' => ['web'] , 'namespace'=>'Web'], function () {
     
     Route::any('/xddl', 'IndexController@xddl')->name('xddl')->middleware(['web.login']);
     Route::any('/xddl_upload', 'IndexController@xddl_upload')->name('xddl_upload')->middleware(['web.login']);
-    //Route::any('/xd_year', 'IndexController@xd_year')->name('xd_year')->middleware(['web.login']);
+    Route::any('/xd_year', 'IndexController@xd_year')->name('xd_year')->middleware(['web.login']);
     
     Route::get('/jdxf', 'IndexController@jdxf')->name('jdxf')->middleware(['web.login']);
     Route::post('/jdxf_upload', 'IndexController@jdxf_upload')->name('jdxf_upload')->middleware(['web.login']);

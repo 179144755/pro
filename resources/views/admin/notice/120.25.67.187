@@ -10,18 +10,17 @@
    {overflow: hidden; height:20px;}
    div.edui-box{overflow: hidden; height:22px;}
 </style>
-
         <!--面包屑导航 开始-->
 <div class="crumb_warp">
     <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
-    <i class="fa fa-home"></i> <a href="{{url('admin/info')}}">首页</a> &raquo; 毒品信息
+    <i class="fa fa-home"></i> <a href="{{url('admin/info')}}">首页</a> &raquo; 公告信息
 </div>
 <!--面包屑导航 结束-->
 
 <!--结果集标题与导航组件 开始-->
 <div class="result_wrap">
     <div class="result_title">
-        <h3>添加毒品信息<h3>
+        <h3>添加公告信息<h3>
         @if(count($errors)>0)
             <div class="mark">
                 @if(is_object($errors))
@@ -36,82 +35,57 @@
     </div>
     <div class="result_content">
         <div class="short_wrap">
-            <a href="{{url('admin/narcotics/create')}}"><i class="fa fa-plus"></i>添加毒品</a>
-            <a href="{{url('admin/narcotics')}}"><i class="fa fa-recycle"></i>全部毒品</a>
+            <a href="{{url('admin/notice/create')}}"><i class="fa fa-plus"></i>添加公告</a>
+            <a href="{{url('admin/notice')}}"><i class="fa fa-recycle"></i>全部公告</a>
         </div>
     </div>
 </div>
 <!--结果集标题与导航组件 结束-->
 
 <div class="result_wrap" id="app">
-    <form action="{{url('admin/narcotics/save')}}" enctype="multipart/form-data" method="post">
+    <form action="{{url('admin/notice/save')}}" method="post">
         {{csrf_field()}}
-        <input type="hidden" value="{{$narcotics->id}}" name="id" />
+        <input type="hidden" value="{{$notice->id}}" name="id" />
         <table class="add_tab">
             <tbody>
             <tr>
-                <th><i class="require">*</i> 毒品名称：</th>
+                <th><i class="require">*</i> 标题：</th>
                 <td>
-                    <input type="text" class="lg" name="title" value="{{$narcotics->title}}">
+                    <input type="text" class="lg" name="title" value="{{$notice->title}}">
                 </td>
             </tr>
-            
             <tr>
-                <th><i class="require">*</i> 宣传图：</th>
-                <td>
-                    @if($narcotics->img)
-                    <image src="{{$narcotics->img}}" id="show_img" style="width:200px;height:100px"  />
-                    <p><input type="file" class="lg" onchange="imgchangeUpload()" name="img" value="{{$narcotics->img}}"></p>
-                    <input type="hidden" id="upload_img" name="upload_img" value="{{$narcotics->img}}" />
-                    @elseif($narcotics->id)
-                      
-                    @else
-                    <input type="file" class="lg" name="img" value="{{$narcotics->img}}">
-                    @endif
-                </td>
-            </tr>
-            
-            <tr>
-                <th><i class="require">*</i> 分类：</th>
+                <th><i class="require">*</i> 选项：</th>
                 <td>
                     <select name="type">
-                        <option value="3">认识毒品</option>
-                        <option value="4">毒品危害</option>
+                        <option value="1">工作动态</option>
+                        <option value="2">政务法规</option>
                     </select>
                 </td>
             </tr>
-            
-            <tr>
-                <th><i class="require">*</i> 毒品类型：</th>
-                <td>
-                    <select name="tag">
-                        <option value="传统毒品">传统毒品</option>
-                        <option value="新型毒品">新型毒品</option>
-                    </select>
-                </td>
-            </tr>
-            
-            
             
             <tr>
                 <th><i class="require">*</i> 简介：</th>
                 <td>
-                    <textarea  class="lg" name="short_content" >{{$narcotics->short_content}}</textarea>
+                    <textarea name="short_content" class="lg">
+                        {{$notice->short_content}}
+                    </textarea>
                 </td>
             </tr>
-            
             
             <tr>
                 <th><i class="require">*</i> 内容介绍：</th>
                 <td>
-                    <script id="editor" name="content" type="text/plain" style="width:860px;height:400px;">{!!$narcotics->content!!}</script>
+                    <script id="editor" name="content" type="text/plain" style="width:860px;height:400px;">{!!$notice->content!!}</script>
                 </td>
             </tr>
 
             <tr>
                 <th></th>
                 <td>
+                    @if(!$notice->id) 
                     <input type="submit" value="提交">
+                    @endif
                     <input type="button" class="back" onclick="history.go(-1)" value="返回">
                 </td>
             </tr>
@@ -122,12 +96,7 @@
 
 <script type="text/javascript">
     var ue = UE.getEditor('editor');
-    
-    function imgchangeUpload(){
-        $('#show_img').hide();
-        $('#upload_img').val('');
-    }
-    
 </script>
+
 
 @endsection

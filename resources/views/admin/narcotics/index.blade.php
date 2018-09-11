@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-        <!--面包屑导航 开始-->
+<!--面包屑导航 开始-->
 <div class="crumb_warp">
     <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
     <i class="fa fa-home"></i> <a href="{{url('admin/info')}}">首页</a> &raquo; 毒品管理
@@ -22,12 +22,12 @@
         </div>
         <!--快捷导航 结束-->
     </div>
-    
 
-    
+
+
     <div class="result_wrap" id="app">
         <div class="result_content">
-            
+
             <table class="list_tab">
                 <tr>
                     <th>毒品名称</th>
@@ -37,13 +37,14 @@
                     <th>操作</th>
                 </tr>
 
-                <tr v-for="narcotics in narcoticss">
+                <tr v-for="(narcotics,index) in narcoticss">
                     <td>@{{narcotics.title}}</td>
                     <td>@{{narcotics.tag}}</td>
                     <td>@{{narcotics.short_content}}</td>
                     <td>@{{narcotics.create_time}}</td>
                     <td>
-                        <a v-bind:href="'{{url('admin/narcotics/create')}}/'+narcotics.id">查看</a>
+                        <a v-bind:href="'{{url('admin/narcotics/create')}}/'+narcotics.id">修改</a>
+                        <a href="javascript:;" v-on:click="del(index)">删除</a>
                     </td>
                 </tr>
 
@@ -64,24 +65,50 @@
         border: 1px solid #ccc;
         color : #000;
     }
-    
+
     .active{
         background-color: gray;
     }
-    
+
 </style>
 
 <script>
-    var narcoticss = <?php $jsData = $data->toArray() ;  echo  $jsData['data'] ? " JSON.parse('".json_encode($jsData['data'])."')" : "[]";  ?>;
+    var narcoticss = <?php $jsData = $data->toArray();
+echo $jsData['data'] ? json_encode($jsData['data']) : "[]"; ?>;
+//        var narcoticss = <?php //$jsData = $data->toArray();
+//echo $jsData['data'] ? " JSON.parse('" . json_encode($jsData['data']) . "')" : "[]"; ?>//;
     new Vue({
         el: '#app',
         data: {
-            narcoticss : narcoticss
+            narcoticss: narcoticss
         },
-        methods:{
+        created:function(){
             
+        },
+        methods: {
+            del: function (index) {
+                var _this = this;
+                var id = _this.narcoticss[index].id;
+                layer.confirm('您确定要删除吗？', {
+                    btn: ['确定', '取消'] //按钮
+                }, function () {
+                    $.post("{{url('admin/narcotics/del/')}}/" + id, {'_method': 'delete', '_token': "{{csrf_token()}}"}, function (data) {
+                        if (data.status == 0) {
+                            _this.narcoticss.splice(index, 1);
+                            layer.msg(data.msg, {icon: 5});
+
+                        } else {
+                            layer.msg(data.msg, {icon: 6});
+                        }
+                    });
+                }, function () {
+
+                });
+
+            }
         }
-   })
+    });
+
 
 </script>
 @endsection

@@ -1,5 +1,15 @@
 @extends('layouts.admin')
 @section('content')
+
+<script type="text/javascript" charset="utf-8" src="{{asset('resources/org/ueditor/ueditor.config.js')}}"></script>
+<script type="text/javascript" charset="utf-8" src="{{asset('resources/org/ueditor/ueditor.all.min.js')}}"> </script>
+<script type="text/javascript" charset="utf-8" src="{{asset('resources/org/ueditor/lang/zh-cn/zh-cn.js')}}"></script>
+<style>
+   .edui-default{line-height: 28px;}
+   div.edui-combox-body,div.edui-button-body,div.edui-splitbutton-body
+   {overflow: hidden; height:20px;}
+   div.edui-box{overflow: hidden; height:22px;}
+</style>
         <!--面包屑导航 开始-->
 <div class="crumb_warp">
     <!--<i class="fa fa-bell"></i> 欢迎使用登陆网站后台，建站的首选工具。-->
@@ -55,20 +65,25 @@
             </tr>
             
             <tr>
-                <th><i class="require">*</i> 内容：</th>
+                <th><i class="require">*</i> 简介：</th>
                 <td>
-                    <textarea name="content" class="lg">
-                        {{$notice->content}}
+                    <textarea name="short_content" class="lg">
+                        {{$notice->short_content}}
                     </textarea>
+                </td>
+            </tr>
+            
+            <tr>
+                <th><i class="require">*</i> 内容介绍：</th>
+                <td>
+                    <script id="editor" name="content" type="text/plain" style="width:860px;height:400px;">{!!$notice->content!!}</script>
                 </td>
             </tr>
 
             <tr>
                 <th></th>
                 <td>
-                    @if(!$notice->id) 
                     <input type="submit" value="提交">
-                    @endif
                     <input type="button" class="back" onclick="history.go(-1)" value="返回">
                 </td>
             </tr>
@@ -77,6 +92,9 @@
     </form>
 </div>
 
+<script type="text/javascript">
+    var ue = UE.getEditor('editor');
+</script>
 
 
 @endsection
