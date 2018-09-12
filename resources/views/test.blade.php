@@ -86,13 +86,14 @@
 <div>
 <div id="mod_player" class="mod_player">
 <div id="mod_player_skin">&nbsp;</div>
+<div id="mod_player_skin2">&nbsp;</div>
 <!-- 这个div是播放器准备输出的位置 --><!-- 引入腾讯视频播放器组件 --><script language="javascript" src="http://qzs.qq.com/tencentvideo_v1/js/tvp/tvp.player.js" charset="utf-8"></script><script language="javascript">
                         //定义视频对象
                         var video = new tvp.VideoInfo();
                         //向视频对象传入视频vid
-                        video.setVid("c0146k6imdf");
+                        video.setVid("i0784ljkier");
                         //定义播放器对象
-                        var player = new tvp.Player(800, 800);
+                        var player = new tvp.Player('50%', '50%');
                         //设置播放器初始化时加载的视频
                         player.setCurVideo(video);
                         player.addParam('type','2');  //设置播放器为直播状态，1表示直播，2表示点播，默认为2
@@ -109,6 +110,7 @@
 //                        player.addParam("wmode","transparent");
                         //player.addParam("pic","http://img1.gtimg.com/ent/pics/hv1/75/182/1238/80547435.jpg");
                         player.write("mod_player_skin");
+                        
                     </script></div>
 </div>
 </div>
@@ -116,6 +118,8 @@
 </div>
 </div>
     
+<!-- <iframe height=498 width=510 src='http://player.youku.com/embed/XMzgxNDA5MTE2OA==' frameborder=0 'allowfullscreen'></iframe> -->
+
 <!--<div class="wfx_wrapper">
     <div class="part1" style="background-image:url(/images/gzh/wfx_eleven/wfx_eleven_index3.jpg);">
        <div id="playvideo" typeid="qq" sid="m0512rrhq7u" pic="http://www.appgame.com/wp-content/uploads/2015/06/poker-forth.jpg"></div>

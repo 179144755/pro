@@ -74,6 +74,11 @@
        }
    }
    
+   if(list.updated){
+	   vue_init_data.updated = list.updated;
+   }
+   
+   
    var vue = new Vue(vue_init_data);
    
    $(function(){

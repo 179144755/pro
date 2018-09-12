@@ -25,7 +25,7 @@
     </div>
     <div class="result_content">
         <div class="short_wrap">
-            <a href="{{url('admin/video/upload')}}"><i class="fa fa-plus"></i>上传本地视频</a>
+<!--             <a href="{{url('admin/video/upload')}}"><i class="fa fa-plus"></i>上传本地视频</a> -->
         </div>
     </div>
 </div>

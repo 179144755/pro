@@ -55,7 +55,19 @@
         </div>
         <div class="videoimg">
             <div class="videosimgzs" v-for="xc in xc_list">
-                <video v-bind:src="xc.attach+xc.url"  v-bind:key="xc.id" controls="controls" class="image1" >您的浏览器不支持 video 标签。</video>
+                <template v-if="xc.type==1">     
+                    <video v-bind:src="xc.attach+xc.url"  v-bind:key="xc.id" controls="controls" class="image1" >您的浏览器不支持 video 标签。</video>
+                </template>
+                
+                <template v-else-if="xc.type==2">
+                    <div v-bind:id="'video_'+xc.id"  class="image1"></div>
+                </template>
+                
+                <template v-else-if="xc.type==3">
+                    <div></div>
+                </template>
+                
+                
             </div>
         </div>
     </div>
@@ -73,7 +85,8 @@
     
 
 </div>
-
+<script language="javascript" src="http://qzs.qq.com/tencentvideo_v1/js/tvp/tvp.player.js" charset="utf-8"></script> 
+  
 <script>
 var vue = new Vue({
     'el' : '#app',
@@ -81,18 +94,31 @@ var vue = new Vue({
        xc_list:[],
        xc_list_more:false,
        webconfig:{},
-       csrf_token:'{{csrf_token()}}'
+       csrf_token:'{{csrf_token()}}',
+       xc_complete:false
     },
     created:function (){        
        this.xc();
        this.webconfighome();
+    },
+    updated:function(){
+        if(this.xc_complete){
+    		for(i in this.xc_list){
+    	        console.log(i);
+        		if(this.xc_list[i].type==2){
+        			loadvideo('video_'+this.xc_list[i].id,this.xc_list[i].attach);	
+        		}
+    		}
+    		this.xc_complete = false
+        }	
     },
     methods:{
       xc:function(){
         var _this = this;
         $.get('{{route("xc")}}',{size:2,_token:this.csrf_token},function(result){
              _this.xc_list_more = result.total > 2;
-             _this.xc_list = result.data; 
+             _this.xc_list = result.data;
+             _this.xc_complete = true;
         },'json');
       },
       webconfighome:function(){
@@ -104,6 +130,25 @@ var vue = new Vue({
     }
     
 });
+
+
+var player = new tvp.Player('100%','100%');
+//设置播放器初始化时加载的视频
+//player.setCurVideo(video);
+player.addParam('type','2');  //设置播放器为直播状态，1表示直播，2表示点播，默认为2
+player.addParam('autoplay',0);           //是否自动播放
+player.addParam('pic','');    ////播放器默认图，当autoplay=0时有效；不传入则使用视频截图                                  
+player.addParam('showend',0)                 //结束时是否有广告
+//player.write("mod_player_skin");
+
+
+function loadvideo(id,vid){
+	var video = new tvp.VideoInfo();
+	video.setVid(vid);
+  	player.setCurVideo(video);
+	player.write(id);
+}
+
 
 
 </script>

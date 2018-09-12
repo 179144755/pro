@@ -55,6 +55,8 @@ Route::group(['middleware' => ['web','admin.login'],'prefix'=>'admin','namespace
     Route::get('video/uploadView', 'VideoController@uploadView');
     Route::get('video', 'VideoController@index');
     Route::post('video/upload', 'VideoController@upload');
+    Route::get('video/external/{type?}', 'VideoController@external')->where('type', '[1-9]');
+    Route::post('video/external', 'VideoController@externalSave');
     
     Route::get('notice/{type?}', 'NoticeController@index')->where('type', '[1-9]');
     Route::get('notice/create/{id?}', 'NoticeController@create');

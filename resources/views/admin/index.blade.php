@@ -32,7 +32,14 @@
                                 <li><a href="{{url('admin/notice')}}" target="main"><i class="fa fa-fw fa-list-ul"></i>公告</a></li>
                                 <li><a href="{{url('admin/quiz')}}" target="main"><i class="fa fa-fw fa-list-ul"></i>知识问答</a></li>
                                 <li><a href="{{url('admin/narcotics')}}" target="main"><i class="fa fa-fw fa-list-ul"></i>毒品</a></li>
-                                <li><a href="{{url('admin/video')}}" target="main"><i class="fa fa-fw fa-list-ul"></i>宣传视频</a></li>
+                                <li>
+                                    <h3><i class="fa fa-fw fa-clipboard"></i>宣传视频</h3>
+                                    <ul class="sub_menu">
+                                        <a href="{{url('admin/video')}}" target="main"><i class="fa fa-fw fa-list-ul"></i>本地视频</a>
+                                        <a href="{{url('admin/video/external')}}/2" target="main"><i class="fa fa-fw fa-list-ul"></i>腾讯视频</a>
+                                        <a href="{{url('admin/video/external')}}/3" target="main"><i class="fa fa-fw fa-list-ul"></i>优酷视频</a>
+                                    </ul>
+                                </li>
                                 <li><a href="{{url('admin/webconfig/index')}}" target="main"><i class="fa fa-fw fa-list-ul"></i>配置</a></li>
 			</ul>
 		</li>

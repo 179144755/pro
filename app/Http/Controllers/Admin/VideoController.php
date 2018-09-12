@@ -24,6 +24,54 @@ class VideoController extends CommonController
          return view('admin.video.upload');
     }
     
+    /**
+     * 外部视频
+     */
+    public function external($type){
+        if($type=='2'){
+            $name = '腾讯视频';
+        }
+        
+        else if($type=='3'){
+            $name = '优酷视频';
+        }
+        
+        else{
+            $name = '其他';
+        }
+        
+        
+        return view('admin.video.external',compact('name','type'));
+    }
+    
+    
+    /**
+     * 外部视频
+     */
+    public function externalSave(){
+        $video = new Video;
+        $video->url = request()->input('url');
+        $video->type = request()->input('type');
+        $video->is_show = 1;
+        $video->create_time = date('Y-m-d H:i:s');        
+        $video->attach = rtrim(parse_url(basename($video->url),PHP_URL_PATH),'.html');
+        
+        //优酷视频
+        if($video->type ==3){
+            $video->attach = ltrim($video->attach,'id_');
+        }
+        
+        if($video->save()){
+            $message = '保存成功';
+        }
+        else{
+            $message = '保存失败';
+        }
+        return array('message'=>$message);
+    }
+    
+    
+    
     public function upload(){
         try{            
             $pathinfo = $this->uploadVideo();
