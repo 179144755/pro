@@ -218,7 +218,7 @@ class IndexController extends CommonController {
      */
     public function xc(Request $request) {
         if ($request->isXmlHttpRequest()) {
-            $data = Video::orderBy('id', 'desc')->paginate($request->input('size', 10));
+            $data = Video::orderBy('id', 'desc')->whereIn('type',array(1,2))->paginate($request->input('size', 10));
             return $data;
         }
         return view('web.jindu_xc');

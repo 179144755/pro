@@ -25,11 +25,36 @@ class WebConfigController extends CommonController
     }
    
     
+    
+    /**
+     * 图片组
+     */
+    protected function templete_type_2($webConfig){
+        return view('admin.webconfig.add_img_array',compact('webConfig'));
+        
+    }
+    
+    
+    /**
+     * 图片
+     */
+    protected  function templete_type_1($webConfig){
+        return view('admin.webconfig.add_img',compact('webConfig'));
+    }
+    
 
     public function edit($id){
        $webConfig = WebConfig::find($id);
-       return view('admin.webconfig.add_img',compact('webConfig'));
+       
+       $templete = 'templete_type_'.$webConfig['type'];
+       
+       return $this->$templete($webConfig);
+       
     }
+    
+    
+    
+    
     
     
     public function save($id){

@@ -64,7 +64,7 @@
 </style>
 
 <script>
-   var configs = <?php $jsData = $data->toArray() ; echo  $jsData['data'] ? " JSON.parse('".json_encode($jsData['data'])."')" : '';  ?>;
+   var configs = <?php $jsData = $data->toArray() ; echo  json_encode($jsData['data'])?: ''; ?>;
     new Vue({
         el: '#app',
         data: {
