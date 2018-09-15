@@ -72,6 +72,11 @@ Route::group(['middleware' => ['web','admin.login'],'prefix'=>'admin','namespace
     Route::get('webconfig/index', 'WebConfigController@index');
     Route::get('webconfig/edit/{id}', 'WebConfigController@edit')->where('id', '[1-9]\d*');
     Route::post('webconfig/save/{id}', 'WebConfigController@save')->where('id', '[1-9]\d*');
+    Route::post('webconfig/upload_img', 'WebConfigController@upload_img')->name('admon.webconfig.upload');
+    Route::post('webconfig/getvalue/{id}', 'WebConfigController@getValue')->where('id', '[1-9]\d*');
+    
+    
+    //
     
 });
 

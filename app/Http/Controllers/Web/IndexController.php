@@ -27,6 +27,9 @@ class IndexController extends CommonController {
         $data = WebConfig::whereIn('name', (array) $name)->get();
 
         foreach ($data as $row) {
+            if($row->type==2){
+                $row->value = json_decode($row->value,true);
+            }
             $object->{$row->name} = array('value' => $row->value, 'type' => $row->type);
         }
 
